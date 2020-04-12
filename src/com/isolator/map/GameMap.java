@@ -84,4 +84,15 @@ public class GameMap {
     public Size getSize() {
         return mapSize;
     }
+
+    public Position randomLocation() {
+        int x = (int) (Math.random() * gridCells.length);
+        int y = (int) (Math.random() * gridCells[0].length);
+
+        if(!gridCells[x][y].isWalkable()) {
+            return randomLocation();
+        }
+
+        return new Position(x * cellSize.getWidth(), y * cellSize.getHeight());
+    }
 }

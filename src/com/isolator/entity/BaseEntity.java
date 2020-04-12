@@ -8,11 +8,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class BaseEntity {
-    private Controller controller;
-    private Velocity velocity;
     private Position position;
     private Direction direction;
-    private Size size;
+    protected Velocity velocity;
+    protected Controller controller;
+    protected Size size;
 
     public BaseEntity() {
         this(null);

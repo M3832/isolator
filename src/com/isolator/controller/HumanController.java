@@ -31,7 +31,17 @@ public class HumanController implements Controller {
     }
 
     @Override
-    public boolean isDoingAction() {
-        return false;
+    public boolean isRequestingAction() {
+        return input.isClicked(KeyEvent.VK_SPACE);
+    }
+
+    @Override
+    public boolean isRequestingSpeedUp() {
+        return input.isClicked(KeyEvent.VK_PLUS);
+    }
+
+    @Override
+    public boolean isRequestingSlowDown() {
+        return input.isClicked(KeyEvent.VK_MINUS);
     }
 }

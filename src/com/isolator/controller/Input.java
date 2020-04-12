@@ -15,20 +15,24 @@ public class Input implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        checkKeyInMap(e.getKeyCode());
-
-        keys.get(e.getKeyCode()).press();
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         checkKeyInMap(e.getKeyCode());
+        KeyPress key = keys.get(e.getKeyCode());
+        if(!key.isTyped()) {
+            key.click();
+        } else {
+            key.press();
+        }
 
-        keys.get(e.getKeyCode()).press();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+            System.out.println("RELEASED SPACE");
         keys.get(e.getKeyCode()).release();
     }
 
@@ -44,18 +48,22 @@ public class Input implements KeyListener {
         }
     }
 
+    public boolean isClicked(Integer keyCode) {
+        checkKeyInMap(keyCode);
+
+        return keys.get(keyCode).isTyped();
+    }
+
     public static class KeyPress {
         private boolean typed;
         private boolean pressed;
 
-        public void press() {
-            if(typed) {
-                pressed = true;
-            }
+        public void click() {
+            typed = true;
+        }
 
-            if(!typed) {
-                typed = true;
-            }
+        public void press() {
+            pressed = true;
         }
 
         public void release() {
@@ -65,6 +73,13 @@ public class Input implements KeyListener {
 
         public boolean isPressed() {
             return pressed || typed;
+        }
+        public boolean isTyped() {
+            if(typed && !pressed) {
+                pressed = true;
+                return true;
+            }
+            return false;
         }
     }
 }

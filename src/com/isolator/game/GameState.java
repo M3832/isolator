@@ -15,6 +15,7 @@ public class GameState {
     private List<BaseEntity> entities;
     private GameMap map;
     private Camera camera;
+    private float gameSpeed = 1;
 
     public GameState(Camera camera) {
         entities = new ArrayList<>();
@@ -56,5 +57,21 @@ public class GameState {
                 .get()
                 .getCollisionBox()
                 .getIntersection(collisionBox);
+    }
+
+    public void increaseGameSpeed() {
+        if(gameSpeed <= 3)
+            gameSpeed += 0.5;
+    }
+
+    public void decreaseGameSpeed() {
+        System.out.println("Decreasing game speed by 0.5");
+        if(gameSpeed >= 1.0)
+            gameSpeed -= 0.5;
+    }
+
+    public float getGameSpeed() {
+       // System.out.println(gameSpeed);
+        return gameSpeed;
     }
 }

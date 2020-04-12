@@ -39,4 +39,26 @@ public class Position {
         nextPosition.apply(velocity);
         return nextPosition;
     }
+
+    public boolean isWithinInteractionRange(Position other) {
+        int interactionRange = 20;
+        int deltaX = Math.max(Math.abs(other.getX()), Math.abs(x)) - Math.min(Math.abs(other.getX()), Math.abs(x));
+        int deltaY = Math.max(Math.abs(other.getY()), Math.abs(y)) - Math.min(Math.abs(other.getY()), Math.abs(y));
+
+        return deltaX <= interactionRange && deltaY <= interactionRange;
+    }
+
+    @Override
+    public boolean equals(Object that){
+        if(!(that instanceof Position)) {
+            return false;
+        }
+        Position thatPosition = (Position) that;
+        return this.getX() == thatPosition.getX() && this.getY() == thatPosition.getY();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(X: %d, Y: %d)", x, y);
+    }
 }

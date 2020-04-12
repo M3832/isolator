@@ -5,5 +5,7 @@ public interface Controller {
     boolean isRequestingDown();
     boolean isRequestingRight();
     boolean isRequestingLeft();
-    boolean isDoingAction();
+    boolean isRequestingAction();
+    boolean isRequestingSpeedUp();
+    boolean isRequestingSlowDown();
 }
