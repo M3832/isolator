@@ -3,6 +3,8 @@ package com.isolator.display;
 import com.isolator.controller.Input;
 import com.isolator.core.Size;
 import com.isolator.game.GameState;
+import com.isolator.map.BaseTile;
+import com.isolator.map.GameMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,6 +56,11 @@ public class Display extends JFrame {
     }
 
     public void renderState(GameState state, Graphics2D screenGraphics) {
+        renderMap(state, screenGraphics);
+        renderEntities(state, screenGraphics);
+    }
+
+    private void renderEntities(GameState state, Graphics2D screenGraphics) {
         state.getEntities().forEach(entity -> {
             screenGraphics.drawImage(
                     entity.getSprite(),
@@ -61,5 +68,21 @@ public class Display extends JFrame {
                     entity.getPosition().getY(),
                     null);
         });
+    }
+
+    private void renderMap(GameState state, Graphics2D screenGraphics) {
+        BaseTile[][] tiles = state.getMap().getTiles();
+        Size cellSize = state.getMap().getCellSize();
+
+        for(int x = 0; x < tiles.length; x++) {
+            for(int y = 0; y < tiles[0].length; y++) {
+                screenGraphics.drawImage(
+                        tiles[x][y].getTileSprite(),
+                        x * cellSize.getWidth(),
+                        y * cellSize.getHeight(),
+                        null
+                );
+            }
+        }
     }
 }

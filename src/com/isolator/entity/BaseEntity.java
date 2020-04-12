@@ -40,10 +40,6 @@ public abstract class BaseEntity {
         velocity.update(controller);
         position.apply(velocity);
         direction = Direction.fromVelocity(velocity, direction);
-
-        if(state.isOutOfBoundsOnX(position.getX())) {
-            position.setX(0);
-        }
     }
 
     public Position getPosition() {
