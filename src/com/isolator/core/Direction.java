@@ -1,4 +1,4 @@
-package com.stopcoronagame.core;
+package com.isolator.core;
 
 public enum Direction {
     S, SW, W, NW, N, NE, E, SE;

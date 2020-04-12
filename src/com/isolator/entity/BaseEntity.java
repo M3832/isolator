@@ -1,9 +1,8 @@
-package com.stopcoronagame.entity;
+package com.isolator.entity;
 
-import com.stopcoronagame.controller.Controller;
-import com.stopcoronagame.controller.Input;
-import com.stopcoronagame.core.*;
-import com.stopcoronagame.game.GameState;
+import com.isolator.controller.Controller;
+import com.isolator.core.*;
+import com.isolator.game.GameState;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,8 +1,8 @@
-package com.stopcoronagame.display;
+package com.isolator.display;
 
-import com.stopcoronagame.controller.Input;
-import com.stopcoronagame.core.Size;
-import com.stopcoronagame.game.GameState;
+import com.isolator.controller.Input;
+import com.isolator.core.Size;
+import com.isolator.game.GameState;
 
 import javax.swing.*;
 import java.awt.*;

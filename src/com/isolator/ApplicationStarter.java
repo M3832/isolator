@@ -1,6 +1,6 @@
-package com.stopcoronagame;
+package com.isolator;
 
-import com.stopcoronagame.game.Game;
+import com.isolator.game.Game;
 
 public class ApplicationStarter {
     public static void main(String[] args) {

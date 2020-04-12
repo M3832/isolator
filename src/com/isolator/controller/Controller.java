@@ -1,4 +1,4 @@
-package com.stopcoronagame.controller;
+package com.isolator.controller;
 
 public interface Controller {
     boolean isRequestingUp();

@@ -1,10 +1,10 @@
-package com.stopcoronagame.game;
+package com.isolator.game;
 
-import com.stopcoronagame.controller.HumanController;
-import com.stopcoronagame.controller.Input;
-import com.stopcoronagame.core.Size;
-import com.stopcoronagame.entity.Player;
-import com.stopcoronagame.display.Display;
+import com.isolator.controller.HumanController;
+import com.isolator.controller.Input;
+import com.isolator.core.Size;
+import com.isolator.entity.Player;
+import com.isolator.display.Display;
 
 public class Game implements Runnable {
     private Display display;

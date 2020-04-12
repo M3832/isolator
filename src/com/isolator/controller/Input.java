@@ -1,4 +1,4 @@
-package com.stopcoronagame.controller;
+package com.isolator.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

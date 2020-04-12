@@ -1,7 +1,7 @@
-package com.stopcoronagame.game;
+package com.isolator.game;
 
-import com.stopcoronagame.core.Size;
-import com.stopcoronagame.entity.BaseEntity;
+import com.isolator.core.Size;
+import com.isolator.entity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.stopcoronagame.core;
+package com.isolator.core;
 
-import com.stopcoronagame.controller.Controller;
+import com.isolator.controller.Controller;
 
 public class Velocity {
     private double velocityX, velocityY;

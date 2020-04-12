@@ -1,4 +1,4 @@
-package com.stopcoronagame.core;
+package com.isolator.core;
 
 public class Size {
 
