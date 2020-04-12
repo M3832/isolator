@@ -38,8 +38,26 @@ public abstract class BaseEntity {
 
     public void update(GameState state) {
         velocity.update(controller);
+
+        if(state.checkCollisionWithWalls(getNextPositionCollisionBox())) {
+            CollisionBox intersection = state.getCollisionIntersection(getNextPositionCollisionBox());
+            boolean collideX = intersection.getBox().getWidth() != 0;
+            boolean collideY = intersection.getBox().getHeight() != 0;
+            velocity.immediateStopInDirections(collideX, collideY);
+        }
         position.apply(velocity);
         direction = Direction.fromVelocity(velocity, direction);
+    }
+
+    public CollisionBox getNextPositionCollisionBox() {
+        Position nextPosition = position.getNextPosition(velocity);
+        Rectangle collisionBounds = new Rectangle(
+                nextPosition.getX(),
+                nextPosition.getY(),
+                size.getWidth(),
+                size.getHeight());
+
+        return new CollisionBox(collisionBounds);
     }
 
     public Position getPosition() {

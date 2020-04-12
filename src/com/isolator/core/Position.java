@@ -33,4 +33,10 @@ public class Position {
         this.x += (int) velocity.getVelocityX();
         this.y += (int) velocity.getVelocityY();
     }
+
+    public Position getNextPosition(Velocity velocity) {
+        Position nextPosition = new Position(x, y);
+        nextPosition.apply(velocity);
+        return nextPosition;
+    }
 }

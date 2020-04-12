@@ -81,4 +81,14 @@ public class Velocity {
     public double getVelocityY() {
         return velocityY;
     }
+
+    public void immediateStopInDirections(boolean collideX, boolean collideY) {
+        if(collideX) {
+            velocityX = 0;
+        }
+
+        if(collideY) {
+            velocityY = 0;
+        }
+    }
 }

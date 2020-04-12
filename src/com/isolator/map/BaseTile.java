@@ -14,7 +14,7 @@ public abstract class BaseTile {
         walkable = true;
     }
 
-    public BufferedImage getTileSprite() {
+    public Image getTileSprite() {
         BufferedImage bufferedImage = new BufferedImage(size.getWidth(), size.getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics2D imageGraphics = bufferedImage.createGraphics();
 

@@ -1,25 +1,22 @@
 package com.isolator.game;
 
+import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.entity.BaseEntity;
-import com.isolator.entity.Player;
 import com.isolator.map.GameMap;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GameState {
 
-    private Size mapSize;
     private List<BaseEntity> entities;
     private GameMap map;
 
-    public GameState(Size mapSize) {
+    public GameState() {
         entities = new ArrayList<>();
         this.map = new GameMap(20, 20, new Size(50, 50));
-        this.mapSize = mapSize;
     }
 
     public void update() {
@@ -30,14 +27,6 @@ public class GameState {
         return entities;
     }
 
-    public void addEntity(BaseEntity entity) {
-        entities.add(entity);
-    }
-
-    public Size getMapSize() {
-        return mapSize;
-    }
-
     public GameMap getMap() {
         return map;
     }
@@ -45,5 +34,19 @@ public class GameState {
     public void addEntityAtPosition(BaseEntity entity, Position position) {
         entity.setPosition(position);
         entities.add(entity);
+    }
+
+    public boolean checkCollisionWithWalls(CollisionBox collisionBox) {
+        return map.getUnwalkableGridCells().stream()
+                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(collisionBox));
+    }
+
+    public CollisionBox getCollisionIntersection(CollisionBox collisionBox) {
+        return map.getUnwalkableGridCells().stream()
+                .filter(gridCell -> gridCell.getCollisionBox().checkCollision(collisionBox))
+                .findFirst()
+                .get()
+                .getCollisionBox()
+                .getIntersection(collisionBox);
     }
 }

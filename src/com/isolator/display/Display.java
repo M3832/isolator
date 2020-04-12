@@ -4,7 +4,7 @@ import com.isolator.controller.Input;
 import com.isolator.core.Size;
 import com.isolator.game.GameState;
 import com.isolator.map.BaseTile;
-import com.isolator.map.GameMap;
+import com.isolator.map.GridCell;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,7 +71,7 @@ public class Display extends JFrame {
     }
 
     private void renderMap(GameState state, Graphics2D screenGraphics) {
-        BaseTile[][] tiles = state.getMap().getTiles();
+        GridCell[][] tiles = state.getMap().getGridCells();
         Size cellSize = state.getMap().getCellSize();
 
         for(int x = 0; x < tiles.length; x++) {
