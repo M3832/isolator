@@ -3,12 +3,15 @@ package com.isolator.game;
 import com.isolator.controller.HumanController;
 import com.isolator.controller.Input;
 import com.isolator.core.Position;
+import com.isolator.core.Size;
+import com.isolator.display.Camera;
 import com.isolator.entity.Player;
 import com.isolator.display.Display;
 
 public class Game implements Runnable {
     private Display display;
     private GameState state;
+    private Camera camera;
     private Input input;
 
     private float speed;
@@ -21,15 +24,18 @@ public class Game implements Runnable {
 
     public Game(int width, int height) {
         input = new Input();
-        state = new GameState();
+        camera = new Camera(new Position(0, 0), new Size(width, height));
         display = new Display(width, height, input);
+        state = new GameState(camera);
         speed = 1f;
 
         initializeGame();
     }
 
     private void initializeGame() {
-        state.addEntityAtPosition(new Player(new HumanController(input)), new Position(100, 100));
+        Player player = new Player(new HumanController(input));
+        state.addEntityAtPosition(player, new Position(100, 100));
+        camera.followEntity(player);
     }
 
     @Override

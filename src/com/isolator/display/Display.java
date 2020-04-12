@@ -1,9 +1,9 @@
 package com.isolator.display;
 
 import com.isolator.controller.Input;
+import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.game.GameState;
-import com.isolator.map.BaseTile;
 import com.isolator.map.GridCell;
 
 import javax.swing.*;
@@ -61,25 +61,29 @@ public class Display extends JFrame {
     }
 
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
+        Camera camera = state.getCamera();
         state.getEntities().forEach(entity -> {
             screenGraphics.drawImage(
                     entity.getSprite(),
-                    entity.getPosition().getX(),
-                    entity.getPosition().getY(),
+                    entity.getPosition().getX() - camera.getPosition().getX(),
+                    entity.getPosition().getY() - camera.getPosition().getY(),
                     null);
         });
     }
 
     private void renderMap(GameState state, Graphics2D screenGraphics) {
+        Camera camera = state.getCamera();
         GridCell[][] tiles = state.getMap().getGridCells();
         Size cellSize = state.getMap().getCellSize();
+        Position startRenderingPosition = state.getMap().getViewableStartingPosition(camera);
+        Position endRenderingPosition = state.getMap().getViewableEndingPosition(camera);
 
-        for(int x = 0; x < tiles.length; x++) {
-            for(int y = 0; y < tiles[0].length; y++) {
+        for(int x = startRenderingPosition.getX(); x < Math.min(tiles.length, endRenderingPosition.getX()); x++) {
+            for(int y = startRenderingPosition.getY(); y < Math.min(tiles[0].length, endRenderingPosition.getY()); y++) {
                 screenGraphics.drawImage(
                         tiles[x][y].getTileSprite(),
-                        x * cellSize.getWidth(),
-                        y * cellSize.getHeight(),
+                        x * cellSize.getWidth() - camera.getPosition().getX(),
+                        y * cellSize.getHeight() - camera.getPosition().getY(),
                         null
                 );
             }
