@@ -1,9 +1,7 @@
 package com.isolator.map;
 
 import com.isolator.core.Size;
-import com.isolator.game.GameState;
 
-import java.awt.*;
 import java.util.Arrays;
 
 public class GameMap {
@@ -16,6 +14,14 @@ public class GameMap {
         this.cellSize = cellSize;
         Arrays.stream(tiles)
                 .forEach(row -> Arrays.fill(row, new WoodFloor(cellSize)));
+
+        for(int x = 0; x < tiles.length; x++) {
+            for(int y = 0; y < tiles[0].length; y++) {
+                if(x == 0 || y == 0) {
+                    tiles[x][y] = new Wall(cellSize);
+                }
+            }
+        }
     }
 
     public BaseTile[][] getTiles() {

@@ -1,7 +1,9 @@
 package com.isolator.game;
 
+import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.entity.BaseEntity;
+import com.isolator.entity.Player;
 import com.isolator.map.GameMap;
 
 import java.util.ArrayList;
@@ -38,5 +40,10 @@ public class GameState {
 
     public GameMap getMap() {
         return map;
+    }
+
+    public void addEntityAtPosition(BaseEntity entity, Position position) {
+        entity.setPosition(position);
+        entities.add(entity);
     }
 }

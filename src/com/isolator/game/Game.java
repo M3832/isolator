@@ -2,6 +2,7 @@ package com.isolator.game;
 
 import com.isolator.controller.HumanController;
 import com.isolator.controller.Input;
+import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.entity.Player;
 import com.isolator.display.Display;
@@ -29,7 +30,7 @@ public class Game implements Runnable {
     }
 
     private void initializeGame() {
-        state.addEntity(new Player(new HumanController(input)));
+        state.addEntityAtPosition(new Player(new HumanController(input)), new Position(100, 100));
     }
 
     @Override

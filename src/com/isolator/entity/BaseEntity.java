@@ -45,4 +45,8 @@ public abstract class BaseEntity {
     public Position getPosition() {
         return position;
     }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    };
 }
