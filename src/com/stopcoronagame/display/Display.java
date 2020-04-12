@@ -1,54 +1,65 @@
 package com.stopcoronagame.display;
 
-import com.stopcoronagame.Handler;
+import com.stopcoronagame.controller.Input;
+import com.stopcoronagame.core.Size;
+import com.stopcoronagame.game.GameState;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 public class Display extends JFrame {
-    private Handler handler;
-    private GamePanel panel;
-    private int width, height;
+    private Canvas canvas;
+    private Size size;
 
-    public Display(int width, int height) {
-        handler = Handler.getHandler();
-        this.width = width;
-        this.height = height;
-
-        handler.setDisplay(this);
-
+    public Display(int width, int height, Input input) {
+        super();
+        size = new Size(width, height);
+        addKeyListener(input);
         setupWindow();
     }
 
     private void setupWindow() {
+        java.awt.Dimension windowSize = new java.awt.Dimension(this.size.getWidth(), this.size.getHeight());
         setTitle("Halt the Spread");
-        setSize(width, height);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+
+        canvas = new Canvas();
+        canvas.setPreferredSize(windowSize);
+        canvas.setFocusable(false);
+        add(canvas);
+        pack();
+        canvas.createBufferStrategy(3);
+
         setLocationRelativeTo(null);
-
-        panel = new GamePanel();
-        panel.setSize(width, height);
-        panel.setMinimumSize(new Dimension(width, height));
-        panel.setMaximumSize(new Dimension(width, height));
-
-        Container graphicsContainer = getContentPane();
-        graphicsContainer.setLayout(new BoxLayout(graphicsContainer, BoxLayout.PAGE_AXIS));
-        graphicsContainer.add(panel);
-
         setVisible(true);
-        createBufferStrategy(3);
     }
 
-    public int getGameWidth() {
-        return width;
+    public void render(GameState state) {
+        BufferStrategy bufferStrategy = canvas.getBufferStrategy();
+        Graphics2D screenGraphics = (Graphics2D) bufferStrategy.getDrawGraphics();
+
+        clearScreen(screenGraphics);
+        renderState(state, screenGraphics);
+
+        screenGraphics.dispose();
+        bufferStrategy.show();
     }
 
-    public int getGameHeight() {
-        return height;
+    private void clearScreen(Graphics2D screenGraphics) {
+        Rectangle graphicsBounds = screenGraphics.getDeviceConfiguration().getBounds();
+        screenGraphics.setColor(Color.BLACK);
+        screenGraphics.fillRect(0, 0, (int) graphicsBounds.getWidth(), (int) graphicsBounds.getHeight());
     }
 
-    public void render() {
-        panel.render(getGraphics(), width, height);
+    public void renderState(GameState state, Graphics2D screenGraphics) {
+        state.getEntities().forEach(entity -> {
+            screenGraphics.drawImage(
+                    entity.getSprite(),
+                    entity.getPosition().getX(),
+                    entity.getPosition().getY(),
+                    null);
+        });
     }
 }
