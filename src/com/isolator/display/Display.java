@@ -104,7 +104,7 @@ public class Display extends JFrame {
 
     private void renderUI(GameState state, Graphics2D screenGraphics) {
         state.getUiContainers().forEach(container -> {
-            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, screenGraphics);
+            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, screenGraphics, size);
             screenGraphics.drawImage(
                     container.getUIElement(),
                     drawPosition.getX(),

@@ -1,17 +1,18 @@
 package com.isolator.ui;
 
 import com.isolator.core.Position;
+import com.isolator.core.Size;
 
 import java.awt.*;
 
 public class UIAlignmentUtils {
 
-    public static Position calculateDrawPosition(UIContainer uiContainer, Graphics2D graphics) {
+    public static Position calculateDrawPosition(UIContainer uiContainer, Graphics2D graphics, Size screenSize) {
         Alignment alignment = uiContainer.getWindowAlignment();
         AlignmentPosition alignmentHorizontal = alignment.getHorizontal();
         AlignmentPosition alignmentVertical = alignment.getVertical();
 
-        int screenWidth = (int) graphics.getDeviceConfiguration().getBounds().getWidth();
+        int screenWidth = screenSize.getWidth();
         int x = 0;
         if(alignmentHorizontal == AlignmentPosition.START)
             x = 0;
@@ -20,7 +21,7 @@ public class UIAlignmentUtils {
         if(alignmentHorizontal == AlignmentPosition.END)
             x = screenWidth - uiContainer.getSize().getWidth();
 
-        int screenHeight = (int) graphics.getDeviceConfiguration().getBounds().getHeight();
+        int screenHeight = screenSize.getHeight();
         int y = 0;
         if(alignmentVertical == AlignmentPosition.START)
             y = 0;

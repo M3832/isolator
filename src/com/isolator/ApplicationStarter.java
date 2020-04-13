@@ -9,5 +9,4 @@ public class ApplicationStarter {
 
         gameRunner.run();
     }
-
 }
