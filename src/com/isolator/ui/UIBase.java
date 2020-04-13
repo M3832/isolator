@@ -10,7 +10,7 @@ public abstract class UIBase {
 
     public UIBase() {
         this.margin = new UISpacing(0);
-        this.padding = new UISpacing(10);
+        this.padding = new UISpacing(5);
     }
 
     public abstract Size getSize();

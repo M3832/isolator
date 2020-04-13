@@ -18,5 +18,7 @@ public class Alignment {
         return horizontal;
     }
 
-    public static Alignment TOP_RIGHT = new Alignment(AlignmentPosition.END, AlignmentPosition.START);
+    public static final Alignment TOP_RIGHT = new Alignment(AlignmentPosition.END, AlignmentPosition.START);
+    public static final Alignment CENTER_CENTER = new Alignment(AlignmentPosition.CENTER, AlignmentPosition.CENTER);
+    public static final Alignment BOTTOM_RIGHT = new Alignment(AlignmentPosition.END, AlignmentPosition.END);
 }

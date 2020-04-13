@@ -34,6 +34,7 @@ public class Game implements Runnable {
         display = new Display(width, height, input);
         state = new GameState(camera);
         fpsContainer = new UIContainer();
+        drawStatisticsUI();
 
         initializeGame();
     }
@@ -77,14 +78,18 @@ public class Game implements Runnable {
     private void printStatistics() {
         long currentTime = System.currentTimeMillis();
         if(statisticsTimer + 1000 <= currentTime) {
-            fpsContainer.clear();
-            fpsContainer.addElement(new UIText(String.format("UPS: %d", updates)));
-            fpsContainer.addElement(new UIText(String.format("FPS: %d", renders)));
-            fpsContainer.setWindowAlignment(Alignment.TOP_RIGHT);
+            drawStatisticsUI();
             statisticsTimer = currentTime;
             renders = 0;
             updates = 0;
         }
+    }
+
+    private void drawStatisticsUI() {
+        fpsContainer.clear();
+        fpsContainer.addElement(new UIText(String.format("UPS: %d", updates)));
+        fpsContainer.addElement(new UIText(String.format("FPS: %d", renders)));
+        fpsContainer.setWindowAlignment(Alignment.BOTTOM_RIGHT);
     }
 
     private void render() {

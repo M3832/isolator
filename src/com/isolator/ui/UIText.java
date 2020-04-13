@@ -22,7 +22,7 @@ public class UIText extends UIBase {
 
     @Override
     public Size getSize() {
-        return new Size(text.length() * fontSize + padding.getHorizontal(), fontSize + padding.getVertical());
+        return new Size(text.length() * fontSize / 2 + padding.getHorizontal(), fontSize + padding.getVertical());
     }
 
     @Override
@@ -33,10 +33,6 @@ public class UIText extends UIBase {
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
 
-        graphics.setColor(Color.RED);
-        graphics.drawRect(0, 0,
-                getSize().getWidth() - 1,
-                getSize().getHeight() - 1);
         graphics.setColor(Color.WHITE);
         graphics.setFont(new Font("Helvetica", Font.PLAIN, fontSize));
         graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop() - 4);
