@@ -12,6 +12,7 @@ public class UIContainer extends UIBase {
     private Position position;
     private ContainerDirection containerDirection;
     private Alignment windowAlignment;
+    private Color backgroundColor;
     private boolean visible;
 
     private List<UIBase> elements;
@@ -25,6 +26,7 @@ public class UIContainer extends UIBase {
         position = new Position(0, 0);
         padding = new UISpacing(0, 10);
         containerDirection = ContainerDirection.VERTICAL;
+        backgroundColor = new Color(0, 0, 0, 0.5f);
         windowAlignment = new Alignment(AlignmentPosition.START, AlignmentPosition.START);
         elements = new ArrayList<>();
         this.visible = visible;
@@ -85,7 +87,7 @@ public class UIContainer extends UIBase {
         BufferedImage image = new BufferedImage(containerSize.getWidth(), containerSize.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = image.createGraphics();
 
-        graphics.setColor(new Color(0, 0, 0, 0.5f));
+        graphics.setColor(backgroundColor);
         graphics.fillRect(0, 0, containerSize.getWidth(), containerSize.getHeight());
 
         int currentY = padding.getTop();
@@ -127,5 +129,9 @@ public class UIContainer extends UIBase {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
 public class AIWander extends AIState {
 
     Optional<Position> targetPosition;
-    private boolean done;
+    private boolean done, movingLeft, movingRight, movingUp, movingDown;
 
     public AIWander() {
         targetPosition = Optional.empty();
@@ -49,8 +49,14 @@ public class AIWander extends AIState {
     public UIBase getDebugUI(GameState state, BaseEntity baseEntity) {
         UIContainer container = new UIContainer();
         container.addElement(new UIText(this.getClass().getSimpleName(), 18));
-        container.addElement(new UIText("Current position: " + baseEntity.getPosition(), 12));
-        container.addElement(new UIText("Target position: " + targetPosition, 12));
+        container.addElement(new UIText("Current position: " + baseEntity.getPosition(), 10));
+        container.addElement(new UIText("Target position: " + targetPosition, 10));
+        container.addElement(new UIText("---", 12));
+        container.addElement(new UIText("< " + movingLeft, 12));
+        container.addElement(new UIText("> " + movingRight, 12));
+        container.addElement(new UIText("^ " + movingUp, 12));
+        container.addElement(new UIText("v " + movingDown, 12));
+
         return container;
     }
 
@@ -59,9 +65,14 @@ public class AIWander extends AIState {
         Position aiPosition = controlledEntity.getPosition();
         Position target = targetPosition.get();
 
-        aiController.setLeft(aiPosition.getX() > target.getX());
-        aiController.setRight(aiPosition.getX() < target.getX());
-        aiController.setUp(aiPosition.getY() > target.getY());
-        aiController.setDown(aiPosition.getY() < target.getY());
+        movingLeft = aiPosition.getX() > target.getX();
+        movingRight = aiPosition.getX() < target.getX();
+        movingUp = aiPosition.getY() > target.getY();
+        movingDown = aiPosition.getY() < target.getY();
+
+        aiController.setLeft(movingLeft);
+        aiController.setRight(movingRight);
+        aiController.setUp(movingUp);
+        aiController.setDown(movingDown);
     }
 }

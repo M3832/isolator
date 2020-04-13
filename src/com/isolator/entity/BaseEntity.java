@@ -6,6 +6,7 @@ import com.isolator.game.Game;
 import com.isolator.game.GameState;
 import com.isolator.game.RunMode;
 import com.isolator.ui.UIContainer;
+import com.isolator.ui.UISpacing;
 import com.isolator.ui.UIText;
 
 import java.awt.*;
@@ -29,11 +30,13 @@ public abstract class BaseEntity {
         this.velocity = new Velocity(0.5f, 5.0f);
         this.controller = controller;
         this.direction = Direction.N;
-        this.uiContainer = new UIContainer();
         initUIElements();
     }
 
     private void initUIElements() {
+        this.uiContainer = new UIContainer();
+        uiContainer.setBackgroundColor(new Color(0, 0, 0, 0));
+        uiContainer.setPadding(new UISpacing(0));
         uiContainer.addElement(getDebugUIText());
     }
 
