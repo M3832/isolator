@@ -5,6 +5,7 @@ import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.game.GameState;
 import com.isolator.map.GridCell;
+import com.isolator.ui.UIAlignmentUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,6 +59,7 @@ public class Display extends JFrame {
     public void renderState(GameState state, Graphics2D screenGraphics) {
         renderMap(state, screenGraphics);
         renderEntities(state, screenGraphics);
+        renderUI(state, screenGraphics);
     }
 
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
@@ -88,5 +90,17 @@ public class Display extends JFrame {
                 );
             }
         }
+    }
+
+    private void renderUI(GameState state, Graphics2D screenGraphics) {
+        state.getUiContainers().forEach(container -> {
+            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, screenGraphics);
+            screenGraphics.drawImage(
+                    container.getUIElement(),
+                    drawPosition.getX(),
+                    drawPosition.getY(),
+                    null
+            );
+        });
     }
 }

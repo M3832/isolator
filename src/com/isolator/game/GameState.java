@@ -6,6 +6,9 @@ import com.isolator.core.Size;
 import com.isolator.display.Camera;
 import com.isolator.entity.BaseEntity;
 import com.isolator.map.GameMap;
+import com.isolator.ui.UIContainer;
+import com.isolator.ui.UISpacing;
+import com.isolator.ui.UIText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 public class GameState {
 
     private List<BaseEntity> entities;
+    private List<UIContainer> uiContainers;
     private GameMap map;
     private Camera camera;
     private float gameSpeed = 1;
@@ -21,6 +25,16 @@ public class GameState {
         entities = new ArrayList<>();
         this.map = new GameMap(20, 20, new Size(100, 100));
         this.camera = camera;
+        initUI();
+    }
+
+    private void initUI() {
+        uiContainers = new ArrayList<>();
+
+        UIContainer container = new UIContainer();
+        container.addElement(new UIText("Testing"));
+
+        uiContainers.add(container);
     }
 
     public void update() {
@@ -30,6 +44,10 @@ public class GameState {
 
     public List<BaseEntity> getEntities() {
         return entities;
+    }
+
+    public List<UIContainer> getUiContainers() {
+        return uiContainers;
     }
 
     public GameMap getMap() {
@@ -65,13 +83,15 @@ public class GameState {
     }
 
     public void decreaseGameSpeed() {
-        System.out.println("Decreasing game speed by 0.5");
         if(gameSpeed >= 1.0)
             gameSpeed -= 0.5;
     }
 
     public float getGameSpeed() {
-       // System.out.println(gameSpeed);
         return gameSpeed;
+    }
+
+    public void addUIContainer(UIContainer container) {
+        uiContainers.add(container);
     }
 }
