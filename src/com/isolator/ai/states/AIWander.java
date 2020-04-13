@@ -2,8 +2,12 @@ package com.isolator.ai.states;
 
 import com.isolator.controller.AIController;
 import com.isolator.core.Position;
+import com.isolator.entity.BaseEntity;
 import com.isolator.entity.Visitor;
 import com.isolator.game.GameState;
+import com.isolator.ui.UIBase;
+import com.isolator.ui.UIContainer;
+import com.isolator.ui.UIText;
 
 import java.util.Optional;
 
@@ -25,7 +29,6 @@ public class AIWander extends AIState {
             }  while(target.isWithinInteractionRange(controlledEntity.getPosition()));
 
             targetPosition = Optional.of(target);
-            System.out.println(controlledEntity + " - New target position: " + targetPosition.get() + " Current position: " +controlledEntity.getPosition());
             return;
         }
 
@@ -40,6 +43,15 @@ public class AIWander extends AIState {
     @Override
     public boolean readyToTransition() {
         return done;
+    }
+
+    @Override
+    public UIBase getDebugUI(GameState state, BaseEntity baseEntity) {
+        UIContainer container = new UIContainer();
+        container.addElement(new UIText(this.getClass().getSimpleName(), 18));
+        container.addElement(new UIText("Current position: " + baseEntity.getPosition(), 12));
+        container.addElement(new UIText("Target position: " + targetPosition, 12));
+        return container;
     }
 
     private void moveToTargetPosition(Visitor controlledEntity) {

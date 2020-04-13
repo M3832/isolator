@@ -1,12 +1,13 @@
 package com.isolator.entity;
 
 import com.isolator.ai.AIStateMachine;
+import com.isolator.ai.states.AIState;
 import com.isolator.controller.Controller;
 import com.isolator.core.Velocity;
 import com.isolator.game.GameState;
+import com.isolator.ui.UIText;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Visitor extends BaseEntity {
 
@@ -19,23 +20,21 @@ public class Visitor extends BaseEntity {
     }
 
     @Override
-    public Image getSprite() {
-        BufferedImage bufferedImage = new BufferedImage(size.getWidth(), size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D imageGraphics = bufferedImage.createGraphics();
-
+    protected void drawSprite(Graphics2D imageGraphics) {
         imageGraphics.setColor(Color.BLUE);
         imageGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
-        imageGraphics.setColor(Color.BLACK);
-        imageGraphics.setFont(new Font("Serif", Font.BOLD, 50));
-        imageGraphics.drawString("HELLO", 0, 0);
-
-        return bufferedImage;
     }
 
     @Override
     public void update(GameState state) {
         super.update(state);
         ai.update(state, this);
+        refreshUIContainer(state);
+    }
+
+    private void refreshUIContainer(GameState state) {
+        uiContainer.clear();
+        uiContainer.addElement(ai.getCurrentState().getDebugUI(state, this));
     }
 
     public Controller getController() {

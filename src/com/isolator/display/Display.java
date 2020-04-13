@@ -64,13 +64,23 @@ public class Display extends JFrame {
 
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
         Camera camera = state.getCamera();
-        state.getEntities().forEach(entity -> {
-            screenGraphics.drawImage(
-                    entity.getSprite(),
-                    entity.getPosition().getX() - camera.getPosition().getX(),
-                    entity.getPosition().getY() - camera.getPosition().getY(),
-                    null);
-        });
+        Position startRenderingPosition = state.getMap().getViewableStartingPosition(camera);
+        Position endRenderingPosition = state.getMap().getViewableEndingPosition(camera);
+
+        state.getEntities()
+                .stream()
+                .filter(entity -> {
+                    int y = (entity.getPosition().getY() / state.getCellSize().getHeight());
+                    int x = (entity.getPosition().getX() / state.getCellSize().getWidth());
+
+                    return y > startRenderingPosition.getY() - 2 && y < endRenderingPosition.getY()
+                            && x > startRenderingPosition.getX() - 3 && x < endRenderingPosition.getX();
+                })
+                .forEach(entity -> screenGraphics.drawImage(
+                                        entity.getDrawGraphics(),
+                                        entity.getPosition().getX() - camera.getPosition().getX(),
+                                        entity.getPosition().getY() - camera.getPosition().getY(),
+                                        null));
     }
 
     private void renderMap(GameState state, Graphics2D screenGraphics) {

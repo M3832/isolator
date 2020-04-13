@@ -9,37 +9,34 @@ import com.isolator.map.GameMap;
 import com.isolator.ui.UIContainer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameState {
 
     private List<BaseEntity> entities;
     private List<UIContainer> uiContainers;
-    private UIContainer debugContainer;
     private GameMap map;
     private Camera camera;
+    private Size cellSize;
     private float gameSpeed = 1;
 
     public GameState(Camera camera) {
+        cellSize = new Size(100, 100);
         entities = new ArrayList<>();
-        this.map = new GameMap(20, 20, new Size(100, 100));
+        this.map = new GameMap(20, 20, cellSize);
         this.camera = camera;
         initUI();
     }
 
     private void initUI() {
         uiContainers = new ArrayList<>();
-        debugContainer = new UIContainer();
-        uiContainers.add(debugContainer);
     }
 
     public void update() {
+        entities.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
         entities.forEach(entity -> entity.update(this));
         camera.update(this);
-    }
-
-    public void updateDebug() {
-
     }
 
     public List<BaseEntity> getEntities() {
@@ -93,5 +90,9 @@ public class GameState {
 
     public void addUIContainer(UIContainer container) {
         uiContainers.add(container);
+    }
+
+    public Size getCellSize() {
+        return cellSize;
     }
 }

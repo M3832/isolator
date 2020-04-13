@@ -31,8 +31,6 @@ public class Input implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE)
-            System.out.println("RELEASED SPACE");
         keys.get(e.getKeyCode()).release();
     }
 

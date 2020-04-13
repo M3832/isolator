@@ -21,4 +21,8 @@ public class AIStateMachine {
             currentState = new AIWander();
         }
     }
+
+    public AIState getCurrentState() {
+        return currentState;
+    }
 }
