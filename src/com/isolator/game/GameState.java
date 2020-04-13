@@ -7,8 +7,6 @@ import com.isolator.display.Camera;
 import com.isolator.entity.BaseEntity;
 import com.isolator.map.GameMap;
 import com.isolator.ui.UIContainer;
-import com.isolator.ui.UISpacing;
-import com.isolator.ui.UIText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,7 @@ public class GameState {
 
     private List<BaseEntity> entities;
     private List<UIContainer> uiContainers;
+    private UIContainer debugContainer;
     private GameMap map;
     private Camera camera;
     private float gameSpeed = 1;
@@ -30,16 +29,17 @@ public class GameState {
 
     private void initUI() {
         uiContainers = new ArrayList<>();
-
-        UIContainer container = new UIContainer();
-        container.addElement(new UIText("Testing"));
-
-        uiContainers.add(container);
+        debugContainer = new UIContainer();
+        uiContainers.add(debugContainer);
     }
 
     public void update() {
         entities.forEach(entity -> entity.update(this));
         camera.update(this);
+    }
+
+    public void updateDebug() {
+
     }
 
     public List<BaseEntity> getEntities() {

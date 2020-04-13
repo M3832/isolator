@@ -12,16 +12,22 @@ public class UIContainer extends UIBase {
     private Position position;
     private ContainerDirection containerDirection;
     private Alignment windowAlignment;
+    private boolean visible;
 
     private List<UIBase> elements;
 
     public UIContainer() {
+        this(true);
+    }
+
+    public UIContainer(boolean visible) {
         super();
         position = new Position(0, 0);
         padding = new UISpacing(0, 10);
         containerDirection = ContainerDirection.VERTICAL;
         windowAlignment = new Alignment(AlignmentPosition.START, AlignmentPosition.START);
         elements = new ArrayList<>();
+        this.visible = visible;
     }
 
     public void addElement(UIBase uiBase) {
@@ -72,7 +78,7 @@ public class UIContainer extends UIBase {
 
     @Override
     public Image getUIElement() {
-        if(elements.isEmpty())
+        if(elements.isEmpty() || !visible)
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
         Size containerSize = getSize();
@@ -113,5 +119,13 @@ public class UIContainer extends UIBase {
 
     public Alignment getWindowAlignment() {
         return windowAlignment;
+    }
+
+    public void toggleVisibility() {
+        visible = !visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }

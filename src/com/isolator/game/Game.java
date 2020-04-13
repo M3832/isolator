@@ -18,6 +18,7 @@ public class Game implements Runnable {
     private GameState state;
     private Camera camera;
     private Input input;
+    private RunMode mode;
 
     private UIContainer fpsContainer;
 
@@ -33,8 +34,8 @@ public class Game implements Runnable {
         camera = new Camera(new Position(0, 0), new Size(width, height));
         display = new Display(width, height, input);
         state = new GameState(camera);
-        fpsContainer = new UIContainer();
-        drawStatisticsUI();
+        fpsContainer = new UIContainer(false);
+        mode = RunMode.DEFAULT;
 
         initializeGame();
     }
@@ -45,6 +46,7 @@ public class Game implements Runnable {
         state.addUIContainer(fpsContainer);
         addVisitors();
         camera.followEntity(player);
+        setDebugMode();
     }
 
     private void addVisitors() {
@@ -71,7 +73,9 @@ public class Game implements Runnable {
                 accumulator -= UPDATE_RATE;
             }
             render();
-            printStatistics();
+            if(mode == RunMode.DEBUG) {
+                printStatistics();
+            }
         }
     }
 
@@ -99,6 +103,19 @@ public class Game implements Runnable {
 
     private void update() {
         state.update();
+        if(mode == RunMode.DEBUG) {
+            state.updateDebug();
+        }
         updates++;
+    }
+
+    public void setDefaultMode() {
+        mode = RunMode.DEFAULT;
+        fpsContainer.toggleVisibility();
+    }
+
+    public void setDebugMode() {
+        mode = RunMode.DEBUG;
+        fpsContainer.toggleVisibility();
     }
 }

@@ -3,6 +3,7 @@ package com.isolator.entity;
 import com.isolator.controller.Controller;
 import com.isolator.core.*;
 import com.isolator.game.GameState;
+import com.isolator.ui.UIText;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -67,4 +68,8 @@ public abstract class BaseEntity {
     public void setPosition(Position position) {
         this.position = position;
     };
+
+    public UIText getDebugUIText() {
+        return new UIText(this.toString());
+    }
 }
