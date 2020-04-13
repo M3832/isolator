@@ -1,5 +1,6 @@
 package com.isolator.ai;
 
+import com.isolator.ai.states.AIStand;
 import com.isolator.ai.states.AIState;
 import com.isolator.ai.states.AIWander;
 import com.isolator.entity.Visitor;
@@ -10,15 +11,23 @@ public class AIStateMachine {
     private AIState currentState;
 
     public AIStateMachine() {
-        currentState = new AIWander();
+        decideOnNewState();
     }
 
     public void update(GameState state, Visitor entity) {
         currentState.update(state, entity);
 
         if(currentState.readyToTransition()) {
-            int random = ((int)(Math.random() * 3)) + 1;
+            decideOnNewState();
+        }
+    }
+
+    private void decideOnNewState() {
+        int random = (int)(Math.random() * 2) + 1;
+        if(random == 1) {
             currentState = new AIWander();
+        } else if (random == 2) {
+            currentState = new AIStand();
         }
     }
 

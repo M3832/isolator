@@ -14,7 +14,7 @@ import java.util.Optional;
 public class AIWander extends AIState {
 
     Optional<Position> targetPosition;
-    private boolean done, movingLeft, movingRight, movingUp, movingDown;
+    private boolean done;
 
     public AIWander() {
         targetPosition = Optional.empty();
@@ -36,6 +36,7 @@ public class AIWander extends AIState {
 
         if(targetPosition.get().isWithinInteractionRange(controlledEntity.getPosition())) {
             targetPosition = Optional.empty();
+            ((AIController) controlledEntity.getController()).stop();
             done = true;
         }
     }
@@ -51,11 +52,6 @@ public class AIWander extends AIState {
         container.addElement(new UIText(this.getClass().getSimpleName(), 18));
         container.addElement(new UIText("Current position: " + baseEntity.getPosition(), 10));
         container.addElement(new UIText("Target position: " + targetPosition, 10));
-        container.addElement(new UIText("---", 12));
-        container.addElement(new UIText("< " + movingLeft, 12));
-        container.addElement(new UIText("> " + movingRight, 12));
-        container.addElement(new UIText("^ " + movingUp, 12));
-        container.addElement(new UIText("v " + movingDown, 12));
 
         return container;
     }
@@ -65,10 +61,10 @@ public class AIWander extends AIState {
         Position aiPosition = controlledEntity.getPosition();
         Position target = targetPosition.get();
 
-        movingLeft = aiPosition.getX() > target.getX();
-        movingRight = aiPosition.getX() < target.getX();
-        movingUp = aiPosition.getY() > target.getY();
-        movingDown = aiPosition.getY() < target.getY();
+        boolean movingLeft = aiPosition.getX() > target.getX();
+        boolean movingRight = aiPosition.getX() < target.getX();
+        boolean movingUp = aiPosition.getY() > target.getY();
+        boolean movingDown = aiPosition.getY() < target.getY();
 
         aiController.setLeft(movingLeft);
         aiController.setRight(movingRight);

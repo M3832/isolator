@@ -40,15 +40,13 @@ public abstract class BaseEntity {
         uiContainer.addElement(getDebugUIText());
     }
 
-    public Image getDrawGraphics() {
+    public Image getDrawGraphics(GameState state) {
         BufferedImage bufferedImage = new BufferedImage(size.getWidth(), size.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D imageGraphics = bufferedImage.createGraphics();
 
         drawSprite(imageGraphics);
 
-        return Game.RUN_MODE == RunMode.DEBUG
-                ? addUI(bufferedImage)
-                : bufferedImage;
+        return bufferedImage;
     }
 
     protected void drawSprite(Graphics2D imageGraphics) {
@@ -56,19 +54,8 @@ public abstract class BaseEntity {
         imageGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
     }
 
-    protected BufferedImage addUI(Image image) {
-        Image uiContainerImage = uiContainer.getUIElement();
-        BufferedImage bufferedImage = new BufferedImage(
-                Math.max(size.getWidth(), uiContainerImage.getWidth(null)),
-                size.getHeight() + uiContainerImage.getHeight(null),
-                BufferedImage.TYPE_INT_ARGB
-        );
-        Graphics2D imageGraphics = (Graphics2D) bufferedImage.getGraphics();
-
-        imageGraphics.drawImage(image, 0, 0, null);
-        imageGraphics.drawImage(uiContainerImage, 0, size.getHeight(), null);
-
-        return bufferedImage;
+    public Image getDebugUI() {
+        return uiContainer.getUIElement();
     }
 
     public void update(GameState state) {
@@ -105,6 +92,10 @@ public abstract class BaseEntity {
 
     public UIText getDebugUIText() {
         return new UIText(this.toString(), 12);
+    }
+
+    public Size getSize() {
+        return size;
     }
 
     @Override

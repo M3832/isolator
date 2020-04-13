@@ -53,4 +53,11 @@ public class AIController implements Controller {
     public void setRight(boolean right) {
         this.right = right;
     }
+
+    public void stop() {
+        up = false;
+        left = false;
+        right = false;
+        down = false;
+    }
 }

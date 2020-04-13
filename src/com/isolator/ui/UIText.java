@@ -33,6 +33,13 @@ public class UIText extends UIBase {
                 BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
 
+        graphics.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_OFF);
+        graphics.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
         graphics.setColor(Color.WHITE);
         graphics.setFont(new Font("Helvetica", Font.PLAIN, fontSize));
         graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop() - 4);

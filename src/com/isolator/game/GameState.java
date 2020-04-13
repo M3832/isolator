@@ -14,18 +14,22 @@ import java.util.List;
 
 public class GameState {
 
-    private List<BaseEntity> entities;
-    private List<UIContainer> uiContainers;
     private GameMap map;
     private Camera camera;
     private Size cellSize;
+    private RunMode mode;
+
+    private List<BaseEntity> entities;
+    private List<UIContainer> uiContainers;
+
     private float gameSpeed = 1;
 
     public GameState(Camera camera) {
-        cellSize = new Size(100, 100);
-        entities = new ArrayList<>();
-        this.map = new GameMap(20, 20, cellSize);
+        cellSize = new Size(50, 50);
+        this.map = new GameMap(50, 50, cellSize);
         this.camera = camera;
+        entities = new ArrayList<>();
+        mode = RunMode.DEFAULT;
         initUI();
     }
 
@@ -94,5 +98,17 @@ public class GameState {
 
     public Size getCellSize() {
         return cellSize;
+    }
+
+    public void toggleDebugMode() {
+        if(mode == RunMode.DEFAULT) {
+            mode = RunMode.DEBUG;
+        } else {
+            mode = RunMode.DEFAULT;
+        }
+    }
+
+    public RunMode getRunMode() {
+        return mode;
     }
 }

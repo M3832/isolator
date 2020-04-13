@@ -18,7 +18,6 @@ public class Game implements Runnable {
     private GameState state;
     private Camera camera;
     private Input input;
-    public static RunMode RUN_MODE;
 
     private UIContainer fpsContainer;
 
@@ -35,7 +34,6 @@ public class Game implements Runnable {
         display = new Display(width, height, input);
         state = new GameState(camera);
         fpsContainer = new UIContainer(false);
-        RUN_MODE = RunMode.DEFAULT;
 
         initializeGame();
     }
@@ -43,19 +41,19 @@ public class Game implements Runnable {
     private void initializeGame() {
         addEntities();
         state.addUIContainer(fpsContainer);
-        setDebugMode();
+        state.toggleDebugMode();
     }
 
     private void addEntities() {
         Player player = new Player(new HumanController(input));
         state.addEntityAtPosition(player, new Position(100, 100));
 
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 100; i++) {
             Visitor visitor = new Visitor(new AIController());
             state.addEntityAtPosition(visitor, state.getMap().randomLocation());
+            camera.followEntity(visitor);
         }
 
-        camera.followEntity(player);
     }
 
     @Override
@@ -75,7 +73,8 @@ public class Game implements Runnable {
                 accumulator -= UPDATE_RATE;
             }
             render();
-            if(RUN_MODE == RunMode.DEBUG) {
+
+            if(state.getRunMode() == RunMode.DEBUG) {
                 printStatistics();
             }
         }
@@ -92,6 +91,9 @@ public class Game implements Runnable {
     }
 
     private void drawStatisticsUI() {
+        if(!fpsContainer.isVisible())
+            fpsContainer.toggleVisibility();
+
         fpsContainer.clear();
         fpsContainer.addElement(new UIText(String.format("UPS: %d", updates)));
         fpsContainer.addElement(new UIText(String.format("FPS: %d", renders)));
@@ -106,15 +108,5 @@ public class Game implements Runnable {
     private void update() {
         state.update();
         updates++;
-    }
-
-    public void setDefaultMode() {
-        RUN_MODE = RunMode.DEFAULT;
-        fpsContainer.toggleVisibility();
-    }
-
-    public void setDebugMode() {
-        RUN_MODE = RunMode.DEBUG;
-        fpsContainer.toggleVisibility();
     }
 }

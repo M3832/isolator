@@ -3,7 +3,9 @@ package com.isolator.display;
 import com.isolator.controller.Input;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
+import com.isolator.entity.BaseEntity;
 import com.isolator.game.GameState;
+import com.isolator.game.RunMode;
 import com.isolator.map.GridCell;
 import com.isolator.ui.UIAlignmentUtils;
 
@@ -64,23 +66,44 @@ public class Display extends JFrame {
 
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
         Camera camera = state.getCamera();
-        Position startRenderingPosition = state.getMap().getViewableStartingPosition(camera);
-        Position endRenderingPosition = state.getMap().getViewableEndingPosition(camera);
 
         state.getEntities()
                 .stream()
-                .filter(entity -> {
-                    int y = (entity.getPosition().getY() / state.getCellSize().getHeight());
-                    int x = (entity.getPosition().getX() / state.getCellSize().getWidth());
-
-                    return y > startRenderingPosition.getY() - 2 && y < endRenderingPosition.getY()
-                            && x > startRenderingPosition.getX() - 3 && x < endRenderingPosition.getX();
-                })
+                .filter(entity -> withinViewingBounds(state, entity))
                 .forEach(entity -> screenGraphics.drawImage(
-                                        entity.getDrawGraphics(),
+                                        entity.getDrawGraphics(state),
                                         entity.getPosition().getX() - camera.getPosition().getX(),
                                         entity.getPosition().getY() - camera.getPosition().getY(),
                                         null));
+
+        if(state.getRunMode() == RunMode.DEBUG) {
+            //renderEntityUI(state, screenGraphics);
+        }
+    }
+
+    private void renderEntityUI(GameState state, Graphics2D screenGraphics) {
+        Camera camera = state.getCamera();
+
+        state.getEntities()
+                .stream()
+                .filter(entity -> withinViewingBounds(state, entity))
+                .forEach(entity -> screenGraphics.drawImage(
+                        entity.getDebugUI(),
+                        entity.getPosition().getX() - camera.getPosition().getX() - entity.getDebugUI().getWidth(null) / 2 + entity.getSize().getWidth() / 2,
+                        entity.getPosition().getY() - camera.getPosition().getY() + entity.getSize().getHeight(),
+                        null));
+    }
+
+    private boolean withinViewingBounds(GameState state, BaseEntity entity) {
+        Camera camera = state.getCamera();
+        Position startRenderingPosition = state.getMap().getViewableStartingPosition(camera);
+        Position endRenderingPosition = state.getMap().getViewableEndingPosition(camera);
+
+        int y = (entity.getPosition().getY() / state.getCellSize().getHeight());
+        int x = (entity.getPosition().getX() / state.getCellSize().getWidth());
+
+        return y > startRenderingPosition.getY() - 2 && y < endRenderingPosition.getY()
+                && x > startRenderingPosition.getX() - 3 && x < endRenderingPosition.getX();
     }
 
     private void renderMap(GameState state, Graphics2D screenGraphics) {

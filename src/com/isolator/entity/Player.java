@@ -14,7 +14,7 @@ public class Player extends BaseEntity {
         super.update(state);
 
         if(controller.isRequestingAction()) {
-            System.out.println(getPosition());
+            state.toggleDebugMode();
         }
 
         if(controller.isRequestingSpeedUp()) {
