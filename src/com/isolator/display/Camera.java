@@ -11,12 +11,14 @@ public class Camera {
 
     private Position position;
     private Size size;
+    private double zoom;
 
     private Optional<BaseEntity> entityToFollow;
 
     public Camera(Position position, Size size) {
         this.position = position;
         this.size = size;
+        zoom = 2f;
     }
 
     public void followEntity(BaseEntity entityToFollow) {
@@ -53,5 +55,9 @@ public class Camera {
 
     public Size getSize() {
         return size;
+    }
+
+    public double getZoom() {
+        return zoom;
     }
 }

@@ -13,6 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+import static com.isolator.gfx.ImageUtils.SPRITE_SIZE;
+
 public class Display extends JFrame {
     private Canvas canvas;
     private Size size;
@@ -53,9 +55,8 @@ public class Display extends JFrame {
     }
 
     private void clearScreen(Graphics2D screenGraphics) {
-        Rectangle graphicsBounds = screenGraphics.getDeviceConfiguration().getBounds();
-        screenGraphics.setColor(Color.BLACK);
-        screenGraphics.fillRect(0, 0, (int) graphicsBounds.getWidth(), (int) graphicsBounds.getHeight());
+        screenGraphics.setColor(Color.LIGHT_GRAY);
+        screenGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
     }
 
     public void renderState(GameState state, Graphics2D screenGraphics) {
@@ -70,11 +71,19 @@ public class Display extends JFrame {
         state.getEntities()
                 .stream()
                 .filter(entity -> withinViewingBounds(state, entity))
-                .forEach(entity -> screenGraphics.drawImage(
-                                        entity.getDrawGraphics(state),
-                                        entity.getPosition().getX() - camera.getPosition().getX(),
-                                        entity.getPosition().getY() - camera.getPosition().getY(),
-                                        null));
+                .forEach(entity -> {
+                    Image drawImage = entity.getDrawGraphics(state)
+                            .getScaledInstance(
+                                    (int) (SPRITE_SIZE * camera.getZoom()),
+                                    (int) (SPRITE_SIZE * camera.getZoom()),
+                                    0);
+
+                    screenGraphics.drawImage(
+                            drawImage,
+                            entity.getPosition().getX() - camera.getPosition().getX() - (int)(drawImage.getWidth(null) / (2 * camera.getZoom())),
+                            entity.getPosition().getY() - camera.getPosition().getY() - (int)(drawImage.getHeight(null) / (2 * camera.getZoom())),
+                            null);
+                });
 
         if(state.getRunMode() == RunMode.DEBUG) {
             //renderEntityUI(state, screenGraphics);

@@ -2,9 +2,8 @@ package com.isolator.entity;
 
 import com.isolator.controller.Controller;
 import com.isolator.core.*;
-import com.isolator.game.Game;
 import com.isolator.game.GameState;
-import com.isolator.game.RunMode;
+import com.isolator.gfx.AnimationController;
 import com.isolator.ui.UIContainer;
 import com.isolator.ui.UISpacing;
 import com.isolator.ui.UIText;
@@ -16,6 +15,7 @@ public abstract class BaseEntity {
     private static int ID_COUNTER = 1;
 
     private int id;
+    private AnimationController animationController;
     private Position position;
     private Direction direction;
     protected Velocity velocity;
@@ -25,8 +25,9 @@ public abstract class BaseEntity {
 
     public BaseEntity(Controller controller) {
         this.id = ID_COUNTER++;
+        animationController = AnimationController.randomUnit();
         this.position = new Position(0, 0);
-        this.size = new Size(50, 50);
+        this.size = new Size(64, 64);
         this.velocity = new Velocity(0.5f, 5.0f);
         this.controller = controller;
         this.direction = Direction.N;
@@ -41,17 +42,7 @@ public abstract class BaseEntity {
     }
 
     public Image getDrawGraphics(GameState state) {
-        BufferedImage bufferedImage = new BufferedImage(size.getWidth(), size.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D imageGraphics = bufferedImage.createGraphics();
-
-        drawSprite(imageGraphics);
-
-        return bufferedImage;
-    }
-
-    protected void drawSprite(Graphics2D imageGraphics) {
-        imageGraphics.setColor(Color.RED);
-        imageGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
+        return animationController.getDrawGraphics();
     }
 
     public Image getDebugUI() {
@@ -60,15 +51,28 @@ public abstract class BaseEntity {
 
     public void update(GameState state) {
         velocity.update(controller);
+        setAnimation(velocity);
+        animationController.update(state, direction);
+        checkWallCollision(state);
+        position.apply(velocity);
+        direction = Direction.fromVelocity(velocity, direction);
+    }
 
+    private void setAnimation(Velocity velocity) {
+         if(velocity.isMoving()) {
+            animationController.setAnimation("walk");
+        } else {
+            animationController.setAnimation("stand");
+        }
+    }
+
+    private void checkWallCollision(GameState state) {
         if(state.checkCollisionWithWalls(getNextPositionCollisionBox())) {
             CollisionBox intersection = state.getCollisionIntersection(getNextPositionCollisionBox());
             boolean collideX = intersection.getBox().getWidth() != 0;
             boolean collideY = intersection.getBox().getHeight() != 0;
             velocity.immediateStopInDirections(collideX, collideY);
         }
-        position.apply(velocity);
-        direction = Direction.fromVelocity(velocity, direction);
     }
 
     public CollisionBox getNextPositionCollisionBox() {

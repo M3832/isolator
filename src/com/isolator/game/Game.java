@@ -51,9 +51,9 @@ public class Game implements Runnable {
         for(int i = 0; i < 100; i++) {
             Visitor visitor = new Visitor(new AIController());
             state.addEntityAtPosition(visitor, state.getMap().randomLocation());
-            camera.followEntity(visitor);
         }
 
+        camera.followEntity(player);
     }
 
     @Override

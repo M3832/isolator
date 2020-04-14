@@ -4,7 +4,7 @@ import com.isolator.ai.AIStateMachine;
 import com.isolator.controller.Controller;
 import com.isolator.core.Velocity;
 import com.isolator.game.GameState;
-import com.isolator.gfx.Sprites;
+import com.isolator.gfx.SpritesLibrary;
 
 import java.awt.*;
 
@@ -18,17 +18,6 @@ public class Visitor extends BaseEntity {
         ai = new AIStateMachine();
         maxVelocity = Math.random() * (3 - 1.5f) + 1.5f;
         this.velocity = new Velocity(0.5f, maxVelocity);
-    }
-
-    @Override
-    protected void drawSprite(Graphics2D imageGraphics) {
-        imageGraphics.setColor(Color.BLUE);
-        imageGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
-    }
-
-    @Override
-    public Image getDrawGraphics(GameState state) {
-        return Sprites.getVisitorSprite();
     }
 
     @Override

@@ -60,6 +60,14 @@ public class Velocity {
         if(getVelocityVectorLength() > maxVelocity) {
             normalize();
         }
+
+        if(velocityX < 0.2 && velocityX > -0.2) {
+            velocityX = 0;
+        }
+
+        if(velocityY < 0.2 && velocityY > -0.2) {
+            velocityY = 0;
+        }
     }
 
     private void normalize() {
@@ -90,5 +98,9 @@ public class Velocity {
         if(collideY) {
             velocityY = 0;
         }
+    }
+
+    public boolean isMoving() {
+        return velocityX != 0 || velocityY != 0;
     }
 }
