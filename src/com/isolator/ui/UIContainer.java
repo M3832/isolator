@@ -2,6 +2,7 @@ package com.isolator.ui;
 
 import com.isolator.core.Position;
 import com.isolator.core.Size;
+import com.isolator.gfx.ImageUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -84,7 +85,7 @@ public class UIContainer extends UIBase {
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
         Size containerSize = getSize();
-        BufferedImage image = new BufferedImage(containerSize.getWidth(), containerSize.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(containerSize.getWidth(), containerSize.getHeight());
         Graphics2D graphics = image.createGraphics();
 
         graphics.setColor(backgroundColor);

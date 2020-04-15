@@ -61,11 +61,11 @@ public class Velocity {
             normalize();
         }
 
-        if(velocityX < 0.2 && velocityX > -0.2) {
+        if(velocityX < 0.3 && velocityX > -0.3) {
             velocityX = 0;
         }
 
-        if(velocityY < 0.2 && velocityY > -0.2) {
+        if(velocityY < 0.3 && velocityY > -0.3) {
             velocityY = 0;
         }
     }

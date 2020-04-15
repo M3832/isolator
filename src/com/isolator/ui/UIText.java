@@ -1,6 +1,7 @@
 package com.isolator.ui;
 
 import com.isolator.core.Size;
+import com.isolator.gfx.ImageUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -27,10 +28,7 @@ public class UIText extends UIBase {
 
     @Override
     public Image getUIElement() {
-        BufferedImage bufferedImage = new BufferedImage(
-                getSize().getWidth(),
-                getSize().getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = (BufferedImage) ImageUtils.createCompatibleImage(getSize().getWidth(), getSize().getHeight());
         Graphics2D graphics = bufferedImage.createGraphics();
 
         graphics.setRenderingHint(

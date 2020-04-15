@@ -25,8 +25,8 @@ public class GameState {
     private float gameSpeed = 1;
 
     public GameState(Camera camera) {
-        cellSize = new Size(50, 50);
-        this.map = new GameMap(50, 50, cellSize);
+        cellSize = new Size(64, 64);
+        this.map = new GameMap(25, 25, cellSize);
         this.camera = camera;
         entities = new ArrayList<>();
         mode = RunMode.DEFAULT;

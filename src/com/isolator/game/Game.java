@@ -31,7 +31,7 @@ public class Game implements Runnable {
     public Game(int width, int height) {
         input = new Input();
         camera = new Camera(new Position(0, 0), new Size(width, height));
-        display = new Display(width, height, input);
+        display = new Display(width, height, input, 1);
         state = new GameState(camera);
         fpsContainer = new UIContainer(false);
 
@@ -48,7 +48,7 @@ public class Game implements Runnable {
         Player player = new Player(new HumanController(input));
         state.addEntityAtPosition(player, new Position(100, 100));
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 250; i++) {
             Visitor visitor = new Visitor(new AIController());
             state.addEntityAtPosition(visitor, state.getMap().randomLocation());
         }

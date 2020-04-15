@@ -4,6 +4,8 @@ import com.isolator.controller.Controller;
 import com.isolator.core.*;
 import com.isolator.game.GameState;
 import com.isolator.gfx.AnimationController;
+import com.isolator.gfx.ImageUtils;
+import com.isolator.gfx.SpritesLibrary;
 import com.isolator.ui.UIContainer;
 import com.isolator.ui.UISpacing;
 import com.isolator.ui.UIText;
@@ -79,9 +81,9 @@ public abstract class BaseEntity {
         Position nextPosition = position.getNextPosition(velocity);
         Rectangle collisionBounds = new Rectangle(
                 nextPosition.getX(),
-                nextPosition.getY(),
-                size.getWidth(),
-                size.getHeight());
+                nextPosition.getY() + size.getHeight() / 4,
+                size.getWidth() / 2,
+                size.getHeight() / 2);
 
         return new CollisionBox(collisionBounds);
     }

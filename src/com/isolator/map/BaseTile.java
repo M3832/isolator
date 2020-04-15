@@ -16,7 +16,7 @@ public abstract class BaseTile {
     }
 
     public Image getTileSprite() {
-        return null;
+        return SpritesLibrary.woodFloor;
     }
 
     public boolean isWalkable() {

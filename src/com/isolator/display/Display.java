@@ -1,29 +1,40 @@
 package com.isolator.display;
 
 import com.isolator.controller.Input;
+import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.entity.BaseEntity;
 import com.isolator.game.GameState;
 import com.isolator.game.RunMode;
+import com.isolator.gfx.ImageUtils;
+import com.isolator.gfx.SpritesLibrary;
 import com.isolator.map.GridCell;
 import com.isolator.ui.UIAlignmentUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.isolator.gfx.ImageUtils.SPRITE_SIZE;
 
 public class Display extends JFrame {
     private Canvas canvas;
     private Size size;
+    private int numberOfRenderers;
 
-    public Display(int width, int height, Input input) {
+    public Display(int width, int height, Input input, int numberOfRenderers) {
         super();
         size = new Size(width, height);
         addKeyListener(input);
         setupWindow();
+        this.numberOfRenderers = numberOfRenderers;
     }
 
     private void setupWindow() {
@@ -55,7 +66,7 @@ public class Display extends JFrame {
     }
 
     private void clearScreen(Graphics2D screenGraphics) {
-        screenGraphics.setColor(Color.LIGHT_GRAY);
+        screenGraphics.setColor(Color.BLACK);
         screenGraphics.fillRect(0, 0, size.getWidth(), size.getHeight());
     }
 
@@ -68,26 +79,39 @@ public class Display extends JFrame {
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
         Camera camera = state.getCamera();
 
-        state.getEntities()
-                .stream()
-                .filter(entity -> withinViewingBounds(state, entity))
-                .forEach(entity -> {
-                    Image drawImage = entity.getDrawGraphics(state)
-                            .getScaledInstance(
-                                    (int) (SPRITE_SIZE * camera.getZoom()),
-                                    (int) (SPRITE_SIZE * camera.getZoom()),
-                                    0);
-
-                    screenGraphics.drawImage(
-                            drawImage,
-                            entity.getPosition().getX() - camera.getPosition().getX() - (int)(drawImage.getWidth(null) / (2 * camera.getZoom())),
-                            entity.getPosition().getY() - camera.getPosition().getY() - (int)(drawImage.getHeight(null) / (2 * camera.getZoom())),
-                            null);
-                });
+        getViewableEntities(state).forEach(entity -> {
+            screenGraphics.drawImage(
+                    ImageUtils.scale(entity.getDrawGraphics(state), camera.getZoom()),
+                    entity.getPosition().getX() - camera.getPosition().getX() - (int)(SPRITE_SIZE * camera.getZoom() / (2 * camera.getZoom())),
+                    entity.getPosition().getY() - camera.getPosition().getY() - (int)(SPRITE_SIZE * camera.getZoom() / (2 * camera.getZoom())),
+                    null);
+        });
 
         if(state.getRunMode() == RunMode.DEBUG) {
+            //renderCollisionBoxes(state, screenGraphics);
             //renderEntityUI(state, screenGraphics);
         }
+    }
+
+    private List<BaseEntity> getViewableEntities(GameState state) {
+        return state.getEntities()
+                .stream()
+                .filter(entity -> withinViewingBounds(state, entity))
+                .collect(Collectors.toList());
+    }
+
+    private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {
+        getViewableEntities(state).stream()
+                .forEach(entity -> {
+                        CollisionBox box = entity.getNextPositionCollisionBox();
+                        screenGraphics.fillRect(
+                                box.getBox().x - state.getCamera().getPosition().getX(),
+                                box.getBox().y - state.getCamera().getPosition().getY(),
+                                (int) box.getBox().getWidth(),
+                                (int) box.getBox().getHeight()
+                        );
+                    }
+                );
     }
 
     private void renderEntityUI(GameState state, Graphics2D screenGraphics) {
