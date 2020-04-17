@@ -1,10 +1,15 @@
 package com.isolator.game;
 
+import com.isolator.controller.AIController;
+import com.isolator.controller.HumanController;
+import com.isolator.controller.Input;
 import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.display.Camera;
 import com.isolator.entity.BaseEntity;
+import com.isolator.entity.Player;
+import com.isolator.entity.Visitor;
 import com.isolator.map.GameMap;
 import com.isolator.ui.UIContainer;
 
@@ -16,6 +21,7 @@ public class GameState {
 
     private GameMap map;
     private Camera camera;
+    private Input input;
     private Size cellSize;
     private RunMode mode;
 
@@ -24,13 +30,27 @@ public class GameState {
 
     private float gameSpeed = 1;
 
-    public GameState(Camera camera) {
+    public GameState(Camera camera, Input input) {
         cellSize = new Size(64, 64);
         this.map = new GameMap(25, 25, cellSize);
         this.camera = camera;
         entities = new ArrayList<>();
+        this.input = input;
         mode = RunMode.DEFAULT;
         initUI();
+        initGame();
+    }
+
+    private void initGame() {
+        Player player = new Player(new HumanController(input));
+        addEntityAtPosition(player, new Position(100, 100));
+
+        for(int i = 0; i < 300; i++) {
+            Visitor visitor = new Visitor(new AIController());
+            addEntityAtPosition(visitor, getMap().randomLocation());
+        }
+
+        camera.followEntity(player);
     }
 
     private void initUI() {

@@ -31,7 +31,7 @@ public class ImageUtils {
         GraphicsConfiguration gc = gd.getDefaultConfiguration();
         return gc.createCompatibleImage(width,
                 height,
-                3);
+                2);
     }
 
     public static Image scale(Image image, double amount) {

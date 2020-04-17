@@ -32,28 +32,15 @@ public class Game implements Runnable {
         input = new Input();
         camera = new Camera(new Position(0, 0), new Size(width, height));
         display = new Display(width, height, input, 1);
-        state = new GameState(camera);
+        state = new GameState(camera, input);
         fpsContainer = new UIContainer(false);
 
         initializeGame();
     }
 
     private void initializeGame() {
-        addEntities();
         state.addUIContainer(fpsContainer);
         state.toggleDebugMode();
-    }
-
-    private void addEntities() {
-        Player player = new Player(new HumanController(input));
-        state.addEntityAtPosition(player, new Position(100, 100));
-
-        for(int i = 0; i < 250; i++) {
-            Visitor visitor = new Visitor(new AIController());
-            state.addEntityAtPosition(visitor, state.getMap().randomLocation());
-        }
-
-        camera.followEntity(player);
     }
 
     @Override
