@@ -31,7 +31,7 @@ public class Game implements Runnable {
     public Game(int width, int height) {
         input = new Input();
         camera = new Camera(new Position(0, 0), new Size(width, height));
-        display = new Display(width, height, input, 1);
+        display = new Display(width, height, input);
         state = new GameState(camera, input);
         fpsContainer = new UIContainer(false);
 

@@ -30,8 +30,9 @@ public class Position {
     }
 
     public void apply(Velocity velocity) {
-        this.x += (int) velocity.getVelocityX();
-        this.y += (int) velocity.getVelocityY();
+        Vector2 movement = velocity.getMovement();
+        this.x += (int) movement.getX();
+        this.y += (int) movement.getY();
     }
 
     public Position getNextPosition(Velocity velocity) {

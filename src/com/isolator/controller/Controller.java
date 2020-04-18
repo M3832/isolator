@@ -8,4 +8,6 @@ public interface Controller {
     boolean isRequestingAction();
     boolean isRequestingSpeedUp();
     boolean isRequestingSlowDown();
+
+    boolean isRequestingMove();
 }

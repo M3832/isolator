@@ -3,104 +3,73 @@ package com.isolator.core;
 import com.isolator.controller.Controller;
 
 public class Velocity {
-    private double velocityX, velocityY;
+    private double velocity;
+    private Vector2 direction;
     private double accelerationRate;
     private double maxVelocity;
-    private double dampener;
+    private double damper;
 
     public Velocity(double accelerationRate, double maxVelocity) {
-        this.velocityX = 0;
-        this.velocityY = 0;
+        this.velocity = 0;
+        this.direction = new Vector2();
         this.accelerationRate = accelerationRate;
         this.maxVelocity = maxVelocity;
-        this.dampener = 0.90f;
+        this.damper = 0.93f;
     }
 
     public void update(Controller controller) {
-        boolean addingForceX = false, addingForceY = false;
+        direction.damper(0.5f);
 
         if(controller.isRequestingRight()) {
-            velocityX += accelerationRate;
-            addingForceX = true;
+            direction.setX(1);
         }
 
         if(controller.isRequestingLeft()) {
-            velocityX -= accelerationRate;
-            addingForceX = true;
+            direction.setX(-1);
         }
 
         if(controller.isRequestingDown()) {
-            velocityY += accelerationRate;
-            addingForceY = true;
+            direction.setY(1);
         }
 
         if(controller.isRequestingUp()) {
-            velocityY -= accelerationRate;
-            addingForceY = true;
+            direction.setY(-1);
+
         }
 
-        clampVelocity();
-        dampen(addingForceX, addingForceY);
+        if(controller.isRequestingMove())
+            velocity += accelerationRate;
+
+        clamp();
+        velocity *= damper;
     }
 
-    private void dampen(boolean addingForceX, boolean addingForceY) {
-        if(!addingForceX) {
-            velocityX *= dampener;
+    private void clamp() {
+        if(velocity < 0.3 && velocity > -0.3) {
+            velocity = 0;
         }
-
-        if(!addingForceY) {
-            velocityY *= dampener;
-        }
-    }
-
-    private void clampVelocity() {
-        velocityX = Math.max(Math.min(velocityX, maxVelocity), -maxVelocity);
-        velocityY = Math.max(Math.min(velocityY, maxVelocity), -maxVelocity);
-
-        if(getVelocityVectorLength() > maxVelocity) {
-            normalize();
-        }
-
-        if(velocityX < 0.3 && velocityX > -0.3) {
-            velocityX = 0;
-        }
-
-        if(velocityY < 0.3 && velocityY > -0.3) {
-            velocityY = 0;
-        }
-    }
-
-    private void normalize() {
-        double vectorLength = getVelocityVectorLength();
-        velocityX = velocityX / vectorLength * maxVelocity;
-        velocityY = velocityY / vectorLength * maxVelocity;
-    }
-
-    private double getVelocityVectorLength() {
-        double x = Math.abs(velocityX);
-        double y = Math.abs(velocityY);
-        return Math.sqrt(x * x + y * y);
-    }
-
-    public double getVelocityX() {
-        return velocityX;
-    }
-
-    public double getVelocityY() {
-        return velocityY;
     }
 
     public void immediateStopInDirections(boolean collideX, boolean collideY) {
         if(collideX) {
-            velocityX = 0;
+            direction.setX(0);
         }
 
         if(collideY) {
-            velocityY = 0;
+            direction.setY(0);
         }
     }
 
     public boolean isMoving() {
-        return velocityX != 0 || velocityY != 0;
+        return velocity != 0;
+    }
+
+    public Vector2 getMovement() {
+        direction.normalize();
+        return direction.multiply(Math.min(velocity, maxVelocity));
+    }
+
+    public Vector2 getDirection() {
+        return direction;
     }
 }

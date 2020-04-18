@@ -38,6 +38,11 @@ public class AIController implements Controller {
         return false;
     }
 
+    @Override
+    public boolean isRequestingMove() {
+        return isRequestingDown() || isRequestingLeft() || isRequestingRight() ||isRequestingUp();
+    }
+
     public void setUp(boolean up) {
         this.up = up;
     }

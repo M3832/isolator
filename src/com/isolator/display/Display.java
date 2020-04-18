@@ -8,18 +8,13 @@ import com.isolator.entity.BaseEntity;
 import com.isolator.game.GameState;
 import com.isolator.game.RunMode;
 import com.isolator.gfx.ImageUtils;
-import com.isolator.gfx.SpritesLibrary;
 import com.isolator.map.GridCell;
 import com.isolator.ui.UIAlignmentUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.isolator.gfx.ImageUtils.SPRITE_SIZE;
@@ -27,14 +22,12 @@ import static com.isolator.gfx.ImageUtils.SPRITE_SIZE;
 public class Display extends JFrame {
     private Canvas canvas;
     private Size size;
-    private int numberOfRenderers;
 
-    public Display(int width, int height, Input input, int numberOfRenderers) {
+    public Display(int width, int height, Input input) {
         super();
         size = new Size(width, height);
         addKeyListener(input);
         setupWindow();
-        this.numberOfRenderers = numberOfRenderers;
     }
 
     private void setupWindow() {

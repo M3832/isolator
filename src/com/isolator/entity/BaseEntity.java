@@ -4,14 +4,11 @@ import com.isolator.controller.Controller;
 import com.isolator.core.*;
 import com.isolator.game.GameState;
 import com.isolator.gfx.AnimationController;
-import com.isolator.gfx.ImageUtils;
-import com.isolator.gfx.SpritesLibrary;
 import com.isolator.ui.UIContainer;
 import com.isolator.ui.UISpacing;
 import com.isolator.ui.UIText;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public abstract class BaseEntity {
     private static int ID_COUNTER = 1;

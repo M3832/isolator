@@ -44,4 +44,9 @@ public class HumanController implements Controller {
     public boolean isRequestingSlowDown() {
         return input.isClicked(KeyEvent.VK_MINUS);
     }
+
+    @Override
+    public boolean isRequestingMove() {
+        return isRequestingDown() || isRequestingLeft() || isRequestingRight() ||isRequestingUp();
+    }
 }
