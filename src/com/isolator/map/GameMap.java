@@ -10,12 +10,14 @@ import java.util.List;
 public class GameMap {
 
     private GridCell[][] gridCells;
+    private List<GridCell> unwalkableGridCells;
     private Size cellSize;
     private Size mapSize;
 
     public GameMap(int xTiles, int yTiles, Size cellSize) {
         gridCells = new GridCell[xTiles][yTiles];
         this.cellSize = cellSize;
+        unwalkableGridCells = new ArrayList<>();
         fillWithTiles();
         addWallsToPerimeter();
         mapSize = new Size(xTiles * cellSize.getWidth(), yTiles * cellSize.getHeight());
@@ -37,25 +39,14 @@ public class GameMap {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
                     gridCells[x][y].setTile(new Wall(cellSize));
+                    unwalkableGridCells.add(gridCells[x][y]);
                 }
             }
         }
     }
 
-    public List<GridCell> getUnwalkableGridCells(Camera camera) {
-        Position viewableStart = getViewableStartingPosition(camera);
-        Position viewableEnd = getViewableEndingPosition(camera);
-
-        List<GridCell> unwalkableCells = new ArrayList<>();
-        for(int x = viewableStart.getX(); x < Math.min(gridCells.length, viewableEnd.getX()); x++) {
-            for (int y = viewableStart.getY(); y < Math.min(gridCells[0].length, viewableEnd.getY()); y++) {
-                if(!gridCells[x][y].isWalkable()) {
-                    unwalkableCells.add(gridCells[x][y]);
-                }
-            }
-        }
-
-        return unwalkableCells;
+    public List<GridCell> getUnwalkableGridCells() {
+        return unwalkableGridCells;
     }
 
     public Position getViewableStartingPosition(Camera camera) {

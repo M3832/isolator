@@ -66,10 +66,20 @@ public class Velocity {
 
     public Vector2 getMovement() {
         direction.normalize();
-        return direction.multiply(Math.min(velocity, maxVelocity));
+        Vector2 applyVelocity = direction.multiply(Math.min(velocity, maxVelocity));
+        return applyVelocity;
     }
 
     public Vector2 getDirection() {
         return direction;
+    }
+
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public void apply(Vector2 direction, double force) {
+        this.direction.add(direction);
+        this.velocity = Math.min(maxVelocity, force);
     }
 }

@@ -13,6 +13,13 @@ public class Position {
         this.y = y;
     }
 
+    public static boolean withinCloseProximity(Position position, Position position1) {
+        double x = position.getX() - position1.getX();
+        double y = position.getY() - position1.getY();
+
+        return Math.abs(x * y) > 20;
+    }
+
     public int getX() {
         return x;
     }

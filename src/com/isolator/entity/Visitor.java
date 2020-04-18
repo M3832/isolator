@@ -28,7 +28,6 @@ public class Visitor extends BaseEntity {
     }
 
     private void updateUIContainer(GameState state) {
-        uiContainer.clear();
         uiContainer.addElement(getDebugUIText());
         uiContainer.addElement(ai.getCurrentState().getDebugUI(state, this));
     }

@@ -9,6 +9,10 @@ public class CollisionBox {
         this.box = box;
     }
 
+    public static CollisionBox emptyBox() {
+        return CollisionBox.of(new Position(0, 0), new Size(0, 0));
+    }
+
     public boolean checkCollision(CollisionBox otherBox) {
         return box.intersects(otherBox.getBox());
     }

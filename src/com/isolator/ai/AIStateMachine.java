@@ -25,7 +25,7 @@ public class AIStateMachine {
     private void decideOnNewState() {
         int random = (int)(Math.random() * 2) + 1;
         if(random == 1) {
-            currentState = new AIWander();
+            currentState = new AIStand();
         } else if (random == 2) {
             currentState = new AIStand();
         }

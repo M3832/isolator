@@ -16,6 +16,7 @@ import com.isolator.ui.UIContainer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameState {
 
@@ -24,6 +25,7 @@ public class GameState {
     private Input input;
     private Size cellSize;
     private RunMode mode;
+    private CollisionResolver collisionResolver;
 
     private List<BaseEntity> entities;
     private List<UIContainer> uiContainers;
@@ -32,8 +34,9 @@ public class GameState {
 
     public GameState(Camera camera, Input input) {
         cellSize = new Size(64, 64);
-        this.map = new GameMap(25, 25, cellSize);
+        this.map = new GameMap(12, 12, cellSize);
         this.camera = camera;
+        this.collisionResolver = new CollisionResolver();
         entities = new ArrayList<>();
         this.input = input;
         mode = RunMode.DEFAULT;
@@ -45,7 +48,7 @@ public class GameState {
         Player player = new Player(new HumanController(input));
         addEntityAtPosition(player, new Position(100, 100));
 
-        for(int i = 0; i < 300; i++) {
+        for(int i = 0; i < 1; i++) {
             Visitor visitor = new Visitor(new AIController());
             addEntityAtPosition(visitor, getMap().randomLocation());
         }
@@ -84,20 +87,6 @@ public class GameState {
         entities.add(entity);
     }
 
-    public boolean checkCollisionWithWalls(CollisionBox collisionBox) {
-        return map.getUnwalkableGridCells(camera).stream()
-                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(collisionBox));
-    }
-
-    public CollisionBox getCollisionIntersection(CollisionBox collisionBox) {
-        return map.getUnwalkableGridCells(camera).stream()
-                .filter(gridCell -> gridCell.getCollisionBox().checkCollision(collisionBox))
-                .findFirst()
-                .get()
-                .getCollisionBox()
-                .getIntersection(collisionBox);
-    }
-
     public void increaseGameSpeed() {
         if(gameSpeed <= 3)
             gameSpeed += 0.5;
@@ -106,6 +95,24 @@ public class GameState {
     public void decreaseGameSpeed() {
         if(gameSpeed >= 1.0)
             gameSpeed -= 0.5;
+    }
+
+    public List<BaseEntity> getViewableEntities() {
+        return entities
+                .stream()
+                .filter(entity -> withinViewingBounds(entity))
+                .collect(Collectors.toList());
+    }
+
+    private boolean withinViewingBounds(BaseEntity entity) {
+        Position startRenderingPosition = map.getViewableStartingPosition(camera);
+        Position endRenderingPosition = map.getViewableEndingPosition(camera);
+
+        int y = (entity.getPosition().getY() / cellSize.getHeight());
+        int x = (entity.getPosition().getX() / cellSize.getWidth());
+
+        return y > startRenderingPosition.getY() - 2 && y < endRenderingPosition.getY()
+                && x > startRenderingPosition.getX() - 3 && x < endRenderingPosition.getX();
     }
 
     public float getGameSpeed() {
@@ -130,5 +137,9 @@ public class GameState {
 
     public RunMode getRunMode() {
         return mode;
+    }
+
+    public CollisionResolver getCollisionResolver() {
+        return collisionResolver;
     }
 }

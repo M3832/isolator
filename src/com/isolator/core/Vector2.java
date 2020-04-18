@@ -10,13 +10,24 @@ public class Vector2 {
         y = 0;
     }
 
-    private double getLength() {
-        double absX = Math.abs(x);
-        double absY = Math.abs(y);
+    public static Vector2 directionBetweenPositions(Position startingPosition, Position terminalPosition) {
+        Vector2 directionBetweenPositions = new Vector2();
+        directionBetweenPositions.setX(startingPosition.getX() - terminalPosition.getX());
+        directionBetweenPositions.setY(startingPosition.getY() - terminalPosition.getY());
 
+        return directionBetweenPositions;
+    }
+
+    public static double dotProduct(Vector2 v1, Vector2 v2) {
+        return v1.getX() * v2.getX() + v1.getY() + v2.getY();
+    }
+
+    private double getLength() {
         if(x == 0 && y == 0)
             return 0;
 
+        double absX = Math.abs(x);
+        double absY = Math.abs(y);
         return Math.sqrt(absX * absX + absY * absY);
     }
 
@@ -69,5 +80,10 @@ public class Vector2 {
     @Override
     public String toString() {
         return String.format("Vector2(x: %f, y: %f)", x, y);
+    }
+
+    public void add(Vector2 direction) {
+        this.x += direction.getX();
+        this.y += direction.getY();
     }
 }

@@ -14,19 +14,26 @@ public abstract class BaseEntity {
     private static int ID_COUNTER = 1;
 
     private int id;
-    private AnimationController animationController;
-    private Position position;
-    private Direction direction;
-    protected Velocity velocity;
+
     protected Controller controller;
+    protected Position position;
+    protected Direction direction;
     protected Size size;
+    protected Velocity velocity;
+
+    protected Size collisionBoxSize;
+
+    protected Position renderOffset;
+    protected AnimationController animationController;
     protected UIContainer uiContainer;
 
     public BaseEntity(Controller controller) {
         this.id = ID_COUNTER++;
         animationController = AnimationController.randomUnit();
-        this.position = new Position(0, 0);
+        this.position = new Position();
         this.size = new Size(64, 64);
+        this.renderOffset= new Position(0, -12);
+        this.collisionBoxSize = new Size(24, 32);
         this.velocity = new Velocity(0.5f, 5.0f);
         this.controller = controller;
         this.direction = Direction.N;
@@ -37,10 +44,17 @@ public abstract class BaseEntity {
         this.uiContainer = new UIContainer();
         uiContainer.setBackgroundColor(new Color(0, 0, 0, 0));
         uiContainer.setPadding(new UISpacing(0));
-        uiContainer.addElement(getDebugUIText());
+        updateDebugContainer();
     }
 
-    public Image getDrawGraphics(GameState state) {
+    private void updateDebugContainer() {
+        uiContainer.clear();
+        uiContainer.addElement(getDebugUIText());
+        uiContainer.addElement(new UIText(String.format("Direction: %s", velocity.getDirection())));
+        uiContainer.addElement(new UIText(String.format("Speed: %f", velocity.getVelocity())));
+    }
+
+    public Image getDrawGraphics() {
         return animationController.getDrawGraphics();
     }
 
@@ -48,13 +62,21 @@ public abstract class BaseEntity {
         return uiContainer.getUIElement();
     }
 
+    public void push(Vector2 direction, double force) {
+        this.velocity.apply(direction, force);
+    }
+
     public void update(GameState state) {
         velocity.update(controller);
+
+        state.getCollisionResolver().handleCollisions(state, this);
+
         setAnimation(velocity);
         animationController.update(state, direction);
-        checkWallCollision(state);
+
         position.apply(velocity);
         direction = Direction.fromVelocity(velocity, direction);
+        updateDebugContainer();
     }
 
     private void setAnimation(Velocity velocity) {
@@ -65,22 +87,13 @@ public abstract class BaseEntity {
         }
     }
 
-    private void checkWallCollision(GameState state) {
-        if(state.checkCollisionWithWalls(getNextPositionCollisionBox())) {
-            CollisionBox intersection = state.getCollisionIntersection(getNextPositionCollisionBox());
-            boolean collideX = intersection.getBox().getWidth() != 0;
-            boolean collideY = intersection.getBox().getHeight() != 0;
-            velocity.immediateStopInDirections(collideX, collideY);
-        }
-    }
-
     public CollisionBox getNextPositionCollisionBox() {
         Position nextPosition = position.getNextPosition(velocity);
         Rectangle collisionBounds = new Rectangle(
-                nextPosition.getX(),
-                nextPosition.getY() + size.getHeight() / 4,
-                size.getWidth() / 2,
-                size.getHeight() / 2);
+                nextPosition.getX() - collisionBoxSize.getWidth() / 2,
+                nextPosition.getY() - collisionBoxSize.getHeight() / 2,
+                collisionBoxSize.getWidth(),
+                collisionBoxSize.getHeight());
 
         return new CollisionBox(collisionBounds);
     }
@@ -104,5 +117,25 @@ public abstract class BaseEntity {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " " + id;
+    }
+
+    public void immediateStopInDirections(boolean collideX, boolean collideY) {
+        velocity.immediateStopInDirections(collideX, collideY);
+    }
+
+    public double getCurrentSpeed() {
+        return velocity.getVelocity();
+    }
+
+    public boolean isMovingToward(BaseEntity other) {
+        Vector2 direction = Vector2.directionBetweenPositions(other.getPosition(), position);
+        double dotProduct = Vector2.dotProduct(direction, velocity.getDirection());
+
+        System.out.println(dotProduct);
+        return dotProduct > 0;
+    }
+
+    public Position getRenderOffset() {
+        return renderOffset;
     }
 }
