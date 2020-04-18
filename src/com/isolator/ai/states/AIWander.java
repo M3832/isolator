@@ -25,7 +25,7 @@ public class AIWander extends AIState {
         if(!targetPosition.isPresent()) {
             Position target;
             do {
-                target = state.getMap().randomLocation();
+                target = state.getMap().getRandomAvailableLocation(controlledEntity.getCollisionBoxSize());
             }  while(target.isWithinInteractionRange(controlledEntity.getPosition()));
 
             targetPosition = Optional.of(target);

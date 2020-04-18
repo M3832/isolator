@@ -19,7 +19,9 @@ public class Vector2 {
     }
 
     public static double dotProduct(Vector2 v1, Vector2 v2) {
-        return v1.getX() * v2.getX() + v1.getY() + v2.getY();
+        v1.normalize();
+        v2.normalize();
+        return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
 
     private double getLength() {

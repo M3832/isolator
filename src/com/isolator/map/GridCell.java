@@ -27,7 +27,7 @@ public class GridCell {
     }
 
     public CollisionBox getCollisionBox() {
-        return CollisionBox.of(position, size);
+        return CollisionBox.of(new Position(position.getX() + size.getWidth() / 2, position.getY() + size.getHeight() / 2), size);
     }
 
     public Image getTileSprite() {

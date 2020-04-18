@@ -131,11 +131,18 @@ public abstract class BaseEntity {
         Vector2 direction = Vector2.directionBetweenPositions(other.getPosition(), position);
         double dotProduct = Vector2.dotProduct(direction, velocity.getDirection());
 
-        System.out.println(dotProduct);
         return dotProduct > 0;
     }
 
     public Position getRenderOffset() {
         return renderOffset;
+    }
+
+    public Velocity getVelocity() {
+        return velocity;
+    }
+
+    public Size getCollisionBoxSize() {
+        return collisionBoxSize;
     }
 }

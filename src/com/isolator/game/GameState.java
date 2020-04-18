@@ -3,7 +3,6 @@ package com.isolator.game;
 import com.isolator.controller.AIController;
 import com.isolator.controller.HumanController;
 import com.isolator.controller.Input;
-import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.display.Camera;
@@ -46,11 +45,13 @@ public class GameState {
 
     private void initGame() {
         Player player = new Player(new HumanController(input));
-        addEntityAtPosition(player, new Position(100, 100));
+        map.setAtRandomAvailableLocation(player);
+        addEntity(player);
 
-        for(int i = 0; i < 1; i++) {
+        for(int i = 0; i < 100; i++) {
             Visitor visitor = new Visitor(new AIController());
-            addEntityAtPosition(visitor, getMap().randomLocation());
+            map.setAtRandomAvailableLocation(visitor);
+            addEntity(visitor);
         }
 
         camera.followEntity(player);
@@ -82,8 +83,7 @@ public class GameState {
         return camera;
     }
 
-    public void addEntityAtPosition(BaseEntity entity, Position position) {
-        entity.setPosition(position);
+    public void addEntity(BaseEntity entity) {
         entities.add(entity);
     }
 

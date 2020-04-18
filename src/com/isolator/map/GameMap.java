@@ -1,8 +1,10 @@
 package com.isolator.map;
 
+import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
 import com.isolator.display.Camera;
+import com.isolator.entity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,5 +87,38 @@ public class GameMap {
         }
 
         return new Position(x * cellSize.getWidth(), y * cellSize.getHeight());
+    }
+
+    public void setAtRandomAvailableLocation(BaseEntity entity) {
+        Position randomPosition = new Position(
+                (int) (Math.random() * gridCells.length * cellSize.getWidth()),
+                (int) (Math.random() * gridCells[0].length * cellSize.getHeight())
+        );
+        entity.setPosition(randomPosition);
+
+        boolean badPlace = getUnwalkableGridCells().stream()
+                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(entity.getNextPositionCollisionBox()));
+
+        if(badPlace) {
+            setAtRandomAvailableLocation(entity);
+        }
+    }
+
+    public Position getRandomAvailableLocation(Size collisionBoxSize) {
+        Position randomPosition = new Position(
+                (int) (Math.random() * gridCells.length * cellSize.getWidth()),
+                (int) (Math.random() * gridCells[0].length * cellSize.getHeight())
+        );
+
+        CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
+
+        boolean badPlace = getUnwalkableGridCells().stream()
+                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(targetCollisionBox));
+
+        if(badPlace) {
+            return getRandomAvailableLocation(collisionBoxSize);
+        }
+
+        return randomPosition;
     }
 }

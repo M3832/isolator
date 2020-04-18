@@ -1,9 +1,7 @@
 package com.isolator.display;
 
-import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Size;
-import com.isolator.entity.BaseEntity;
 import com.isolator.game.GameState;
 import com.isolator.game.RunMode;
 import com.isolator.gfx.ImageUtils;
@@ -12,9 +10,6 @@ import com.isolator.ui.UIAlignmentUtils;
 
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.isolator.gfx.ImageUtils.SPRITE_SIZE;
 
 public class Renderer {
 

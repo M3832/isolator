@@ -28,8 +28,8 @@ public class CollisionBox {
     public static CollisionBox of(Position position, Size size) {
         return new CollisionBox(
                 new Rectangle(
-                        position.getX(),
-                        position.getY(),
+                        position.getX() - size.getWidth() / 2,
+                        position.getY() - size.getHeight() / 2,
                         size.getWidth(),
                         size.getHeight()
                 )

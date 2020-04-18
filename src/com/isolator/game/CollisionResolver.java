@@ -28,7 +28,6 @@ public class CollisionResolver {
             if(current instanceof Player && current.isMovingToward(other) ) {
                 Vector2 direction = Vector2.directionBetweenPositions(current.getPosition(), other.getPosition());
                 direction.normalize();
-                System.out.println(direction);
                 other.push(direction, -current.getCurrentSpeed());
             }
         }
