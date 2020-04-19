@@ -38,6 +38,6 @@ public class ImageUtils {
         return image.getScaledInstance(
                 (int) (SPRITE_SIZE * amount),
                 (int) (SPRITE_SIZE * amount),
-                0);
+                Image.SCALE_FAST);
     }
 }

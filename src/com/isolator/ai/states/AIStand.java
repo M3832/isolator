@@ -13,14 +13,17 @@ public class AIStand extends AIState {
     private long standUntil;
     private boolean done;
 
+    public AIStand() {
+        this((int)(Math.random() * 10));
+    }
+
+    public AIStand(long durationInSeconds) {
+        startTime = System.currentTimeMillis();
+        standUntil = durationInSeconds * 1000 + startTime;
+    }
+
     @Override
     public void update(GameState state, Visitor controlledEntity) {
-        if(standUntil == 0) {
-            startTime = System.currentTimeMillis();
-            long waitSeconds = ((int)(Math.random() * 10));
-            standUntil = waitSeconds * 1000 + startTime;
-        }
-
         if((getScaledEndTime(state) - System.currentTimeMillis()) <= 0) {
             done = true;
         }
@@ -31,17 +34,17 @@ public class AIStand extends AIState {
         return done;
     }
 
+    public long getScaledEndTime(GameState state) {
+        long standTime = standUntil - startTime;
+        long scaledStandTime = (long) (standTime / state.getGameSpeed());
+        return startTime + scaledStandTime;
+    }
+
     @Override
     public UIBase getDebugUI(GameState state, BaseEntity entity) {
         UIContainer container = new UIContainer();
         container.addElement(new UIText(this.getClass().getSimpleName()));
         container.addElement(new UIText("Time left: " + (getScaledEndTime(state) - System.currentTimeMillis())));
         return container;
-    }
-
-    public long getScaledEndTime(GameState state) {
-        long standTime = standUntil - startTime;
-        long scaledStandTime = (long) (standTime / state.getGameSpeed());
-        return startTime + scaledStandTime;
     }
 }

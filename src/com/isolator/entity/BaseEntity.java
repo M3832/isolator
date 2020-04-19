@@ -34,7 +34,7 @@ public abstract class BaseEntity {
         this.size = new Size(64, 64);
         this.renderOffset= new Position(0, -12);
         this.collisionBoxSize = new Size(24, 32);
-        this.velocity = new Velocity(0.5f, 5.0f);
+        this.velocity = new Velocity(0.5f, 3.0f);
         this.controller = controller;
         this.direction = Direction.N;
         initUIElements();
@@ -136,10 +136,6 @@ public abstract class BaseEntity {
 
     public Position getRenderOffset() {
         return renderOffset;
-    }
-
-    public Velocity getVelocity() {
-        return velocity;
     }
 
     public Size getCollisionBoxSize() {

@@ -3,8 +3,6 @@ package com.isolator.display;
 import com.isolator.core.CollisionBox;
 import com.isolator.core.Position;
 import com.isolator.core.Vector2;
-import com.isolator.entity.Player;
-import com.isolator.entity.Visitor;
 import com.isolator.game.GameState;
 
 import java.awt.*;
@@ -21,8 +19,6 @@ public class DebugRenderer {
         if (features.contains(COLLISION_BOX)) renderCollisionBoxes(state, screenGraphics);
         if (features.contains(ENTITY_DEBUG_UI)) renderEntityUI(state, screenGraphics);
         if (features.contains(ENTITY_POSITION)) renderEntityPositions(state, screenGraphics);
-
-        //renderPlayerVectors(state, screenGraphics);
     }
 
     private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {
@@ -54,26 +50,6 @@ public class DebugRenderer {
     private void renderEntityPositions(GameState state, Graphics2D screenGraphics) {
         state.getViewableEntities().stream()
                 .forEach(entity -> drawPoint(entity.getPosition(), state, screenGraphics));
-    }
-
-    private void renderPlayerVectors(GameState state, Graphics2D screenGraphics) {
-        Player player = state.getEntities().stream()
-                .filter(entity -> entity instanceof Player)
-                .map(entity -> (Player) entity)
-                .findFirst()
-                .get();
-
-        Visitor visitor = state.getEntities().stream()
-                .filter(entity -> entity instanceof Visitor)
-                .map(entity -> (Visitor) entity)
-                .findFirst()
-                .get();
-
-        Vector2 dir = Vector2.directionBetweenPositions(visitor.getPosition(), player.getPosition());
-        double dotProduct = Vector2.dotProduct(player.getVelocity().getDirection(), dir);
-        drawVector(player.getPosition(), dir, state, screenGraphics);
-        drawVector(player.getPosition(), player.getVelocity().getDirection(), state, screenGraphics);
-        drawString(player.getPosition(), dotProduct + " " + dir + " " + player.getVelocity().getDirection(), state, screenGraphics);
     }
 
     private void drawString(Position position, String string, GameState state, Graphics2D graphics) {

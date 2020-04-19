@@ -31,9 +31,9 @@ public class Renderer {
 
     private void renderEntities(GameState state, Graphics2D screenGraphics) {
         Camera camera = state.getCamera();
+        double zoom = camera.getZoom();
 
         state.getViewableEntities().forEach(entity -> {
-            double zoom = camera.getZoom();
             Position entPos = entity.getPosition();
             Position renderOffset = entity.getRenderOffset();
             Position camPos = camera.getPosition();

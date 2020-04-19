@@ -20,6 +20,10 @@ public class AIWander extends AIState {
         targetPosition = Optional.empty();
     }
 
+    public AIWander(Optional<Position> targetPosition) {
+        this.targetPosition = targetPosition;
+    }
+
     @Override
     public void update(GameState state, Visitor controlledEntity) {
         if(!targetPosition.isPresent()) {

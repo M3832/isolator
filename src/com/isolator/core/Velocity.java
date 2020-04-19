@@ -80,6 +80,6 @@ public class Velocity {
 
     public void apply(Vector2 direction, double force) {
         this.direction.add(direction);
-        this.velocity = Math.min(maxVelocity, force);
+        this.velocity = Math.min(this.velocity + accelerationRate, force);
     }
 }

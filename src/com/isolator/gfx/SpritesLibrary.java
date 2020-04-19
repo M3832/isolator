@@ -14,18 +14,6 @@ public class SpritesLibrary {
 
     public static final Image defaultSprite = createDefaultSprite();
     private static final List<AnimationSet> units = loadUnitSets();
-    public static final Image shadow = createShadow();
-
-    private static Image createShadow() {
-        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(64, 48);
-        Graphics2D graphics = image.createGraphics();
-
-        graphics.setColor(new Color(0, 0, 0, 0.3f));
-        graphics.fillOval(0, 0, 48, 64);
-
-        graphics.dispose();
-        return image;
-    }
 
     public static final Image woodFloor = ImageUtils.loadImage("/tiles/woodfloor.png");
 
