@@ -6,16 +6,17 @@ import com.isolator.engine.core.Direction;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.isolator.engine.gfx.ImageUtils.SCALE;
 import static com.isolator.engine.gfx.ImageUtils.SPRITE_SIZE;
 
 public class AnimationController {
-    private AnimationSet animationSet;
+    private final AnimationSet animationSet;
     private String currentAnimationName;
     private Image currentAnimationSheet;
     private Image currentAnimationFrame;
     private Direction currentDirection;
     private float currentFrameTime;
-    private float frameDisplayTime;
+    private final float frameDisplayTime;
     private int animationFrameIndex;
 
     public AnimationController(AnimationSet animationSet) {
@@ -30,7 +31,7 @@ public class AnimationController {
     }
 
     public void setAnimation(String animationName) {
-        if(animationName == currentAnimationName) {
+        if(animationName.equals(currentAnimationName)) {
             return;
         }
 
@@ -49,10 +50,10 @@ public class AnimationController {
 
     private Image getCurrentAnimationFrame() {
         return ((BufferedImage)currentAnimationSheet).getSubimage(
-                animationFrameIndex * SPRITE_SIZE,
-                currentDirection.getAnimationRow() * SPRITE_SIZE,
-                SPRITE_SIZE,
-                SPRITE_SIZE
+                (int) (animationFrameIndex * (SPRITE_SIZE * SCALE)),
+                (int) (currentDirection.getAnimationRow() * SPRITE_SIZE * SCALE),
+                (int) (SPRITE_SIZE * SCALE),
+                (int) (SPRITE_SIZE * SCALE)
         );
     }
 
@@ -71,14 +72,13 @@ public class AnimationController {
     private void nextAnimationFrame() {
         currentFrameTime = 0;
 
-        int currentAnimationLength = currentAnimationSheet.getWidth(null) / SPRITE_SIZE;
+        int currentAnimationLength = currentAnimationSheet.getWidth(null) / (int) (SPRITE_SIZE * SCALE);
         if(animationFrameIndex >= currentAnimationLength - 1) {
             animationFrameIndex = 0;
-            saveNewCurrentAnimationFrame();
         } else {
             animationFrameIndex++;
-            saveNewCurrentAnimationFrame();
         }
+        saveNewCurrentAnimationFrame();
     }
 
     public static AnimationController randomUnit() {

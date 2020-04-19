@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Input implements KeyListener {
 
-    public Map<Integer, KeyPress> keys;
+    public final Map<Integer, KeyPress> keys;
 
     public Input() {
         this.keys = new HashMap<>();

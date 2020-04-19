@@ -2,8 +2,8 @@ package com.isolator.engine.core;
 
 public class Size {
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public Size() {
         this(0, 0);

@@ -3,7 +3,6 @@ package com.isolator.engine.display;
 import com.isolator.engine.GameState;
 import com.isolator.engine.controller.Input;
 import com.isolator.engine.core.Size;
-import com.isolator.game.IsolatorGameState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +10,8 @@ import java.awt.image.BufferStrategy;
 
 public class Display extends JFrame {
     private Canvas canvas;
-    private Size size;
-    private Renderer renderer;
+    private final Size size;
+    private final Renderer renderer;
 
     public Display(Size size, Input input) {
         super();

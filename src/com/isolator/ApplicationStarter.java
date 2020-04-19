@@ -9,6 +9,6 @@ public class ApplicationStarter {
         final Game game = new Game(new Size(800, 640), new IsolatorGameState());
         final Thread gameRunner = new Thread(game);
 
-        gameRunner.run();
+        gameRunner.start();
     }
 }

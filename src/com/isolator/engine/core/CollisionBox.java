@@ -3,14 +3,10 @@ package com.isolator.engine.core;
 import java.awt.*;
 
 public class CollisionBox {
-    private Rectangle box;
+    private final Rectangle box;
 
     public CollisionBox(Rectangle box) {
         this.box = box;
-    }
-
-    public static CollisionBox emptyBox() {
-        return CollisionBox.of(new Position(0, 0), new Size(0, 0));
     }
 
     public boolean checkCollision(CollisionBox otherBox) {
@@ -29,6 +25,10 @@ public class CollisionBox {
         return new Position((int) box.getX(), (int) box.getY());
     }
 
+    public static CollisionBox empty() {
+        return CollisionBox.of(new Position(), new Size());
+    }
+
     public static CollisionBox of(Position position, Size size) {
         return new CollisionBox(
                 new Rectangle(
@@ -38,5 +38,9 @@ public class CollisionBox {
                         size.getHeight()
                 )
         );
+    }
+
+    public String toString() {
+        return "CollisionBox(" + new Position(box.x, box.y) + ", " + new Size(box.width, box.height) + ")";
     }
 }

@@ -3,15 +3,14 @@ package com.isolator.game.ai.states;
 import com.isolator.engine.GameState;
 import com.isolator.game.objects.BaseEntity;
 import com.isolator.game.objects.Visitor;
-import com.isolator.game.IsolatorGameState;
 import com.isolator.engine.ui.UIBase;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UIText;
 
 public class AIStand extends AIState {
 
-    private long startTime;
-    private long standUntil;
+    private final long startTime;
+    private final long standUntil;
     private boolean done;
 
     public AIStand() {

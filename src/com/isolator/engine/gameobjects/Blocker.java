@@ -5,13 +5,12 @@ import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
-import com.isolator.engine.gfx.ImageUtils;
 
 import java.awt.*;
 
-public class Blocker extends BaseObject implements Collidable {
+public class Blocker extends BaseObject {
 
-    CollisionBox collisionBox;
+    final CollisionBox collisionBox;
 
     public Blocker(Position position, Size size) {
         super();

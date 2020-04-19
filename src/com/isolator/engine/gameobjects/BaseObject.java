@@ -1,6 +1,7 @@
 package com.isolator.engine.gameobjects;
 
 import com.isolator.engine.GameState;
+import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
@@ -10,7 +11,7 @@ import java.awt.*;
 public abstract class BaseObject {
 
     protected Position position;
-    protected Position renderOffset;
+    protected final Position renderOffset;
     protected Size size;
 
     public BaseObject() {
@@ -39,5 +40,9 @@ public abstract class BaseObject {
 
     public Size getSize() {
         return size;
+    }
+
+    public CollisionBox getCollisionBox() {
+        return CollisionBox.empty();
     }
 }

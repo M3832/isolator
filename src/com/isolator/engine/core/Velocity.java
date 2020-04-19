@@ -4,10 +4,10 @@ import com.isolator.engine.controller.Controller;
 
 public class Velocity {
     private double velocity;
-    private Vector2 direction;
-    private double accelerationRate;
-    private double maxVelocity;
-    private double damper;
+    private final Vector2 direction;
+    private final double accelerationRate;
+    private final double maxVelocity;
+    private final double damper;
 
     public Velocity(double accelerationRate, double maxVelocity) {
         this.velocity = 0;
@@ -66,8 +66,7 @@ public class Velocity {
 
     public Vector2 getMovement() {
         direction.normalize();
-        Vector2 applyVelocity = direction.multiply(Math.min(velocity, maxVelocity));
-        return applyVelocity;
+        return direction.multiply(Math.min(velocity, maxVelocity));
     }
 
     public Vector2 getDirection() {

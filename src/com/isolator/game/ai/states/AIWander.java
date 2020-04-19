@@ -10,38 +10,33 @@ import com.isolator.engine.ui.UIBase;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UIText;
 
-import java.util.Optional;
-
 public class AIWander extends AIState {
 
-    Optional<Position> targetPosition;
+    Position targetPosition;
     private boolean done;
 
-    public AIWander() {
-        targetPosition = Optional.empty();
-    }
+    public AIWander() {}
 
-    public AIWander(Optional<Position> targetPosition) {
+    public AIWander(Position targetPosition) {
         this.targetPosition = targetPosition;
     }
 
     @Override
     public void update(GameState state, Visitor controlledEntity) {
-        if(!targetPosition.isPresent() && state instanceof IsolatorGameState) {
+        if(targetPosition == null && state instanceof IsolatorGameState) {
             Position target;
             do {
                 target = ((IsolatorGameState)state).getMap()
-                        .getRandomAvailableLocation(state, controlledEntity.getCollisionBoxSize());
+                        .getRandomAvailableLocation((IsolatorGameState) state, controlledEntity.getCollisionBoxSize());
             }  while(target.isWithinInteractionRange(controlledEntity.getPosition()));
 
-            targetPosition = Optional.of(target);
+            targetPosition = target;
             return;
         }
 
         moveToTargetPosition(controlledEntity);
 
-        if(targetPosition.get().isWithinInteractionRange(controlledEntity.getPosition())) {
-            targetPosition = Optional.empty();
+        if(targetPosition.isWithinInteractionRange(controlledEntity.getPosition())) {
             ((AIController) controlledEntity.getController()).stop();
             done = true;
         }
@@ -65,12 +60,11 @@ public class AIWander extends AIState {
     private void moveToTargetPosition(Visitor controlledEntity) {
         AIController aiController = (AIController) controlledEntity.getController();
         Position aiPosition = controlledEntity.getPosition();
-        Position target = targetPosition.get();
 
-        boolean movingLeft = aiPosition.getX() > target.getX();
-        boolean movingRight = aiPosition.getX() < target.getX();
-        boolean movingUp = aiPosition.getY() > target.getY();
-        boolean movingDown = aiPosition.getY() < target.getY();
+        boolean movingLeft = aiPosition.getX() > targetPosition.getX();
+        boolean movingRight = aiPosition.getX() < targetPosition.getX();
+        boolean movingUp = aiPosition.getY() > targetPosition.getY();
+        boolean movingDown = aiPosition.getY() < targetPosition.getY();
 
         aiController.setLeft(movingLeft);
         aiController.setRight(movingRight);

@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public class Camera {
 
-    private Position position;
-    private Size size;
-    private double zoom;
+    private final Position position;
+    private final Size size;
+    private final double zoom;
 
     private Optional<BaseEntity> entityToFollow;
 

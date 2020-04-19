@@ -4,6 +4,7 @@ import com.isolator.engine.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
+import com.isolator.game.objects.BaseEntity;
 
 import java.awt.*;
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
 
 public class DebugRenderer {
 
-    public static int ENTITY_POSITION = 0;
-    public static int COLLISION_BOX = 1;
-    public static int ENTITY_DEBUG_UI = 2;
+    public static final int ENTITY_POSITION = 0;
+    public static final int COLLISION_BOX = 1;
+    public static final int ENTITY_DEBUG_UI = 2;
 
     public void render(List<Integer> features, GameState state, Graphics2D screenGraphics) {
         if (features.contains(COLLISION_BOX)) renderCollisionBoxes(state, screenGraphics);
@@ -22,9 +23,9 @@ public class DebugRenderer {
     }
 
     private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {
-        state.getCollidables().stream()
-                .forEach(entity -> {
-                            CollisionBox box = entity.getCollisionBox();
+        state.getObjects()
+                .forEach(object -> {
+                            CollisionBox box = object.getCollisionBox();
                             screenGraphics.fillRect(
                                     box.getBox().x - state.getCamera().getPosition().getX(),
                                     box.getBox().y - state.getCamera().getPosition().getY(),
@@ -38,18 +39,22 @@ public class DebugRenderer {
     private void renderEntityUI(GameState state, Graphics2D screenGraphics) {
         Camera camera = state.getCamera();
 
-        state.getEntitiesWithinViewingBounds()
-                .stream()
-                .forEach(entity -> screenGraphics.drawImage(
-                        entity.getDebugUI(),
-                        entity.getPosition().getX() - camera.getPosition().getX() - entity.getDebugUI().getWidth(null) / 2 + entity.getSize().getWidth() / 2,
-                        entity.getPosition().getY() - camera.getPosition().getY() + entity.getSize().getHeight(),
-                        null));
+        state.getObjectsWithinViewingBounds()
+                .forEach(object -> {
+                    if(object instanceof BaseEntity) {
+                        BaseEntity entity = (BaseEntity) object;
+                        screenGraphics.drawImage(
+                                entity.getDebugUI(),
+                                entity.getPosition().getX() - camera.getPosition().getX() - entity.getDebugUI().getWidth(null) / 2 + object.getSize().getWidth() / 2,
+                                entity.getPosition().getY() - camera.getPosition().getY() + entity.getSize().getHeight(),
+                                null);
+                    }
+                });
     }
 
     private void renderEntityPositions(GameState state, Graphics2D screenGraphics) {
-        state.getEntitiesWithinViewingBounds().stream()
-                .forEach(entity -> drawPoint(entity.getPosition(), state, screenGraphics));
+        state.getObjectsWithinViewingBounds()
+                .forEach(object -> drawPoint(object.getPosition(), state, screenGraphics));
     }
 
     private void drawString(Position position, String string, GameState state, Graphics2D graphics) {

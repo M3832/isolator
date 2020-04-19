@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class UIText extends UIBase {
 
-    private int fontSize;
-    private String text;
+    private final int fontSize;
+    private final String text;
 
     public UIText(String text) {
         this(text, 20);

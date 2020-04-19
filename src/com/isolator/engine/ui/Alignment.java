@@ -2,8 +2,8 @@ package com.isolator.engine.ui;
 
 public class Alignment {
 
-    private AlignmentPosition vertical;
-    private AlignmentPosition horizontal;
+    private final AlignmentPosition vertical;
+    private final AlignmentPosition horizontal;
 
     public Alignment(AlignmentPosition horizontal, AlignmentPosition vertical) {
         this.vertical = vertical;

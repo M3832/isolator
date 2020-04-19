@@ -5,7 +5,6 @@ import com.isolator.game.ai.states.AIStand;
 import com.isolator.game.ai.states.AIState;
 import com.isolator.game.ai.states.AIWander;
 import com.isolator.game.objects.Visitor;
-import com.isolator.game.IsolatorGameState;
 
 public class AIStateMachine {
 

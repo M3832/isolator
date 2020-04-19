@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class AnimationSet {
 
-    private Map<String, Image> animationSheets;
+    private final Map<String, Image> animationSheets;
 
     public AnimationSet() {
         this.animationSheets = new HashMap<>();

@@ -1,32 +1,31 @@
 package com.isolator.game.objects;
 
-import com.isolator.engine.GameState;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.gameobjects.Collidable;
 import com.isolator.engine.gfx.AnimationController;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
+import com.isolator.game.IsolatorGameState;
 
 import java.awt.*;
 
-public abstract class BaseEntity extends BaseObject implements Collidable {
+public abstract class BaseEntity extends BaseObject {
     private static int ID_COUNTER = 1;
 
-    private int id;
+    private final int id;
 
-    protected Controller controller;
+    protected final Controller controller;
     protected Direction direction;
     protected Velocity velocity;
 
     protected Size collisionBoxSize;
 
-    protected Position renderOffset;
-    protected AnimationController animationController;
+    protected final Position renderOffset;
+    protected final AnimationController animationController;
     protected UIContainer uiContainer;
 
     public BaseEntity(Controller controller) {
@@ -56,7 +55,7 @@ public abstract class BaseEntity extends BaseObject implements Collidable {
 
     @Override
     public Image getDrawGraphics(Camera camera) {
-        return ImageUtils.scale(animationController.getDrawGraphics(), camera.getZoom());
+        return animationController.getDrawGraphics();
     }
 
     public Image getDebugUI() {
@@ -67,10 +66,10 @@ public abstract class BaseEntity extends BaseObject implements Collidable {
         this.velocity.apply(direction, force);
     }
 
-    public void update(GameState state) {
+    public void update(IsolatorGameState state) {
         velocity.update(controller);
 
-        state.getCollisionResolver().handleCollisions(state, this);
+        checkCollisions(state);
 
         setAnimation(velocity);
         animationController.update(state, direction);
@@ -79,6 +78,8 @@ public abstract class BaseEntity extends BaseObject implements Collidable {
         direction = Direction.fromVelocity(velocity, direction);
         updateDebugContainer();
     }
+
+    protected abstract void checkCollisions(IsolatorGameState state);
 
     private void setAnimation(Velocity velocity) {
          if(velocity.isMoving()) {

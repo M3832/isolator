@@ -4,26 +4,23 @@ import com.isolator.engine.controller.Input;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.gameobjects.Collidable;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.game.CollisionResolver;
-import com.isolator.game.objects.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class GameState {
 
     protected Input input;
     protected RunMode mode;
-    protected CollisionResolver collisionResolver;
+    protected final CollisionResolver collisionResolver;
     protected Camera camera;
     protected GameScene scene;
 
-    protected List<BaseObject> gameObjects;
-    protected List<UIContainer> uiContainers;
+    protected final List<BaseObject> gameObjects;
+    protected final List<UIContainer> uiContainers;
 
     protected float gameSpeed = 1;
 
@@ -38,20 +35,6 @@ public abstract class GameState {
         gameObjects.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
         gameObjects.forEach(entity -> entity.update(this));
         camera.update(this);
-    }
-
-    public List<BaseEntity> getEntities() {
-        return gameObjects.stream()
-                .filter((BaseObject o) -> o instanceof BaseEntity)
-                .map((BaseObject o) -> (BaseEntity) o)
-                .collect(Collectors.toList());
-    }
-
-    public List<Collidable> getCollidables() {
-        return gameObjects.stream()
-                .filter((BaseObject o) -> o instanceof Collidable)
-                .map((BaseObject o) -> (Collidable) o)
-                .collect(Collectors.toList());
     }
 
     public List<UIContainer> getUiContainers() {
@@ -88,10 +71,6 @@ public abstract class GameState {
         }
     }
 
-    public List<BaseEntity> getEntitiesWithinViewingBounds() {
-        return getEntities();
-    }
-
     protected void setupGame(Camera camera, Input input) {
         this.camera = camera;
         this.input = input;
@@ -121,7 +100,5 @@ public abstract class GameState {
         return gameObjects;
     }
 
-    public Iterable<BaseObject> getObjectsWithinViewingBounds() {
-        return gameObjects;
-    }
+    public abstract Iterable<BaseObject> getObjectsWithinViewingBounds();
 }

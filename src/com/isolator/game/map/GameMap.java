@@ -6,19 +6,21 @@ import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
+import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gameobjects.Blocker;
+import com.isolator.engine.gameobjects.Grouping;
 import com.isolator.engine.gfx.ImageUtils;
-import com.isolator.game.objects.BaseEntity;
+import com.isolator.game.IsolatorGameState;
 
 import java.awt.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class GameMap extends GameScene {
 
-    private GridCell[][] gridCells;
-    private Size cellSize;
-    private Size mapSize;
+    private final GridCell[][] gridCells;
+    private final Size cellSize;
+    private final Size mapSize;
 
     public GameMap(int xTiles, int yTiles, Size cellSize) {
         gridCells = new GridCell[xTiles][yTiles];
@@ -39,11 +41,12 @@ public class GameMap extends GameScene {
         }
     }
 
-    public void addWallsToPerimeter(GameState state) {
+    public void addWallsToPerimeter(IsolatorGameState state) {
         for(int x = 0; x < gridCells.length; x++) {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
-                    state.addObject(new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize));
+                    state.addObjectWithGroupings(
+                            new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize), List.of(Grouping.PROPS));
                 }
             }
         }
@@ -68,23 +71,7 @@ public class GameMap extends GameScene {
         return mapSize;
     }
 
-    public void setAtRandomAvailableLocation(GameState state, BaseEntity entity) {
-        Position randomPosition = new Position(
-                (int) (Math.random() * gridCells.length * cellSize.getWidth()),
-                (int) (Math.random() * gridCells[0].length * cellSize.getHeight())
-        );
-        entity.setPosition(randomPosition);
-
-        boolean badPlace = state.getCollidables().stream()
-                .filter(collidable -> !(collidable instanceof BaseEntity))
-                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(entity.getNextPositionCollisionBox()));
-
-        if(badPlace) {
-            setAtRandomAvailableLocation(state, entity);
-        }
-    }
-
-    public Position getRandomAvailableLocation(GameState state, Size collisionBoxSize) {
+    public Position getRandomAvailableLocation(IsolatorGameState state, Size collisionBoxSize) {
         Position randomPosition = new Position(
                 (int) (Math.random() * gridCells.length * cellSize.getWidth()),
                 (int) (Math.random() * gridCells[0].length * cellSize.getHeight())
@@ -92,11 +79,11 @@ public class GameMap extends GameScene {
 
         CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
 
-        boolean badPlace = state.getCollidables().stream()
-                .anyMatch(gridCell -> gridCell.getCollisionBox().checkCollision(targetCollisionBox));
-
-        if(badPlace) {
-            return getRandomAvailableLocation(state, collisionBoxSize);
+        for(BaseObject object : state.getGrouping(Grouping.PROPS).getObjects()) {
+            if (object.getPosition().isWithinInteractionRange(randomPosition)
+                    && object.getCollisionBox().checkCollision(targetCollisionBox)) {
+                return getRandomAvailableLocation(state, collisionBoxSize);
+            }
         }
 
         return randomPosition;

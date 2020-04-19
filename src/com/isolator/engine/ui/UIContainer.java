@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UIContainer extends UIBase {
-    private Position position;
-    private ContainerDirection containerDirection;
+    private final Position position;
+    private final ContainerDirection containerDirection;
     private Alignment windowAlignment;
     private Color backgroundColor;
     private boolean visible;
 
-    private List<UIBase> elements;
+    private final List<UIBase> elements;
 
     public UIContainer() {
         this(true);

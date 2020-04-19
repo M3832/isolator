@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Renderer {
 
-    DebugRenderer debugRenderer;
+    final DebugRenderer debugRenderer;
 
     public Renderer() {
         this.debugRenderer = new DebugRenderer();
@@ -55,7 +55,7 @@ public class Renderer {
 
     private void renderUI(GameState state, Size windowSize, Graphics2D screenGraphics) {
         state.getUiContainers().forEach(container -> {
-            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, screenGraphics, windowSize);
+            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, windowSize);
             screenGraphics.drawImage(
                     container.getUIElement(),
                     drawPosition.getX(),

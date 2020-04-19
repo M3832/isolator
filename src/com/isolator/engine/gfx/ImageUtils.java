@@ -10,9 +10,9 @@ import java.io.IOException;
 public class ImageUtils {
 
     public static final int SPRITE_SIZE = 64;
+    public static final double SCALE = 1.5f;
     public static final int ALPHA_OPAQUE = 1;
     public static final int ALPHA_BIT_MASKED = 2;
-    public static final int ALPHA_BLEND = 4;
 
     public static Image loadImage(String filePath) {
         try {
@@ -43,9 +43,24 @@ public class ImageUtils {
     }
 
     public static Image scale(Image image, double amount) {
-        return image.getScaledInstance(
-                (int) (SPRITE_SIZE * amount),
-                (int) (SPRITE_SIZE * amount),
+        Image result = createCompatibleImage(
+                new Size(
+                        (int)(image.getWidth(null) * amount),
+                        (int)(image.getHeight(null) * amount)),
+                ALPHA_BIT_MASKED);
+
+        Graphics2D graphics = (Graphics2D) result.getGraphics();
+        Image scaledImage = image.getScaledInstance(
+                (int) (image.getWidth(null) * amount),
+                (int) (image.getHeight(null) * amount),
                 Image.SCALE_FAST);
+
+        graphics.drawImage(scaledImage,
+                0,
+                0,
+                null);
+
+        graphics.dispose();
+        return result;
     }
 }

@@ -1,10 +1,10 @@
 package com.isolator.engine.ui;
 
 public class UISpacing {
-    private int top;
-    private int bottom;
-    private int right;
-    private int left;
+    private final int top;
+    private final int bottom;
+    private final int right;
+    private final int left;
 
     public UISpacing(int padding) {
         this(padding, padding);

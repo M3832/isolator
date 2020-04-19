@@ -9,11 +9,11 @@ import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UIText;
 
 public class Game implements Runnable {
-    private GameState state;
-    private Display display;
-    private Input input;
+    private final GameState state;
+    private final Display display;
+    private final Input input;
 
-    private UIContainer fpsContainer;
+    private final UIContainer fpsContainer;
 
     private boolean running;
 

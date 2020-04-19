@@ -10,9 +10,7 @@ public enum Direction {
     E(6),
     SE(7);
 
-    private static final double VELOCITY_SENSITIVITY_VALUE = 0.5;
-
-    private int animationRow;
+    private final int animationRow;
 
     Direction(int animationRow) {
         this.animationRow = animationRow;

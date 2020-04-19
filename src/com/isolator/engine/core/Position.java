@@ -48,12 +48,16 @@ public class Position {
         return nextPosition;
     }
 
-    public boolean isWithinInteractionRange(Position other) {
-        int interactionRange = 20;
-        int deltaX = Math.max(Math.abs(other.getX()), Math.abs(x)) - Math.min(Math.abs(other.getX()), Math.abs(x));
-        int deltaY = Math.max(Math.abs(other.getY()), Math.abs(y)) - Math.min(Math.abs(other.getY()), Math.abs(y));
+    public double distanceTo(Position other) {
+        double deltaX = this.getX() - other.getX();
+        double deltaY = this.getY() - other.getY();
 
-        return deltaX <= interactionRange && deltaY <= interactionRange;
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public boolean isWithinInteractionRange(Position other) {
+        int interactionRange = 128;
+        return distanceTo(other) < interactionRange;
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class HumanController implements Controller {
 
-    private Input input;
+    private final Input input;
 
     public HumanController(Input input) {
         this.input = input;

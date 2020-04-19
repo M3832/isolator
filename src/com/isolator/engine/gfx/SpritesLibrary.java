@@ -1,6 +1,5 @@
 package com.isolator.engine.gfx;
 
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -29,7 +28,7 @@ public class SpritesLibrary {
             for(String animationSheetName : animationSheetsInFolder) {
                 animationSet.addAnimationSheet(
                         animationSheetName.substring(0, animationSheetName.length() - 4),
-                        ImageUtils.loadImage(PATH_TO_UNITS + "/" + folderName + "/" +animationSheetName));
+                        ImageUtils.scale(ImageUtils.loadImage(PATH_TO_UNITS + "/" + folderName + "/" +animationSheetName), ImageUtils.SCALE));
             }
 
             units.add(animationSet);
