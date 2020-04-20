@@ -10,9 +10,11 @@ import com.isolator.game.CollisionResolver;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 public abstract class GameState {
 
+    protected GameTimer gameTimer;
     protected Input input;
     protected RunMode mode;
     protected final CollisionResolver collisionResolver;
@@ -22,16 +24,21 @@ public abstract class GameState {
     protected final List<BaseObject> gameObjects;
     protected final List<UIContainer> uiContainers;
 
+    protected Random random;
+
     protected float gameSpeed = 1;
 
     public GameState() {
+        gameTimer = new GameTimer(60);
         gameObjects = new ArrayList<>();
         uiContainers = new ArrayList<>();
         this.collisionResolver = new CollisionResolver();
         mode = RunMode.DEFAULT;
+        random = new Random(123);
     }
 
     public void update() {
+        gameTimer.update();
         gameObjects.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
         gameObjects.forEach(entity -> entity.update(this));
         camera.update(this);
@@ -101,4 +108,12 @@ public abstract class GameState {
     }
 
     public abstract Iterable<BaseObject> getObjectsWithinViewingBounds();
+
+    public Random getRandomGenerator() {
+        return random;
+    }
+
+    public GameTimer getGameTimer() {
+        return gameTimer;
+    }
 }

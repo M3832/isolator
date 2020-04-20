@@ -3,35 +3,39 @@ package com.isolator.game.ai;
 import com.isolator.engine.GameState;
 import com.isolator.game.ai.states.AIStand;
 import com.isolator.game.ai.states.AIState;
-import com.isolator.game.ai.states.AIWander;
-import com.isolator.game.objects.Visitor;
+import com.isolator.game.entity.Visitor;
 
 public class AIStateMachine {
 
     private AIState currentState;
+    private Runnable runnable;
 
     public AIStateMachine() {
-        decideOnNewState();
+        currentState = new AIStand(1);
     }
 
     public void update(GameState state, Visitor entity) {
         currentState.update(state, entity);
 
-        if(currentState.readyToTransition()) {
-            decideOnNewState();
+        if(isReadyToTransition() && runnable != null) {
+            runnable.run();
+            runnable = null;
         }
     }
 
-    private void decideOnNewState() {
-        int random = (int)(Math.random() * 2) + 1;
-        if(random == 1) {
-            currentState = new AIWander();
-        } else if (random == 2) {
-            currentState = new AIStand();
-        }
+    public void setCurrentState(AIState state) {
+        currentState = state;
+    }
+
+    public void setRunnable(Runnable runnable) {
+        this.runnable = runnable;
     }
 
     public AIState getCurrentState() {
         return currentState;
+    }
+
+    public boolean isReadyToTransition() {
+        return currentState.isReadyToTransition();
     }
 }

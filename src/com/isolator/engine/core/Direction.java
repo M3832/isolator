@@ -16,16 +16,9 @@ public enum Direction {
         this.animationRow = animationRow;
     }
 
-    public int getAnimationRow() {
-        return animationRow;
-    }
-
-    public static Direction fromVelocity(Velocity velocity, Direction direction) {
-        Vector2 directionVector = velocity.getDirection();
-        double x = directionVector.getX();
-        double y = directionVector.getY();
-
-        if(x == 0 && y == 0) return direction;
+    public static Direction fromVector(Vector2 lookDirection) {
+        double x = lookDirection.getX();
+        double y = lookDirection.getY();
 
         if(x == 0 && y > 0) return S;
         if(x < 0 && y == 0) return W;
@@ -35,6 +28,18 @@ public enum Direction {
         if(x < 0 && y < 0) return NW;
         if(x > 0 && y < 0) return NE;
         if(x > 0 && y > 0) return SE;
+
+        return N;
+    }
+
+    public int getAnimationRow() {
+        return animationRow;
+    }
+
+    public static Direction fromVelocity(Velocity velocity, Direction direction) {
+        if(velocity.isMoving()) {
+            return fromVector(velocity.getDirection());
+        }
 
         return direction;
     }

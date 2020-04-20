@@ -58,7 +58,7 @@ public class AnimationController {
     }
 
     public void update(GameState state, Direction direction) {
-        currentFrameTime += 1 * state.getGameSpeed();
+        currentFrameTime += 1;
         if(currentFrameTime >= frameDisplayTime) {
             nextAnimationFrame();
         }

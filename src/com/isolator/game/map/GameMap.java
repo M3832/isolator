@@ -8,7 +8,6 @@ import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gameobjects.Blocker;
-import com.isolator.engine.gameobjects.Grouping;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.game.IsolatorGameState;
 
@@ -45,8 +44,8 @@ public class GameMap extends GameScene {
         for(int x = 0; x < gridCells.length; x++) {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
-                    state.addObjectWithGroupings(
-                            new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize), List.of(Grouping.PROPS));
+                    state.addObject(
+                            new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize));
                 }
             }
         }
@@ -73,13 +72,13 @@ public class GameMap extends GameScene {
 
     public Position getRandomAvailableLocation(IsolatorGameState state, Size collisionBoxSize) {
         Position randomPosition = new Position(
-                (int) (Math.random() * gridCells.length * cellSize.getWidth()),
-                (int) (Math.random() * gridCells[0].length * cellSize.getHeight())
+                (int) (state.getRandomGenerator().nextDouble() * gridCells.length * cellSize.getWidth()),
+                (int) (state.getRandomGenerator().nextDouble() * gridCells[0].length * cellSize.getHeight())
         );
 
         CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
 
-        for(BaseObject object : state.getGrouping(Grouping.PROPS).getObjects()) {
+        for(BaseObject object : state.getObjects()) {
             if (object.getPosition().isWithinInteractionRange(randomPosition)
                     && object.getCollisionBox().checkCollision(targetCollisionBox)) {
                 return getRandomAvailableLocation(state, collisionBoxSize);

@@ -4,9 +4,8 @@ import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.gameobjects.Grouping;
-import com.isolator.game.objects.BaseEntity;
-import com.isolator.game.objects.Player;
+import com.isolator.game.entity.BaseEntity;
+import com.isolator.game.entity.Player;
 
 public class CollisionResolver {
 
@@ -15,7 +14,8 @@ public class CollisionResolver {
     }
 
     public void handlePropCollisions(IsolatorGameState state, BaseEntity current) {
-        state.getGrouping(Grouping.PROPS).getObjects().stream()
+        state.getObjects().stream()
+                .filter(object -> !(object instanceof BaseEntity))
                 .filter(object -> current.getPosition().isWithinInteractionRange(object.getPosition()))
                 .forEach(object -> {
                     CollisionBox box = object.getCollisionBox();
@@ -30,7 +30,7 @@ public class CollisionResolver {
     }
 
     private void handleEntityCollision(IsolatorGameState state, BaseEntity entity) {
-        state.getGrouping(Grouping.ENTITIES).getObjects().stream()
+        state.getObjects().stream()
                 .filter(e -> !e.equals(entity))
                 .filter(e -> Position.withinCloseProximity(e.getPosition(), entity.getPosition()))
                 .forEach(e -> handleCollision(e, entity));

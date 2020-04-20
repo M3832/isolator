@@ -1,19 +1,19 @@
-package com.isolator.game.objects;
+package com.isolator.game.entity;
 
 import com.isolator.engine.GameState;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.Velocity;
+import com.isolator.game.ai.states.AIState;
 
 public class Visitor extends BaseEntity {
 
     private final AIStateMachine ai;
 
-    public Visitor(Controller controller) {
+    public Visitor(Controller controller, double maxVelocity) {
         super(controller);
         ai = new AIStateMachine();
-        double maxVelocity = Math.random() * (3 - 1.5f) + 1.5f;
         this.velocity = new Velocity(0.5f, maxVelocity);
     }
 
@@ -36,5 +36,13 @@ public class Visitor extends BaseEntity {
 
     public Controller getController() {
         return controller;
+    }
+
+    public boolean isIdle() {
+        return ai.isReadyToTransition();
+    }
+
+    public void perform(AIState action) {
+        ai.setCurrentState(action);
     }
 }

@@ -1,4 +1,4 @@
-package com.isolator.game.objects;
+package com.isolator.game.entity;
 
 import com.isolator.engine.GameState;
 import com.isolator.engine.controller.Controller;
@@ -9,7 +9,7 @@ public class Player extends BaseEntity {
 
     public Player(Controller controller) {
         super(controller);
-        this.collisionBoxSize = new Size(64, 64);
+        this.collisionBoxSize = new Size(24, 32);
     }
 
     @Override

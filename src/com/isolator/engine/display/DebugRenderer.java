@@ -4,7 +4,7 @@ import com.isolator.engine.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
-import com.isolator.game.objects.BaseEntity;
+import com.isolator.game.entity.BaseEntity;
 
 import java.awt.*;
 import java.util.List;
@@ -20,6 +20,22 @@ public class DebugRenderer {
         if (features.contains(COLLISION_BOX)) renderCollisionBoxes(state, screenGraphics);
         if (features.contains(ENTITY_DEBUG_UI)) renderEntityUI(state, screenGraphics);
         if (features.contains(ENTITY_POSITION)) renderEntityPositions(state, screenGraphics);
+
+        testCircle(state, screenGraphics);
+    }
+
+    private void testCircle(GameState state, Graphics2D screenGraphics) {
+        int numberOfPoints = 6;
+        int radius = 50;
+        double distance = 2 * Math.PI / numberOfPoints;
+
+        for(int i = 0; i < numberOfPoints; i++) {
+            double angle = distance * i;
+            drawPoint(
+                    new Position((int) (Math.sin(angle) * radius) + 400, (int) (Math.cos(angle) * radius * 0.8) + 400),
+                    state,
+                    screenGraphics);
+        }
     }
 
     private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {

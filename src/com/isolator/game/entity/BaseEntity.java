@@ -1,11 +1,10 @@
-package com.isolator.game.objects;
+package com.isolator.game.entity;
 
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gfx.AnimationController;
-import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
@@ -139,7 +138,9 @@ public abstract class BaseEntity extends BaseObject {
         return zoomedOffset;
     }
 
-    public Size getCollisionBoxSize() {
-        return collisionBoxSize;
+    public void lookAt(Position targetPosition) {
+        Vector2 lookDirection = Vector2.directionBetweenPositions(targetPosition, this.position);
+
+        this.direction = Direction.fromVector(lookDirection);
     }
 }

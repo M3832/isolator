@@ -8,29 +8,23 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.gameobjects.Grouping;
-import com.isolator.game.objects.Player;
-import com.isolator.game.objects.Visitor;
+import com.isolator.game.entity.Player;
+import com.isolator.game.entity.Visitor;
+import com.isolator.game.logic.Group;
 import com.isolator.game.map.GameMap;
 
-import java.util.*;
+import java.util.stream.Collectors;
 
 public class IsolatorGameState extends GameState {
 
     private final GameMap map;
     private final Size cellSize;
 
-    private final List<BaseObject> objectsInView;
-
-    private final Map<Integer, Grouping> groupings;
-
     public IsolatorGameState() {
         super();
-        groupings = new HashMap<>();
         cellSize = new Size(64, 64);
-        this.map = new GameMap(16, 12, cellSize);
+        this.map = new GameMap(16, 25, cellSize);
         this.map.addWallsToPerimeter(this);
-        objectsInView = new ArrayList<>();
         this.scene = map;
     }
 
@@ -39,40 +33,30 @@ public class IsolatorGameState extends GameState {
         player.setPosition(
                 map.getRandomAvailableLocation(this, player.getSize())
         );
-        addObjectWithGroupings(player, List.of(Grouping.ENTITIES));
+        addObject(player);
 
-        for(int i = 0; i < 500; i++) {
-            Visitor visitor = new Visitor(new AIController());
-            visitor.setPosition(
-                    map.getRandomAvailableLocation(this, visitor.getSize())
-            );
-            addObjectWithGroupings(visitor, List.of(Grouping.ENTITIES));
+        for(int i = 0; i < 75; i++) {
+            generateGroupOfVisitors();
         }
 
         camera.followEntity(player);
     }
 
-    public void update() {
-        gameObjects.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
-        gameObjects.forEach(entity -> entity.update(this));
-        camera.update(this);
-        updateObjectsInView();
-    }
+    private void generateGroupOfVisitors() {
+        Group group = new Group();
+        int numberOfMembers = random.nextInt(4) + 1;
+        for(int i = 0; i < numberOfMembers; i++) {
+            double maxVelocity = random.nextDouble() * (3.5f - 1.5f) + 1.5f;
+            Visitor visitor = new Visitor(new AIController(), maxVelocity);
+            visitor.setPosition(
+                    map.getRandomAvailableLocation(this, visitor.getSize())
+            );
 
-    public void addObjectWithGroupings(BaseObject object, List<Integer> groupings) {
-        addObject(object);
-        for(int i : groupings) {
-            addToGrouping(i, object);
-        }
-    }
-
-    private void addToGrouping(int groupingType, BaseObject object) {
-        if(!groupings.containsKey(groupingType)) {
-            groupings.put(groupingType, new Grouping());
+            group.addMember(visitor);
+            addObject(visitor);
         }
 
-        Grouping grouping = groupings.get(groupingType);
-        grouping.addObject(object);
+        addObject(group);
     }
 
     public GameMap getMap() {
@@ -81,17 +65,7 @@ public class IsolatorGameState extends GameState {
 
     @Override
     public Iterable<BaseObject> getObjectsWithinViewingBounds() {
-        return objectsInView;
-    }
-
-    private void updateObjectsInView() {
-        objectsInView.clear();
-
-        for(BaseObject o : gameObjects) {
-            if(withinViewingBounds(o)) {
-                objectsInView.add(o);
-            }
-        }
+        return gameObjects.stream().filter(this::withinViewingBounds).collect(Collectors.toList());
     }
 
     public boolean withinViewingBounds(BaseObject entity) {
@@ -110,9 +84,5 @@ public class IsolatorGameState extends GameState {
         this.camera = camera;
         this.input = input;
         initGame();
-    }
-
-    public Grouping getGrouping(int groupingType) {
-        return groupings.get(groupingType);
     }
 }
