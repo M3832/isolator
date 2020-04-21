@@ -35,7 +35,7 @@ public class IsolatorGameState extends GameState {
         );
         addObject(player);
 
-        for(int i = 0; i < 75; i++) {
+        for(int i = 0; i < 100; i++) {
             generateGroupOfVisitors();
         }
 
@@ -44,7 +44,7 @@ public class IsolatorGameState extends GameState {
 
     private void generateGroupOfVisitors() {
         Group group = new Group();
-        int numberOfMembers = random.nextInt(4) + 1;
+        int numberOfMembers = random.nextInt(9) + 1;
         for(int i = 0; i < numberOfMembers; i++) {
             double maxVelocity = random.nextDouble() * (3.5f - 1.5f) + 1.5f;
             Visitor visitor = new Visitor(new AIController(), maxVelocity);

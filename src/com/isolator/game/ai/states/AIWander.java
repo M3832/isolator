@@ -23,7 +23,7 @@ public class AIWander extends AIState {
         moveToTargetPosition(controlledEntity);
         updatesAlive++;
 
-        if(targetPosition.isWithinInteractionRange(controlledEntity.getPosition())) {
+        if(targetPosition.isWithinRangeOf(20, controlledEntity.getPosition())) {
             ((AIController) controlledEntity.getController()).stop();
             done = true;
         }

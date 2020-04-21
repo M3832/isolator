@@ -16,7 +16,7 @@ public class CircleFormation implements Formation {
 
         for(int i = 0; i < numberOfPositions; i++) {
             double angle = distance * i;
-            Position calculatedPos = new Position(Math.sin(angle) * radius, Math.cos(angle) * radius);
+            Position calculatedPos = new Position(Math.sin(angle) * radius, Math.cos(angle) * radius * 0.8f);
             positions.add(calculatedPos);
         }
 

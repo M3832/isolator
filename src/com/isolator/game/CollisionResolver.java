@@ -16,7 +16,7 @@ public class CollisionResolver {
     public void handlePropCollisions(IsolatorGameState state, BaseEntity current) {
         state.getObjects().stream()
                 .filter(object -> !(object instanceof BaseEntity))
-                .filter(object -> current.getPosition().isWithinInteractionRange(object.getPosition()))
+                .filter(object -> current.getPosition().isWithinRangeOf(128, object.getPosition()))
                 .forEach(object -> {
                     CollisionBox box = object.getCollisionBox();
                     if(box.checkCollision(current.getNextPositionCollisionBox())) {

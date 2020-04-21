@@ -10,10 +10,12 @@ import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gameobjects.Blocker;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.game.IsolatorGameState;
+import com.isolator.game.entity.BaseEntity;
 
 import java.awt.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameMap extends GameScene {
 
@@ -78,8 +80,8 @@ public class GameMap extends GameScene {
 
         CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
 
-        for(BaseObject object : state.getObjects()) {
-            if (object.getPosition().isWithinInteractionRange(randomPosition)
+        for(BaseObject object : state.getObjects().stream().filter(object -> !(object instanceof BaseEntity)).collect(Collectors.toList())) {
+            if (object.getPosition().isWithinRangeOf(64, randomPosition)
                     && object.getCollisionBox().checkCollision(targetCollisionBox)) {
                 return getRandomAvailableLocation(state, collisionBoxSize);
             }

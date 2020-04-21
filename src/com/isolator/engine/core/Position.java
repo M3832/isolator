@@ -63,11 +63,6 @@ public class Position {
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
-    public boolean isWithinInteractionRange(Position other) {
-        int interactionRange = 128;
-        return distanceTo(other) < interactionRange;
-    }
-
     @Override
     public boolean equals(Object that){
         if(!(that instanceof Position)) {
@@ -85,5 +80,9 @@ public class Position {
     public void subtract(Position other) {
         this.x -= other.x;
         this.y -= other.y;
+    }
+
+    public boolean isWithinRangeOf(double range, Position position) {
+        return distanceTo(position) < range;
     }
 }
