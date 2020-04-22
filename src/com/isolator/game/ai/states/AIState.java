@@ -14,4 +14,5 @@ public abstract class AIState {
     public UIBase getDebugUI(GameState state, BaseEntity baseEntity) {
         return new UIContainer();
     }
+    public String getAnimationName() { return "stand"; }
 }

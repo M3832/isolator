@@ -35,7 +35,7 @@ public class IsolatorGameState extends GameState {
         );
         addObject(player);
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 50; i++) {
             generateGroupOfVisitors();
         }
 

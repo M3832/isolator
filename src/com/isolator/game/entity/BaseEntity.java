@@ -70,7 +70,7 @@ public abstract class BaseEntity extends BaseObject {
 
         state.getCollisionResolver().checkCollisionsFor(state, this);
 
-        setAnimation(movementMotor);
+        setAnimation();
         animationController.update(state, direction);
 
         position.apply(movementMotor);
@@ -88,12 +88,16 @@ public abstract class BaseEntity extends BaseObject {
         }
     }
 
-    private void setAnimation(MovementMotor movementMotor) {
+    private void setAnimation() {
          if(movementMotor.isMoving()) {
             animationController.setAnimation("walk");
         } else {
-            animationController.setAnimation("stand");
+            decideOnAnimation();
         }
+    }
+
+    protected void decideOnAnimation() {
+        animationController.setAnimation("stand");
     }
 
     public CollisionBox getNextPositionCollisionBox() {

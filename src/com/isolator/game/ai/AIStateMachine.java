@@ -8,7 +8,6 @@ import com.isolator.game.entity.Visitor;
 public class AIStateMachine {
 
     private AIState currentState;
-    private Runnable runnable;
 
     public AIStateMachine() {
         currentState = new AIStand(1);
@@ -16,19 +15,10 @@ public class AIStateMachine {
 
     public void update(GameState state, Visitor entity) {
         currentState.update(state, entity);
-
-        if(isReadyToTransition() && runnable != null) {
-            runnable.run();
-            runnable = null;
-        }
     }
 
     public void setCurrentState(AIState state) {
         currentState = state;
-    }
-
-    public void setRunnable(Runnable runnable) {
-        this.runnable = runnable;
     }
 
     public AIState getCurrentState() {

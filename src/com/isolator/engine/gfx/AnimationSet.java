@@ -19,4 +19,8 @@ public class AnimationSet {
     public Image get(String animationName) {
         return animationSheets.get(animationName);
     }
+
+    public boolean exists(String currentAnimationName) {
+        return animationSheets.containsKey(currentAnimationName);
+    }
 }

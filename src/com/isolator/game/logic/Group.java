@@ -5,6 +5,7 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
+import com.isolator.game.ai.states.AIDance;
 import com.isolator.game.ai.states.AIStand;
 import com.isolator.game.ai.states.AIWander;
 import com.isolator.game.entity.Visitor;
@@ -39,7 +40,7 @@ public class Group extends BaseObject {
     }
 
     private void decideOnNewAction(IsolatorGameState state) {
-        int randomNumber = state.getRandomGenerator().nextInt(2);
+        int randomNumber = state.getRandomGenerator().nextInt(5);
         if(randomNumber == 0) {
             int standTime = state.getRandomGenerator().nextInt(10);
             int standGameTime = state.getGameTimer().getGameTimeFromNow(standTime);
@@ -47,7 +48,7 @@ public class Group extends BaseObject {
             members.forEach(member -> {
                 member.perform(new AIStand(standGameTime));
             });
-        } else {
+        } else if(randomNumber == 1) {
             int radius = Math.max(25, 5 * members.size());
             List<Position> walkTargets = formation.calculatePositions(radius, members.size());
             this.position = state.getMap().getRandomAvailableLocation(state, new Size(100, 100));
@@ -56,6 +57,13 @@ public class Group extends BaseObject {
                 Position targetPosition = Position.add(walkTargets.get(i), this.position);
                 members.get(i).perform(new AIWander(targetPosition));
             }
+        } else {
+            int standTime = state.getRandomGenerator().nextInt(10);
+            int standGameTime = state.getGameTimer().getGameTimeFromNow(standTime);
+
+            members.forEach(member -> {
+                member.perform(new AIDance(standGameTime));
+            });
         }
     }
 

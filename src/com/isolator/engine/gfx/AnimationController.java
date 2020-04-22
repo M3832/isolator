@@ -34,9 +34,13 @@ public class AnimationController {
         if(animationName.equals(currentAnimationName)) {
             return;
         }
-
-        currentAnimationSheet = animationSet.get(animationName);
         currentAnimationName = animationName;
+
+        if(!animationSet.exists(currentAnimationName)) {
+            currentAnimationName = "stand";
+        }
+
+        currentAnimationSheet = animationSet.get(currentAnimationName);
         animationFrameIndex = 0;
     }
 

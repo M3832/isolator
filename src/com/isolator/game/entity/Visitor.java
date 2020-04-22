@@ -1,7 +1,6 @@
 package com.isolator.game.entity;
 
 import com.isolator.engine.GameState;
-import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
@@ -29,6 +28,11 @@ public class Visitor extends BaseEntity {
     private void updateUIContainer(GameState state) {
         uiContainer.addElement(getDebugUIText());
         uiContainer.addElement(ai.getCurrentState().getDebugUI(state, this));
+    }
+
+    @Override
+    protected void decideOnAnimation() {
+        animationController.setAnimation(ai.getCurrentState().getAnimationName());
     }
 
     public Controller getController() {
