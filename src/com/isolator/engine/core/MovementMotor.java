@@ -2,14 +2,14 @@ package com.isolator.engine.core;
 
 import com.isolator.engine.controller.Controller;
 
-public class Velocity {
+public class MovementMotor {
     private double velocity;
     private final Vector2 direction;
     private final double accelerationRate;
     private final double maxVelocity;
     private final double damper;
 
-    public Velocity(double accelerationRate, double maxVelocity) {
+    public MovementMotor(double accelerationRate, double maxVelocity) {
         this.velocity = 0;
         this.direction = new Vector2();
         this.accelerationRate = accelerationRate;

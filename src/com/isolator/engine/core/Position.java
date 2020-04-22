@@ -17,13 +17,6 @@ public class Position {
         this((int) x, (int) y);
     }
 
-    public static boolean withinCloseProximity(Position position, Position position1) {
-        double x = position.getX() - position1.getX();
-        double y = position.getY() - position1.getY();
-
-        return Math.abs(x) < 128 && Math.abs(y) < 128;
-    }
-
     public static Position add(Position position, Position position1) {
         return new Position(position.getX() + position1.getX(), position.getY() + position1.getY());
     }
@@ -44,15 +37,15 @@ public class Position {
         this.y = y;
     }
 
-    public void apply(Velocity velocity) {
-        Vector2 movement = velocity.getMovement();
+    public void apply(MovementMotor movementMotor) {
+        Vector2 movement = movementMotor.getMovement();
         this.x += (int) movement.getX();
         this.y += (int) movement.getY();
     }
 
-    public Position getNextPosition(Velocity velocity) {
+    public Position getNextPosition(MovementMotor movementMotor) {
         Position nextPosition = new Position(x, y);
-        nextPosition.apply(velocity);
+        nextPosition.apply(movementMotor);
         return nextPosition;
     }
 

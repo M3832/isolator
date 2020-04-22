@@ -19,7 +19,7 @@ public abstract class BaseEntity extends BaseObject {
 
     protected final Controller controller;
     protected Direction direction;
-    protected Velocity velocity;
+    protected MovementMotor movementMotor;
 
     protected Size collisionBoxSize;
 
@@ -34,7 +34,7 @@ public abstract class BaseEntity extends BaseObject {
         this.size = new Size(64, 64);
         this.renderOffset = new Position(0, -12);
         this.collisionBoxSize = new Size(24, 32);
-        this.velocity = new Velocity(0.5f, 3.0f);
+        this.movementMotor = new MovementMotor(0.5f, 3.0f);
         this.controller = controller;
         this.direction = Direction.N;
         initUIElements();
@@ -62,26 +62,34 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     public void push(Vector2 direction, double force) {
-        this.velocity.apply(direction, force);
+        this.movementMotor.apply(direction, force);
     }
 
     public void update(IsolatorGameState state) {
-        velocity.update(controller);
+        movementMotor.update(controller);
 
-        checkCollisions(state);
+        state.getCollisionResolver().checkCollisionsFor(state, this);
 
-        setAnimation(velocity);
+        setAnimation(movementMotor);
         animationController.update(state, direction);
 
-        position.apply(velocity);
-        direction = Direction.fromVelocity(velocity, direction);
+        position.apply(movementMotor);
+        direction = Direction.fromVelocity(movementMotor, direction);
         updateDebugContainer();
     }
 
-    protected abstract void checkCollisions(IsolatorGameState state);
+    public void handleCollision(IsolatorGameState state, BaseObject object) {
+        if(!(object instanceof BaseEntity)) {
+            CollisionBox box = object.getCollisionBox();
+            CollisionBox intersection = box.getIntersection(getNextPositionCollisionBox());
+            immediateStopInDirections(
+                    intersection.getBox().getWidth() > 0,
+                    intersection.getBox().getHeight() > 0);
+        }
+    }
 
-    private void setAnimation(Velocity velocity) {
-         if(velocity.isMoving()) {
+    private void setAnimation(MovementMotor movementMotor) {
+         if(movementMotor.isMoving()) {
             animationController.setAnimation("walk");
         } else {
             animationController.setAnimation("stand");
@@ -89,7 +97,7 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     public CollisionBox getNextPositionCollisionBox() {
-        Position nextPosition = position.getNextPosition(velocity);
+        Position nextPosition = position.getNextPosition(movementMotor);
         Rectangle collisionBounds = new Rectangle(
                 nextPosition.getX() - collisionBoxSize.getWidth() / 2,
                 nextPosition.getY() - collisionBoxSize.getHeight() / 2,
@@ -109,16 +117,16 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     public void immediateStopInDirections(boolean collideX, boolean collideY) {
-        velocity.immediateStopInDirections(collideX, collideY);
+        movementMotor.immediateStopInDirections(collideX, collideY);
     }
 
     public double getCurrentSpeed() {
-        return velocity.getVelocity();
+        return movementMotor.getVelocity();
     }
 
     public boolean isMovingToward(Position position) {
         Vector2 direction = Vector2.directionBetweenPositions(position, this.position);
-        double dotProduct = Vector2.dotProduct(direction, velocity.getDirection());
+        double dotProduct = Vector2.dotProduct(direction, movementMotor.getDirection());
 
         return dotProduct > 0;
     }

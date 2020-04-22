@@ -36,9 +36,9 @@ public enum Direction {
         return animationRow;
     }
 
-    public static Direction fromVelocity(Velocity velocity, Direction direction) {
-        if(velocity.isMoving()) {
-            return fromVector(velocity.getDirection());
+    public static Direction fromVelocity(MovementMotor movementMotor, Direction direction) {
+        if(movementMotor.isMoving()) {
+            return fromVector(movementMotor.getDirection());
         }
 
         return direction;

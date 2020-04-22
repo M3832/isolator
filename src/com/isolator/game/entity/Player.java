@@ -3,6 +3,8 @@ package com.isolator.game.entity;
 import com.isolator.engine.GameState;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.Size;
+import com.isolator.engine.core.Vector2;
+import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
 
 public class Player extends BaseEntity {
@@ -12,10 +14,15 @@ public class Player extends BaseEntity {
         this.collisionBoxSize = new Size(24, 32);
     }
 
-    @Override
-    protected void checkCollisions(IsolatorGameState state) {
-        state.getCollisionResolver().handleCollisions(state, this);
-        state.getCollisionResolver().handlePropCollisions(state, this);
+    public void handleCollision(IsolatorGameState state, BaseObject other) {
+        super.handleCollision(state, other);
+
+        if(other instanceof BaseEntity && isMovingToward(other.getCollisionBox().getPosition())) {
+            BaseEntity entity = (BaseEntity) other;
+            Vector2 direction = Vector2.directionBetweenPositions(getPosition(), other.getPosition());
+            direction.normalize();
+            entity.push(direction, -getCurrentSpeed());
+        }
     }
 
     @Override

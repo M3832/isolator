@@ -4,7 +4,7 @@ import com.isolator.engine.GameState;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
 import com.isolator.engine.controller.Controller;
-import com.isolator.engine.core.Velocity;
+import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AIState;
 
 public class Visitor extends BaseEntity {
@@ -14,12 +14,7 @@ public class Visitor extends BaseEntity {
     public Visitor(Controller controller, double maxVelocity) {
         super(controller);
         ai = new AIStateMachine();
-        this.velocity = new Velocity(0.5f, maxVelocity);
-    }
-
-    @Override
-    protected void checkCollisions(IsolatorGameState state) {
-        state.getCollisionResolver().handlePropCollisions(state, this);
+        this.movementMotor = new MovementMotor(0.5f, maxVelocity);
     }
 
     @Override
