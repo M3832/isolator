@@ -9,6 +9,7 @@ import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
 import com.isolator.game.IsolatorGameState;
+import com.isolator.game.logic.Group;
 
 import java.awt.*;
 
@@ -79,7 +80,7 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     public void handleCollision(IsolatorGameState state, BaseObject object) {
-        if(!(object instanceof BaseEntity)) {
+        if(!(object instanceof BaseEntity) && !(object instanceof Group)) {
             CollisionBox box = object.getCollisionBox();
             CollisionBox intersection = box.getIntersection(getNextPositionCollisionBox());
             immediateStopInDirections(

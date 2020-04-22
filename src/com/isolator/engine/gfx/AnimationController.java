@@ -25,13 +25,13 @@ public class AnimationController {
         currentFrameTime = 0;
         animationFrameIndex = 0;
         currentAnimationName = "stand";
-        currentAnimationSheet = animationSet.get(currentAnimationName);
+        currentAnimationSheet = animationSet.getRandomThatBeginsWith(currentAnimationName);
         currentDirection = Direction.N;
         saveNewCurrentAnimationFrame();
     }
 
     public void setAnimation(String animationName) {
-        if(animationName.equals(currentAnimationName)) {
+        if(currentAnimationName.startsWith(animationName)) {
             return;
         }
         currentAnimationName = animationName;
@@ -40,7 +40,7 @@ public class AnimationController {
             currentAnimationName = "stand";
         }
 
-        currentAnimationSheet = animationSet.get(currentAnimationName);
+        currentAnimationSheet = animationSet.getRandomThatBeginsWith(currentAnimationName);
         animationFrameIndex = 0;
     }
 
@@ -62,7 +62,11 @@ public class AnimationController {
     }
 
     public void update(GameState state, Direction direction) {
-        currentFrameTime += 1;
+        currentFrameTime++;
+        if(state.getRandomGenerator().nextInt(100) > 95) {
+            currentFrameTime++;
+        }
+
         if(currentFrameTime >= frameDisplayTime) {
             nextAnimationFrame();
         }

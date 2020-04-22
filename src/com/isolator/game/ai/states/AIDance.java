@@ -6,5 +6,5 @@ public class AIDance extends AIStand {
     }
 
     @Override
-    public String getAnimationName() { return "dance1"; }
+    public String getAnimationName() { return "dance"; }
 }

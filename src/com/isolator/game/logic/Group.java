@@ -1,6 +1,7 @@
 package com.isolator.game.logic;
 
 import com.isolator.engine.GameState;
+import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gameobjects.BaseObject;
@@ -20,6 +21,7 @@ public class Group extends BaseObject {
     public Group() {
         members = new ArrayList<>();
         formation = new CircleFormation();
+
     }
 
     public void addMember(Visitor visitor) {
@@ -67,5 +69,16 @@ public class Group extends BaseObject {
         }
     }
 
+
+    @Override
+    public CollisionBox getCollisionBox() {
+        Size collisionSize = new Size(25 * members.size(), 25 * members.size());
+        Position collisionPosition = new Position(
+                position.getX() - collisionSize.getWidth() / 2,
+                position.getY() - collisionSize.getHeight() / 2
+        );
+
+        return CollisionBox.of(collisionPosition, collisionSize);
+    }
 
 }
