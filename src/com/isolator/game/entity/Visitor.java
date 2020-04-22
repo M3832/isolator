@@ -1,6 +1,8 @@
 package com.isolator.game.entity;
 
 import com.isolator.engine.GameState;
+import com.isolator.engine.core.Vector2;
+import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
 import com.isolator.engine.controller.Controller;
@@ -39,5 +41,15 @@ public class Visitor extends BaseEntity {
 
     public void perform(AIState action) {
         ai.setCurrentState(action);
+    }
+
+    public void handleCollision(IsolatorGameState state, BaseObject object) {
+        super.handleCollision(state, object);
+
+        if(object instanceof BaseEntity && !(object instanceof Player)) {
+            if(isMovingToward(object.getPosition())) {
+                movementMotor.rotateByAngle(20);
+            }
+        }
     }
 }

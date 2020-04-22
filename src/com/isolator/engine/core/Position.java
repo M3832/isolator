@@ -21,22 +21,6 @@ public class Position {
         return new Position(position.getX() + position1.getX(), position.getY() + position1.getY());
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public void apply(MovementMotor movementMotor) {
         Vector2 movement = movementMotor.getMovement();
         this.x += (int) movement.getX();
@@ -77,5 +61,37 @@ public class Position {
 
     public boolean isWithinRangeOf(double range, Position position) {
         return distanceTo(position) < range;
+    }
+
+    public boolean isLeftOf(Position other) {
+        return x < other.getX();
+    }
+
+    public boolean isRightOf(Position other) {
+        return x < other.getX();
+    }
+
+    public boolean isAbove(Position other) {
+        return y < other.getY();
+    }
+
+    public boolean isUnder(Position other) {
+        return y < other.getY();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

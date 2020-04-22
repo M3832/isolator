@@ -10,6 +10,11 @@ public class Vector2 {
         y = 0;
     }
 
+    public Vector2(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public static Vector2 directionBetweenPositions(Position startingPosition, Position terminalPosition) {
         Vector2 directionBetweenPositions = new Vector2();
         directionBetweenPositions.setX(startingPosition.getX() - terminalPosition.getX());
@@ -87,5 +92,13 @@ public class Vector2 {
     public void add(Vector2 direction) {
         this.x += direction.getX();
         this.y += direction.getY();
+    }
+
+    public void rotate(int angle) {
+        double newX = Math.cos(angle) * x - Math.sin(angle) * y;
+        double newY = Math.sin(angle) * x + Math.cos(angle) * y;
+
+        this.x = newX;
+        this.y = newY;
     }
 }

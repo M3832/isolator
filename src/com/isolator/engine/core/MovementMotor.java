@@ -8,6 +8,9 @@ public class MovementMotor {
     private final double accelerationRate;
     private final double maxVelocity;
     private final double damper;
+    private int rotationAngle;
+    private int avoidingCounter;
+
 
     public MovementMotor(double accelerationRate, double maxVelocity) {
         this.velocity = 0;
@@ -42,6 +45,11 @@ public class MovementMotor {
 
         clamp();
         velocity *= damper;
+
+        if(avoidingCounter > 0) {
+            direction.rotate(rotationAngle);
+            avoidingCounter--;
+        }
     }
 
     private void clamp() {
@@ -57,6 +65,13 @@ public class MovementMotor {
 
         if(collideY) {
             direction.setY(0);
+        }
+    }
+
+    public void rotateByAngle(int angle) {
+        if(avoidingCounter == 0) {
+            this.rotationAngle = angle;
+            this.avoidingCounter = 10;
         }
     }
 

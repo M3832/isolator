@@ -1,11 +1,6 @@
 package com.isolator.game;
 
-import com.isolator.engine.core.CollisionBox;
-import com.isolator.engine.core.Position;
-import com.isolator.engine.core.Vector2;
-import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.entity.BaseEntity;
-import com.isolator.game.entity.Player;
 
 public class CollisionResolver {
 
