@@ -11,7 +11,7 @@ import java.util.List;
 
 public class UIContainer extends UIBase {
     private final Position position;
-    private final ContainerDirection containerDirection;
+    private ContainerDirection containerDirection;
     private Alignment windowAlignment;
     private Color backgroundColor;
     private boolean visible;
@@ -27,7 +27,7 @@ public class UIContainer extends UIBase {
         position = new Position(0, 0);
         padding = new UISpacing(0, 10);
         containerDirection = ContainerDirection.VERTICAL;
-        backgroundColor = new Color(0, 0, 0, 0.5f);
+        backgroundColor = new Color(217, 189, 142);
         windowAlignment = new Alignment(AlignmentPosition.START, AlignmentPosition.START);
         elements = new ArrayList<>();
         this.visible = visible;
@@ -84,12 +84,16 @@ public class UIContainer extends UIBase {
         if(elements.isEmpty() || !visible)
             return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
+        if(containerDirection.equals(ContainerDirection.HORIZONTAL)) {
+            return getUIElementHorizontal();
+        }
+
         Size containerSize = getSize();
-        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(containerSize, ImageUtils.ALPHA_OPAQUE);
+        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(containerSize, ImageUtils.ALPHA_BIT_MASKED);
         Graphics2D graphics = image.createGraphics();
 
         graphics.setColor(backgroundColor);
-        graphics.fillRect(0, 0, containerSize.getWidth(), containerSize.getHeight());
+        graphics.fillRoundRect(0, 0, containerSize.getWidth(), containerSize.getHeight(), 20, 20);
 
         int currentY = padding.getTop();
         for(UIBase element : elements) {
@@ -103,6 +107,31 @@ public class UIContainer extends UIBase {
 
             currentY += element.getSize().getHeight();
             currentY += element.getMargin().getBottom();
+        }
+
+        return image;
+    }
+
+    private Image getUIElementHorizontal() {
+        Size containerSize = getSizeHorizontal();
+        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(containerSize, ImageUtils.ALPHA_BIT_MASKED);
+        Graphics2D graphics = image.createGraphics();
+
+        graphics.setColor(backgroundColor);
+        graphics.fillRoundRect(0, 0, containerSize.getWidth(), containerSize.getHeight(), 25, 25);
+
+        int currentX = padding.getLeft();
+        for(UIBase element : elements) {
+            currentX += element.getMargin().getLeft();
+
+            graphics.drawImage(
+                    element.getUIElement(),
+                    currentX,
+                    padding.getTop(),
+                    null);
+
+            currentX += element.getSize().getWidth();
+            currentX += element.getMargin().getBottom();
         }
 
         return image;
@@ -134,5 +163,9 @@ public class UIContainer extends UIBase {
 
     public void setBackgroundColor(Color backgroundColor) {
         this.backgroundColor = backgroundColor;
+    }
+
+    public void setDirection(ContainerDirection containerDirection) {
+        this.containerDirection = containerDirection;
     }
 }

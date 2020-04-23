@@ -8,17 +8,20 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
+import com.isolator.engine.ui.*;
 import com.isolator.game.entity.Player;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
 import com.isolator.game.map.GameMap;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 public class IsolatorGameState extends GameState {
 
     private final GameMap map;
     private final Size cellSize;
+    private UIContainer scoreContainer;
 
     public IsolatorGameState() {
         super();
@@ -26,6 +29,26 @@ public class IsolatorGameState extends GameState {
         this.map = new GameMap(16, 25, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
+        this.setupScoreContainer();
+    }
+
+    private void setupScoreContainer() {
+        scoreContainer = new UIContainer();
+        scoreContainer.setMargin(new UISpacing(10, 10));
+        scoreContainer.setPadding(new UISpacing(0, 5));
+        scoreContainer.setDirection(ContainerDirection.HORIZONTAL);
+        uiContainers.add(scoreContainer);
+        updateScoreContainer();
+    }
+
+    private void updateScoreContainer() {
+        scoreContainer.clear();
+        long healthy = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isHealthy()).count();
+        long infected = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isInfected()).count();
+        long sick = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isSick()).count();
+        scoreContainer.addElement(new UIText(healthy + "", Color.GREEN));
+        scoreContainer.addElement(new UIText(infected + "", Color.YELLOW));
+        scoreContainer.addElement(new UIText(sick + "", Color.RED));
     }
 
     private void initGame() {
@@ -57,6 +80,12 @@ public class IsolatorGameState extends GameState {
         }
 
         addObject(group);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        updateScoreContainer();
     }
 
     public GameMap getMap() {

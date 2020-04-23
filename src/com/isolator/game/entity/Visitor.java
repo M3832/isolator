@@ -8,16 +8,19 @@ import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AIState;
 import com.isolator.game.gfx.Outline;
+import com.isolator.game.logic.InfectionStatus;
 
 import java.awt.*;
 
 public class Visitor extends BaseEntity {
 
     private final AIStateMachine ai;
+    private final InfectionStatus status;
 
     public Visitor(Controller controller, double maxVelocity) {
         super(controller);
         ai = new AIStateMachine();
+        status = new InfectionStatus();
         this.movementMotor = new MovementMotor(0.5f, maxVelocity);
     }
 
@@ -66,5 +69,15 @@ public class Visitor extends BaseEntity {
                 movementMotor.rotateByAngle(20);
             }
         }
+    }
+
+    public boolean isHealthy() {
+        return status.isWell();
+    }
+    public boolean isInfected() {
+        return status.isInfected();
+    }
+    public boolean isSick() {
+        return status.isSick();
     }
 }

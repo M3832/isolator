@@ -11,18 +11,18 @@ public class UIAlignmentUtils {
         AlignmentPosition alignmentVertical = alignment.getVertical();
 
         int screenWidth = screenSize.getWidth();
-        int x = 0;
+        int x = 0 + uiContainer.getMargin().getLeft();
         if(alignmentHorizontal == AlignmentPosition.CENTER)
             x = screenWidth / 2 - uiContainer.getSize().getWidth() / 2;
         if(alignmentHorizontal == AlignmentPosition.END)
-            x = screenWidth - uiContainer.getSize().getWidth();
+            x = screenWidth - uiContainer.getSize().getWidth() - uiContainer.getMargin().getRight();
 
         int screenHeight = screenSize.getHeight();
-        int y = 0;
+        int y = 0 + uiContainer.getMargin().getTop();
         if(alignmentVertical == AlignmentPosition.CENTER)
             y = screenHeight / 2 - uiContainer.getSize().getHeight() / 2;
         if(alignmentVertical == AlignmentPosition.END)
-            y = screenHeight - uiContainer.getSize().getHeight();
+            y = screenHeight - uiContainer.getSize().getHeight() - uiContainer.getMargin().getBottom();
 
         return new Position(x, y);
     }
