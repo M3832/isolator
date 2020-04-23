@@ -7,6 +7,9 @@ import com.isolator.game.ai.AIStateMachine;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AIState;
+import com.isolator.game.gfx.Outline;
+
+import java.awt.*;
 
 public class Visitor extends BaseEntity {
 
@@ -33,6 +36,14 @@ public class Visitor extends BaseEntity {
     @Override
     protected void decideOnAnimation() {
         animationController.setAnimation(ai.getCurrentState().getAnimationName());
+    }
+
+    public void focus() {
+        imageEffects.add(new Outline(new Color(94, 156, 255)));
+    }
+
+    public void removeFocus() {
+        imageEffects.clear();
     }
 
     public Controller getController() {

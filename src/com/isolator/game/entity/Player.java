@@ -7,7 +7,12 @@ import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
 
+import java.util.Comparator;
+import java.util.Optional;
+
 public class Player extends BaseEntity {
+
+    private Visitor markedVisitor;
 
     public Player(Controller controller) {
         super(controller);
@@ -28,6 +33,8 @@ public class Player extends BaseEntity {
     @Override
     public void update(GameState state) {
         super.update((IsolatorGameState) state);
+        removeMark();
+        markClosestEntity(state);
 
         if(controller.isRequestingAction()) {
             state.toggleDebugMode();
@@ -39,6 +46,30 @@ public class Player extends BaseEntity {
 
         if(controller.isRequestingSlowDown()) {
             state.decreaseGameSpeed();
+        }
+    }
+
+    private void markClosestEntity(GameState state) {
+        Optional<Visitor> closestVisitor = state.getObjects().stream()
+                .filter(o -> o instanceof Visitor)
+                .map(o -> (Visitor) o)
+                .filter(v -> v.getPosition().isWithinRangeOf(64, position))
+                .filter(v -> isMovingToward(v.getPosition()))
+                .min(Comparator.comparingDouble(e -> position.distanceTo(e.getPosition())));
+
+        if(closestVisitor.isPresent()) {
+            setMark(closestVisitor.get());
+        }
+    }
+
+    private void setMark(Visitor visitor) {
+        visitor.focus();
+        markedVisitor = visitor;
+    }
+
+    private void removeMark() {
+        if(markedVisitor != null) {
+            markedVisitor.removeFocus();
         }
     }
 }

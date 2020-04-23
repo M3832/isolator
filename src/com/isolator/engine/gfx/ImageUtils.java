@@ -43,16 +43,19 @@ public class ImageUtils {
     }
 
     public static Image scale(Image image, double amount) {
+        return scale(image, amount, amount);
+    }
+    public static Image scale(Image image, double amountWidth, double amountHeight) {
         Image result = createCompatibleImage(
                 new Size(
-                        (int)(image.getWidth(null) * amount),
-                        (int)(image.getHeight(null) * amount)),
+                        (int)(image.getWidth(null) * amountWidth),
+                        (int)(image.getHeight(null) * amountHeight)),
                 ALPHA_BIT_MASKED);
 
         Graphics2D graphics = (Graphics2D) result.getGraphics();
         Image scaledImage = image.getScaledInstance(
-                (int) (image.getWidth(null) * amount),
-                (int) (image.getHeight(null) * amount),
+                (int) (image.getWidth(null) * amountWidth),
+                (int) (image.getHeight(null) * amountHeight),
                 Image.SCALE_FAST);
 
         graphics.drawImage(scaledImage,
@@ -62,5 +65,11 @@ public class ImageUtils {
 
         graphics.dispose();
         return result;
+    }
+
+
+
+    public static Image createCompatibleImage(Image sprite) {
+        return createCompatibleImage(new Size(sprite.getWidth(null), sprite.getHeight(null)), ALPHA_BIT_MASKED);
     }
 }

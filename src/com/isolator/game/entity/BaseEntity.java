@@ -5,13 +5,17 @@ import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gfx.AnimationController;
+import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
 import com.isolator.game.IsolatorGameState;
+import com.isolator.game.gfx.ImageEffect;
 import com.isolator.game.logic.Group;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseEntity extends BaseObject {
     private static int ID_COUNTER = 1;
@@ -28,6 +32,8 @@ public abstract class BaseEntity extends BaseObject {
     protected final AnimationController animationController;
     protected UIContainer uiContainer;
 
+    protected List<ImageEffect> imageEffects;
+
     public BaseEntity(Controller controller) {
         super();
         this.id = ID_COUNTER++;
@@ -38,6 +44,7 @@ public abstract class BaseEntity extends BaseObject {
         this.movementMotor = new MovementMotor(0.5f, 3.0f);
         this.controller = controller;
         this.direction = Direction.N;
+        imageEffects = new ArrayList<>();
         initUIElements();
     }
 
@@ -55,7 +62,34 @@ public abstract class BaseEntity extends BaseObject {
 
     @Override
     public Image getDrawGraphics(Camera camera) {
-        return animationController.getDrawGraphics();
+        return composeSprite();
+    }
+
+    private Image composeSprite() {
+        Image sprite = animationController.getDrawGraphics();
+        if(imageEffects.isEmpty()) {
+            return sprite;
+        }
+
+        Image composite = ImageUtils.createCompatibleImage(sprite);
+        Graphics2D graphics = (Graphics2D) composite.getGraphics();
+
+        for(ImageEffect effect : imageEffects) {
+            if(effect.getRenderOrder().equals(ImageEffect.RenderOrder.BEFORE)) {
+                graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
+            }
+        }
+
+        graphics.drawImage(sprite, 0, 0, null);
+
+        for(ImageEffect effect : imageEffects) {
+            if(effect.getRenderOrder().equals(ImageEffect.RenderOrder.AFTER)) {
+                graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
+            }
+        }
+
+        graphics.dispose();
+        return composite;
     }
 
     public Image getDebugUI() {
