@@ -74,22 +74,20 @@ public abstract class BaseEntity extends BaseObject {
         Image composite = ImageUtils.createCompatibleImage(sprite);
         Graphics2D graphics = (Graphics2D) composite.getGraphics();
 
-        for(ImageEffect effect : imageEffects) {
-            if(effect.getRenderOrder().equals(ImageEffect.RenderOrder.BEFORE)) {
-                graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
-            }
-        }
-
+        renderEffects(sprite, graphics, ImageEffect.RenderOrder.BEFORE);
         graphics.drawImage(sprite, 0, 0, null);
-
-        for(ImageEffect effect : imageEffects) {
-            if(effect.getRenderOrder().equals(ImageEffect.RenderOrder.AFTER)) {
-                graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
-            }
-        }
+        renderEffects(sprite, graphics, ImageEffect.RenderOrder.AFTER);
 
         graphics.dispose();
         return composite;
+    }
+
+    private void renderEffects(Image sprite, Graphics2D graphics, ImageEffect.RenderOrder order) {
+        for (ImageEffect effect : imageEffects) {
+            if (effect.getRenderOrder().equals(order)) {
+                graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
+            }
+        }
     }
 
     public Image getDebugUI() {
