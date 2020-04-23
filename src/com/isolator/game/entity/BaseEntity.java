@@ -62,15 +62,15 @@ public abstract class BaseEntity extends BaseObject {
 
     @Override
     public Image getDrawGraphics(Camera camera) {
-        return composeSprite();
+        if(!imageEffects.isEmpty()) {
+            return composeSprite();
+        }
+
+        return animationController.getDrawGraphics();
     }
 
     private Image composeSprite() {
         Image sprite = animationController.getDrawGraphics();
-        if(imageEffects.isEmpty()) {
-            return sprite;
-        }
-
         Image composite = ImageUtils.createCompatibleImage(sprite);
         Graphics2D graphics = (Graphics2D) composite.getGraphics();
 
