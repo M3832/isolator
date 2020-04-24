@@ -38,7 +38,7 @@ public class Visitor extends BaseEntity {
 
     @Override
     protected void decideOnAnimation() {
-        animationController.setAnimation(ai.getCurrentState().getAnimationName());
+        animationController.playAnimation(ai.getCurrentState().getAnimationName());
     }
 
     public void focus() {

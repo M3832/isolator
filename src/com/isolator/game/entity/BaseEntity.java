@@ -123,14 +123,14 @@ public abstract class BaseEntity extends BaseObject {
 
     private void setAnimation() {
          if(movementMotor.isMoving()) {
-            animationController.setAnimation("walk");
+            animationController.playAnimation("walk");
         } else {
             decideOnAnimation();
         }
     }
 
     protected void decideOnAnimation() {
-        animationController.setAnimation("stand");
+        animationController.playAnimation("stand");
     }
 
     public CollisionBox getNextPositionCollisionBox() {

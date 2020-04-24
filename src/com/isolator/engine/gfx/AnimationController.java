@@ -30,16 +30,17 @@ public class AnimationController {
         saveNewCurrentAnimationFrame();
     }
 
-    public void setAnimation(String animationName) {
+    public void playAnimation(String animationName) {
         if(currentAnimationName.startsWith(animationName)) {
             return;
         }
-        currentAnimationName = animationName;
 
-        if(!animationSet.exists(currentAnimationName)) {
-            currentAnimationName = "stand";
-        }
+        final String animationToSet = animationSet.exists(animationName) ? animationName : "stand";
+        setAnimation(animationToSet);
+    }
 
+    private void setAnimation(String animationToSet) {
+        currentAnimationName = animationToSet;
         currentAnimationSheet = animationSet.getRandomThatBeginsWith(currentAnimationName);
         animationFrameIndex = 0;
     }
@@ -82,11 +83,16 @@ public class AnimationController {
 
         int currentAnimationLength = currentAnimationSheet.getWidth(null) / (int) (SPRITE_SIZE * SCALE);
         if(animationFrameIndex >= currentAnimationLength - 1) {
-            animationFrameIndex = 0;
+            replay();
         } else {
             animationFrameIndex++;
         }
         saveNewCurrentAnimationFrame();
+    }
+
+    private void replay() {
+        setAnimation(this.currentAnimationName);
+
     }
 
     public static AnimationController randomUnit() {
