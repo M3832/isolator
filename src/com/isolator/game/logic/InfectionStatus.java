@@ -11,9 +11,11 @@ public class InfectionStatus {
     }
 
     private Status status;
+    private int incubationTime;
 
     public InfectionStatus() {
         this(Status.NEGATIVE);
+        incubationTime = 3000;
     }
 
     public InfectionStatus(Status status) {
@@ -22,17 +24,29 @@ public class InfectionStatus {
 
     public void update(IsolatorGameState state, Visitor visitor) {
         if(status.equals(Status.SICK)) {
-            double riskOfCoughing = state.getRandomGenerator().nextDouble();
-            if(riskOfCoughing < 0.1) {
-                visitor.cough(state);
-            }
+            handleCough(state, visitor);
+        } else if (status.equals(Status.INFECTED)) {
+            handleIncubation();
+        }
+    }
+
+    private void handleIncubation() {
+        if(--incubationTime == 0) {
+            this.status = Status.SICK;
+        }
+    }
+
+    private void handleCough(IsolatorGameState state, Visitor visitor) {
+        double riskOfCoughing = state.getRandomGenerator().nextDouble();
+        if(riskOfCoughing < 0.01) {
+            visitor.cough(state);
         }
     }
 
     public void exposeWithRisk(Random random, double risk) {
         boolean infect = random.nextDouble() < risk;
 
-        if(infect) {
+        if(infect && !this.status.equals(Status.SICK)) {
             this.status = Status.INFECTED;
         }
     }

@@ -96,4 +96,8 @@ public class MovementMotor {
         this.direction.add(direction);
         this.velocity = Math.min(this.velocity + accelerationRate, force);
     }
+
+    public void stop() {
+        velocity = 0;
+    }
 }

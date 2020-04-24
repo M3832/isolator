@@ -119,7 +119,7 @@ public class UIContainer extends UIBase {
         Graphics2D graphics = image.createGraphics();
 
         graphics.setColor(backgroundColor);
-        graphics.fillRoundRect(0, 0, containerSize.getWidth(), containerSize.getHeight(), 25, 25);
+        graphics.fillRect(0, 0, containerSize.getWidth(), containerSize.getHeight());
 
         int currentX = padding.getLeft();
         for(UIBase element : elements) {

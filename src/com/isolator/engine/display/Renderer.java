@@ -23,7 +23,7 @@ public class Renderer {
         renderUI(state, windowSize, screenGraphics);
 
         if(state.getRunMode() == RunMode.DEBUG) {
-            debugRenderer.render(List.of(), state, screenGraphics);
+            debugRenderer.render(List.of(DebugRenderer.ENTITY_DEBUG_UI), state, screenGraphics);
         }
     }
 

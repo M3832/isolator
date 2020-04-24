@@ -35,7 +35,8 @@ public class Visitor extends BaseEntity {
 
     private void updateUIContainer(GameState state) {
         uiContainer.addElement(getDebugUIText());
-        uiContainer.addElement(ai.getCurrentState().getDebugUI(state, this));
+        AIState aiState = ai.getCurrentState();
+        uiContainer.addElement(aiState.getDebugUI(state, this));
     }
 
     @Override
@@ -84,10 +85,19 @@ public class Visitor extends BaseEntity {
     }
 
     public void cough(IsolatorGameState state) {
-        ai.setCurrentState(new AICough());
+        ai.setCurrentState(new AICough(state));
+        state.spawn(new Cough(position));
     }
 
     public void setInfectionStatus(InfectionStatus infectionStatus) {
         this.infectionStatus = infectionStatus;
+    }
+
+    public void immediateStop() {
+        movementMotor.stop();
+    }
+
+    public void exposeToVirus(IsolatorGameState state) {
+        infectionStatus.exposeWithRisk(state.getRandomGenerator(), 0.01);
     }
 }

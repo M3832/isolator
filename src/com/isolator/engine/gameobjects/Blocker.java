@@ -11,6 +11,7 @@ import java.awt.*;
 public class Blocker extends BaseObject {
 
     final CollisionBox collisionBox;
+    private Image sprite;
 
     public Blocker(Position position, Size size) {
         super();
@@ -21,7 +22,7 @@ public class Blocker extends BaseObject {
 
     @Override
     public Image getDrawGraphics(Camera camera) {
-        return null;
+        return sprite;
     }
 
     @Override
@@ -35,5 +36,9 @@ public class Blocker extends BaseObject {
     @Override
     public Position getRenderOffset(Camera camera) {
         return new Position();
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
     }
 }

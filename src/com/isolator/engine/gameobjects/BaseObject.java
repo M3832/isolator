@@ -10,6 +10,7 @@ import java.awt.*;
 
 public abstract class BaseObject {
 
+    protected boolean remove;
     protected Position position;
     protected final Position renderOffset;
     protected Size size;
@@ -18,6 +19,7 @@ public abstract class BaseObject {
         this.position = new Position();
         this.renderOffset = new Position();
         this.size = new Size();
+        remove = false;
     }
 
     public abstract void update(GameState state);
@@ -44,5 +46,9 @@ public abstract class BaseObject {
 
     public CollisionBox getCollisionBox() {
         return CollisionBox.empty();
+    }
+
+    public boolean readyToRemove() {
+        return remove;
     }
 }

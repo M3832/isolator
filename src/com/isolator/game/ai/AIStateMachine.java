@@ -5,27 +5,36 @@ import com.isolator.game.ai.states.AIStand;
 import com.isolator.game.ai.states.AIState;
 import com.isolator.game.entity.Visitor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AIStateMachine {
 
-    private AIState currentState;
+    private List<AIState> states;
 
     public AIStateMachine() {
-        currentState = new AIStand(1);
+        states = new ArrayList<>();
+        states.add(new AIStand(1));
     }
 
     public void update(GameState state, Visitor entity) {
-        currentState.update(state, entity);
+        if(!states.isEmpty()) {
+            states.get(0).update(state, entity);
+            if(states.get(0).isReadyToTransition()) {
+                states.remove(0);
+            }
+        }
     }
 
     public void setCurrentState(AIState state) {
-        currentState = state;
+        states.add(0, state);
     }
 
     public AIState getCurrentState() {
-        return currentState;
+        return states.isEmpty() ? new AIStand(0) : states.get(0);
     }
 
     public boolean isReadyToTransition() {
-        return currentState.isReadyToTransition();
+        return states.isEmpty();
     }
 }

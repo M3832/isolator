@@ -15,6 +15,8 @@ public class SpritesLibrary {
     private static final List<AnimationSet> units = loadUnitSets();
 
     public static final Image WOOD_FLOOR = ImageUtils.loadImage("/tiles/woodfloor.png");
+    public static final Image WOOD_WALL_N = ImageUtils.loadImage("/tiles/woodwallN.png");
+    public static final Image STAGE_FLOOR = ImageUtils.loadImage("/tiles/stagefloor.png");
 
     private static final String PATH_TO_UNITS = "/units";
 

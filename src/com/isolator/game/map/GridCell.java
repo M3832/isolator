@@ -9,18 +9,22 @@ import java.awt.*;
 
 public class GridCell extends BaseObject {
 
-    private final int tile;
+    private Image sprite;
 
-    public GridCell(int tile, Position position, Size size) {
-        this.tile = tile;
+    public GridCell(Image sprite, Position position, Size size) {
+        this.sprite = sprite;
         this.position = position;
         this.size = size;
     }
 
     public Image getTileSprite() {
-        return Tiles.get(tile);
+        return sprite;
     }
 
     @Override
     public void update(GameState state) {}
+
+    public void setTileSprite(Image sprite) {
+        this.sprite = sprite;
+    }
 }

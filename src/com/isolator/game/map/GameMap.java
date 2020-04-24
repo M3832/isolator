@@ -9,6 +9,7 @@ import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gameobjects.Blocker;
 import com.isolator.engine.gfx.ImageUtils;
+import com.isolator.engine.gfx.SpritesLibrary;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.entity.BaseEntity;
 
@@ -35,7 +36,7 @@ public class GameMap extends GameScene {
             for(int y = 0; y < gridCells[0].length; y++) {
                 Position position = new Position(x * cellSize.getWidth(), y * cellSize.getHeight());
                 gridCells[x][y] = new GridCell(
-                        Tiles.WOOD_FLOOR,
+                        SpritesLibrary.WOOD_FLOOR,
                         position,
                         cellSize);
             }
@@ -46,8 +47,33 @@ public class GameMap extends GameScene {
         for(int x = 0; x < gridCells.length; x++) {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
-                    state.addObject(
-                            new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize));
+                    Blocker blocker = new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize);
+                    gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
+                    state.addObject(blocker);
+                }
+            }
+        }
+        addStage(state);
+    }
+
+    private void addStage(IsolatorGameState state) {
+        int stageXStart =  gridCells.length - gridCells.length/2 - 5;
+        int stageXEnd = 10;
+        int stageYEnd = 6;
+        for(int x = 0; x < stageXEnd; x++) {
+            for(int y = 0; y < stageYEnd; y++) {
+                if(x == 0 || x == stageXEnd - 1 || y == 0 || y == stageYEnd - 1) {
+                    gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
+                    state.addObject(new Blocker(
+                            new Position(
+                                    (stageXStart + x) * cellSize.getWidth(),
+                                    y * cellSize.getHeight()),
+                            cellSize));
+                } else {
+                    gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.STAGE_FLOOR);
+                }
+                if(y == 0) {
+                    gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.STAGE_FLOOR);
                 }
             }
         }
@@ -81,7 +107,7 @@ public class GameMap extends GameScene {
         CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
 
         for(BaseObject object : state.getObjects().stream().filter(object -> !(object instanceof BaseEntity)).collect(Collectors.toList())) {
-            if (object.getPosition().isWithinRangeOf(64, randomPosition)
+            if (object.getPosition().isWithinRangeOf(128, randomPosition)
                     && object.getCollisionBox().checkCollision(targetCollisionBox)) {
                 return getRandomAvailableLocation(state, collisionBoxSize);
             }

@@ -6,6 +6,7 @@ import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.game.CollisionResolver;
+import com.isolator.game.entity.Cough;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -22,6 +23,7 @@ public abstract class GameState {
     protected GameScene scene;
 
     protected final List<BaseObject> gameObjects;
+    protected final List<BaseObject> readyForSpawn;
     protected final List<UIContainer> uiContainers;
 
     protected Random random;
@@ -31,6 +33,7 @@ public abstract class GameState {
     public GameState() {
         gameTimer = new GameTimer(60);
         gameObjects = new ArrayList<>();
+        readyForSpawn = new ArrayList<>();
         uiContainers = new ArrayList<>();
         this.collisionResolver = new CollisionResolver();
         mode = RunMode.DEFAULT;
@@ -42,6 +45,17 @@ public abstract class GameState {
         gameObjects.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
         gameObjects.forEach(entity -> entity.update(this));
         camera.update(this);
+        gameObjects.addAll(readyForSpawn);
+        readyForSpawn.clear();
+        removeObjects();
+    }
+
+    private void removeObjects() {
+        for(int i = gameObjects.size() - 1; i >= 0; i--) {
+            if(gameObjects.get(i).readyToRemove()) {
+                gameObjects.remove(i);
+            }
+        }
     }
 
     public List<UIContainer> getUiContainers() {
@@ -115,5 +129,9 @@ public abstract class GameState {
 
     public GameTimer getGameTimer() {
         return gameTimer;
+    }
+
+    public void spawn(BaseObject object) {
+        this.readyForSpawn.add(object);
     }
 }

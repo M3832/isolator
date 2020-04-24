@@ -46,14 +46,14 @@ public class IsolatorGameState extends GameState {
         long sick = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isSick()).count();
 
         UIContainer scoreContainer = new UIContainer();
-        scoreContainer.setMargin(new UISpacing(0));
-        scoreContainer.setPadding(new UISpacing(0));
+        scoreContainer.setMargin(new UISpacing(5));
+        scoreContainer.setPadding(new UISpacing(5, 5, 0, 5));
         scoreContainer.setDirection(ContainerDirection.HORIZONTAL);
-        scoreContainer.addElement(createScoreText(healthy + "", Color.GREEN));
+        scoreContainer.setBackgroundColor(new Color(243, 243, 243));
+        scoreContainer.addElement(createScoreText(healthy + "", new Color(0, 228, 12)));
         scoreContainer.addElement(createScoreText(infected + "", Color.YELLOW));
         scoreContainer.addElement(createScoreText(sick + "", Color.RED));
 
-        statsContainer.addElement(new UIText("Infected", 24, Font.PLAIN));
         statsContainer.addElement(scoreContainer);
     }
 
@@ -70,11 +70,11 @@ public class IsolatorGameState extends GameState {
         );
         addObject(player);
 
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < 20; i++) {
             generateGroupOfVisitors();
         }
 
-        initSickPeople(200);
+        initSickPeople(5);
 
         camera.followEntity(player);
     }
