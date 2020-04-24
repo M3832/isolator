@@ -17,11 +17,16 @@ import java.util.List;
 public class Group extends BaseObject {
     private List<Visitor> members;
     private Formation formation;
+    private int timeout;
 
     public Group() {
         members = new ArrayList<>();
         formation = new CircleFormation();
+        setTimeout();
+    }
 
+    private void setTimeout() {
+        timeout = 60 * 30;
     }
 
     public void addMember(Visitor visitor) {
@@ -30,6 +35,7 @@ public class Group extends BaseObject {
 
     @Override
     public void update(GameState state) {
+        timeout--;
         if(members.stream().allMatch(Visitor::isIdle)) {
             decideOnNewAction((IsolatorGameState) state);
         }
@@ -38,6 +44,11 @@ public class Group extends BaseObject {
             if(visitor.isIdle()) {
                 visitor.lookAt(this.position);
             }
+        }
+
+        if(timeout <= 0) {
+            decideOnNewAction((IsolatorGameState) state);
+            setTimeout();
         }
     }
 

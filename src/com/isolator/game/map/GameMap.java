@@ -66,13 +66,13 @@ public class GameMap extends GameScene {
         int stageYEnd = 6;
         for(int x = 0; x < stageXEnd; x++) {
             for(int y = 0; y < stageYEnd; y++) {
+                state.addObject(new Blocker(
+                        new Position(
+                                (stageXStart + x) * cellSize.getWidth(),
+                                y * cellSize.getHeight()),
+                        cellSize));
                 if(x == 0 || x == stageXEnd - 1 || y == 0 || y == stageYEnd - 1) {
                     gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
-                    state.addObject(new Blocker(
-                            new Position(
-                                    (stageXStart + x) * cellSize.getWidth(),
-                                    y * cellSize.getHeight()),
-                            cellSize));
                 } else {
                     gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.STAGE_FLOOR);
                 }
