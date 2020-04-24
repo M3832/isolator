@@ -25,7 +25,7 @@ public class UIContainer extends UIBase {
     public UIContainer(boolean visible) {
         super();
         position = new Position(0, 0);
-        padding = new UISpacing(0, 10);
+        padding = new UISpacing(0, 5);
         containerDirection = ContainerDirection.VERTICAL;
         backgroundColor = new Color(217, 189, 142, 0);
         windowAlignment = new Alignment(AlignmentPosition.START, AlignmentPosition.START);

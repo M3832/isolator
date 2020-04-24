@@ -35,8 +35,6 @@ public class IsolatorGameState extends GameState {
 
     private void setupStatsContainer() {
         statsContainer = new UIContainer();
-        statsContainer.setMargin(new UISpacing(10, 10));
-        statsContainer.setPadding(new UISpacing(0, 5));
         uiContainers.add(statsContainer);
         updateScoreContainer();
     }
