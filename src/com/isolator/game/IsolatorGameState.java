@@ -22,7 +22,7 @@ public class IsolatorGameState extends GameState {
 
     private final GameMap map;
     private final Size cellSize;
-    private UIContainer scoreContainer;
+    private UIContainer statsContainer;
 
     public IsolatorGameState() {
         super();
@@ -30,26 +30,39 @@ public class IsolatorGameState extends GameState {
         this.map = new GameMap(16, 25, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
-        this.setupScoreContainer();
+        this.setupStatsContainer();
     }
 
-    private void setupScoreContainer() {
-        scoreContainer = new UIContainer();
-        scoreContainer.setMargin(new UISpacing(10, 10));
-        scoreContainer.setPadding(new UISpacing(0, 5));
-        scoreContainer.setDirection(ContainerDirection.HORIZONTAL);
-        uiContainers.add(scoreContainer);
+    private void setupStatsContainer() {
+        statsContainer = new UIContainer();
+        statsContainer.setMargin(new UISpacing(10, 10));
+        statsContainer.setPadding(new UISpacing(0, 5));
+        uiContainers.add(statsContainer);
         updateScoreContainer();
     }
 
     private void updateScoreContainer() {
-        scoreContainer.clear();
+        statsContainer.clear();
         long healthy = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isHealthy()).count();
         long infected = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isInfected()).count();
         long sick = gameObjects.stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isSick()).count();
-        scoreContainer.addElement(new UIText(healthy + "", Color.GREEN));
-        scoreContainer.addElement(new UIText(infected + "", Color.YELLOW));
-        scoreContainer.addElement(new UIText(sick + "", Color.RED));
+
+        UIContainer scoreContainer = new UIContainer();
+        scoreContainer.setMargin(new UISpacing(0));
+        scoreContainer.setPadding(new UISpacing(0));
+        scoreContainer.setDirection(ContainerDirection.HORIZONTAL);
+        scoreContainer.addElement(createScoreText(healthy + "", Color.GREEN));
+        scoreContainer.addElement(createScoreText(infected + "", Color.YELLOW));
+        scoreContainer.addElement(createScoreText(sick + "", Color.RED));
+
+        statsContainer.addElement(new UIText("Infected", 24, Font.PLAIN));
+        statsContainer.addElement(scoreContainer);
+    }
+
+    private UIText createScoreText(String text, Color color) {
+        UIText uiText = new UIText(text, color);
+        uiText.setPadding(new UISpacing(0, 0, 15, 5));
+        return uiText;
     }
 
     private void initGame() {

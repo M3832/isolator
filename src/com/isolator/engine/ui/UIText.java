@@ -5,6 +5,8 @@ import com.isolator.engine.gfx.ImageUtils;
 import org.w3c.dom.css.Rect;
 
 import java.awt.*;
+import java.awt.font.GlyphVector;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class UIText extends UIBase {
@@ -19,7 +21,7 @@ public class UIText extends UIBase {
     }
 
     public UIText(String text, Color color) {
-        this(text, 20);
+        this(text, 24);
         this.color = color;
     }
 
@@ -49,6 +51,10 @@ public class UIText extends UIBase {
         graphics.setRenderingHint(
                 RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+
+        graphics.setColor(new Color(159, 159, 159));
+        int shadowOffset = 2;
+        graphics.drawString(text, padding.getLeft() + shadowOffset, fontSize + padding.getTop() - 4 + shadowOffset);
 
         graphics.setColor(color);
         graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop() - 4);

@@ -27,7 +27,7 @@ public class UIContainer extends UIBase {
         position = new Position(0, 0);
         padding = new UISpacing(0, 10);
         containerDirection = ContainerDirection.VERTICAL;
-        backgroundColor = new Color(217, 189, 142);
+        backgroundColor = new Color(217, 189, 142, 0);
         windowAlignment = new Alignment(AlignmentPosition.START, AlignmentPosition.START);
         elements = new ArrayList<>();
         this.visible = visible;
@@ -109,6 +109,7 @@ public class UIContainer extends UIBase {
             currentY += element.getMargin().getBottom();
         }
 
+        graphics.dispose();
         return image;
     }
 
@@ -134,6 +135,7 @@ public class UIContainer extends UIBase {
             currentX += element.getMargin().getBottom();
         }
 
+        graphics.dispose();
         return image;
     }
 
