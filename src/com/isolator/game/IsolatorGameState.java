@@ -27,7 +27,7 @@ public class IsolatorGameState extends GameState {
     public IsolatorGameState() {
         super();
         cellSize = new Size(64, 64);
-        this.map = new GameMap(16, 25, cellSize);
+        this.map = new GameMap(24, 12, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
         this.setupStatsContainer();
