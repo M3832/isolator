@@ -48,7 +48,11 @@ public class GameMap extends GameScene {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
                     Blocker blocker = new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize);
-                    gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
+                    if(y == 0) {
+                        gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
+                    } else {
+                        gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL);
+                    }
                     state.addObject(blocker);
                 }
             }
@@ -72,7 +76,7 @@ public class GameMap extends GameScene {
                 } else {
                     gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.STAGE_FLOOR);
                 }
-                if(y == 0) {
+                if(y == 0 || ((x == 0 || x == stageXEnd - 1) && !(y == stageYEnd - 1))) {
                     gridCells[stageXStart + x][y].setTileSprite(SpritesLibrary.STAGE_FLOOR);
                 }
             }

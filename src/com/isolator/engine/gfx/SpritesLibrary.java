@@ -17,6 +17,7 @@ public class SpritesLibrary {
     public static final Image WOOD_FLOOR = ImageUtils.loadImage("/tiles/woodfloor.png");
     public static final Image WOOD_WALL_N = ImageUtils.loadImage("/tiles/woodwallN.png");
     public static final Image STAGE_FLOOR = ImageUtils.loadImage("/tiles/stagefloor.png");
+    public static final Image WOOD_WALL = ImageUtils.loadImage("/tiles/woodwall.png");
 
     private static final String PATH_TO_UNITS = "/units";
 

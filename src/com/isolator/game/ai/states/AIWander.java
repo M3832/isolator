@@ -7,7 +7,7 @@ import com.isolator.game.entity.Visitor;
 
 public class AIWander extends AIState {
 
-    public static int TIMEOUT_TIME = 60 * 20;
+    public static int TIMEOUT_TIME = 60 * 10;
 
     Position targetPosition;
     private boolean done;
