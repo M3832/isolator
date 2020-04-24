@@ -12,6 +12,7 @@ import com.isolator.engine.ui.*;
 import com.isolator.game.entity.Player;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
+import com.isolator.game.logic.InfectionStatus;
 import com.isolator.game.map.GameMap;
 
 import java.awt.*;
@@ -62,7 +63,17 @@ public class IsolatorGameState extends GameState {
             generateGroupOfVisitors();
         }
 
+        initSickPeople(200);
+
         camera.followEntity(player);
+    }
+
+    private void initSickPeople(int amount) {
+        gameObjects.stream()
+                .filter(o -> o instanceof Visitor)
+                .map(o -> (Visitor) o)
+                .limit(amount)
+                .forEach(v -> v.setInfectionStatus(new InfectionStatus(InfectionStatus.Status.SICK)));
     }
 
     private void generateGroupOfVisitors() {

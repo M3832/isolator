@@ -6,6 +6,7 @@ import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
+import com.isolator.game.ai.states.AICough;
 import com.isolator.game.ai.states.AIState;
 import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
@@ -15,12 +16,12 @@ import java.awt.*;
 public class Visitor extends BaseEntity {
 
     private final AIStateMachine ai;
-    private final InfectionStatus status;
+    private InfectionStatus infectionStatus;
 
     public Visitor(Controller controller, double maxVelocity) {
         super(controller);
         ai = new AIStateMachine();
-        status = new InfectionStatus();
+        infectionStatus = new InfectionStatus();
         this.movementMotor = new MovementMotor(0.5f, maxVelocity);
     }
 
@@ -28,6 +29,7 @@ public class Visitor extends BaseEntity {
     public void update(GameState state) {
         super.update((IsolatorGameState) state);
         ai.update(state, this);
+        infectionStatus.update((IsolatorGameState) state, this);
         updateUIContainer(state);
     }
 
@@ -72,12 +74,20 @@ public class Visitor extends BaseEntity {
     }
 
     public boolean isHealthy() {
-        return status.isWell();
+        return infectionStatus.isWell();
     }
     public boolean isInfected() {
-        return status.isInfected();
+        return infectionStatus.isInfected();
     }
     public boolean isSick() {
-        return status.isSick();
+        return infectionStatus.isSick();
+    }
+
+    public void cough(IsolatorGameState state) {
+        ai.setCurrentState(new AICough());
+    }
+
+    public void setInfectionStatus(InfectionStatus infectionStatus) {
+        this.infectionStatus = infectionStatus;
     }
 }
