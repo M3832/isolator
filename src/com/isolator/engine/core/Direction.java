@@ -1,5 +1,7 @@
 package com.isolator.engine.core;
 
+import com.isolator.engine.controller.Controller;
+
 public enum Direction {
     S(0),
     SW(1),
@@ -36,8 +38,8 @@ public enum Direction {
         return animationRow;
     }
 
-    public static Direction fromVelocity(MovementMotor movementMotor, Direction direction) {
-        if(movementMotor.isMoving()) {
+    public static Direction fromVelocity(MovementMotor movementMotor, Controller controller, Direction direction) {
+        if(controller.isRequestingMove() && !(movementMotor.isBlocked())) {
             return fromVector(movementMotor.getDirection());
         }
 

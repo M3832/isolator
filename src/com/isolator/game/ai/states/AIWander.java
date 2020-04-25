@@ -5,27 +5,36 @@ import com.isolator.engine.controller.AIController;
 import com.isolator.engine.core.Position;
 import com.isolator.game.entity.Visitor;
 
+import java.util.List;
+
 public class AIWander extends AIState {
 
-    public static int TIMEOUT_TIME = 60 * 10;
+    public static int TIMEOUT_TIME = 60 * 20;
 
-    Position targetPosition;
+    private List<Position> wanderPath;
     private boolean done;
     private int updatesAlive;
 
-    public AIWander(Position targetPosition) {
-        this.targetPosition = targetPosition;
+    public AIWander(List<Position> wanderPath) {
+        this.wanderPath = wanderPath;
         updatesAlive = 0;
     }
 
     @Override
     public void update(GameState state, Visitor controlledEntity) {
-        moveToTargetPosition(controlledEntity);
         updatesAlive++;
+        if(!wanderPath.isEmpty()) {
+            moveToTargetPosition(controlledEntity);
 
-        if(targetPosition.isWithinRangeOf(20, controlledEntity.getPosition())) {
-            ((AIController) controlledEntity.getController()).stop();
-            done = true;
+            boolean withinRangeOf = wanderPath.get(0).isWithinRangeOf(10, controlledEntity.getPosition());
+            if(withinRangeOf) {
+                wanderPath.remove(0);
+            }
+
+            if(wanderPath.isEmpty()) {
+                ((AIController) controlledEntity.getController()).stop();
+                done = true;
+            }
         }
 
         if(isTimeoutReached()) {
@@ -47,14 +56,18 @@ public class AIWander extends AIState {
         AIController aiController = (AIController) controlledEntity.getController();
         Position aiPosition = controlledEntity.getPosition();
 
-        boolean movingLeft = aiPosition.getX() > targetPosition.getX();
-        boolean movingRight = aiPosition.getX() < targetPosition.getX();
-        boolean movingUp = aiPosition.getY() > targetPosition.getY();
-        boolean movingDown = aiPosition.getY() < targetPosition.getY();
+        boolean movingLeft = aiPosition.getX() > wanderPath.get(0).getX() && aiPosition.getX() > 0;
+        boolean movingRight = aiPosition.getX() < wanderPath.get(0).getX();
+        boolean movingUp = aiPosition.getY() > wanderPath.get(0).getY() && aiPosition.getY() > 0;
+        boolean movingDown = aiPosition.getY() < wanderPath.get(0).getY();
 
         aiController.setLeft(movingLeft);
         aiController.setRight(movingRight);
         aiController.setUp(movingUp);
         aiController.setDown(movingDown);
+    }
+
+    public List<Position> getPositions() {
+        return wanderPath;
     }
 }

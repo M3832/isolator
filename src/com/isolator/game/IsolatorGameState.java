@@ -14,8 +14,10 @@ import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
 import com.isolator.game.logic.InfectionStatus;
 import com.isolator.game.map.GameMap;
+import com.isolator.game.map.Pathfinder;
 
 import java.awt.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class IsolatorGameState extends GameState {
@@ -23,6 +25,7 @@ public class IsolatorGameState extends GameState {
     private final GameMap map;
     private final Size cellSize;
     private UIContainer statsContainer;
+    private Pathfinder pathfinder;
 
     public IsolatorGameState() {
         super();
@@ -31,6 +34,7 @@ public class IsolatorGameState extends GameState {
         this.map.addWallsToPerimeter(this);
         this.scene = map;
         this.setupStatsContainer();
+        pathfinder = new Pathfinder(getObjects(), 24, 12);
     }
 
     private void setupStatsContainer() {
@@ -70,11 +74,11 @@ public class IsolatorGameState extends GameState {
         );
         addObject(player);
 
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 10; i++) {
             generateGroupOfVisitors();
         }
 
-        initSickPeople(5);
+        initSickPeople(0);
 
         camera.followEntity(player);
     }
@@ -135,5 +139,9 @@ public class IsolatorGameState extends GameState {
         this.camera = camera;
         this.input = input;
         initGame();
+    }
+
+    public Pathfinder getPathFinder() {
+        return pathfinder;
     }
 }

@@ -25,8 +25,8 @@ public class Player extends BaseEntity {
         if(other instanceof BaseEntity && isMovingToward(other.getCollisionBox().getPosition())) {
             BaseEntity entity = (BaseEntity) other;
             Vector2 direction = Vector2.directionBetweenPositions(getPosition(), other.getPosition());
-            direction.normalize();
-            entity.push(direction, -getCurrentSpeed());
+            Vector2 normalizedDirection = direction.normalized();
+            entity.push(normalizedDirection, -getCurrentSpeed());
         }
     }
 

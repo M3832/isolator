@@ -65,10 +65,10 @@ public class Group extends BaseObject {
             int radius = Math.max(25, 5 * members.size());
             List<Position> walkTargets = formation.calculatePositions(radius, members.size());
             this.position = state.getMap().getRandomAvailableLocation(state, new Size(100, 100));
-
             for(int i = 0; i < members.size(); i++) {
                 Position targetPosition = Position.add(walkTargets.get(i), this.position);
-                members.get(i).perform(new AIWander(targetPosition));
+                List<Position> path = state.getPathFinder().findPathTo(targetPosition, members.get(i).getPosition());
+                members.get(i).perform(new AIWander(path));
             }
         } else {
             int standTime = state.getRandomGenerator().nextInt(10);

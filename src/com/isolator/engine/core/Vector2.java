@@ -24,9 +24,9 @@ public class Vector2 {
     }
 
     public static double dotProduct(Vector2 v1, Vector2 v2) {
-        v1.normalize();
-        v2.normalize();
-        return v1.getX() * v2.getX() + v1.getY() * v2.getY();
+        Vector2 normalized1 = v1.normalized();
+        Vector2 normalized2 = v2.normalized();
+        return normalized1.getX() * normalized2.getX() + normalized1.getY() * normalized2.getY();
     }
 
     private double getLength() {
@@ -38,13 +38,16 @@ public class Vector2 {
         return Math.sqrt(absX * absX + absY * absY);
     }
 
-    public void normalize() {
+    public Vector2 normalized() {
         double length = getLength();
-
+        double newX = x;
+        double newY = y;
         if(x != 0)
-            x = x / length;
+            newX = x / length;
         if(y != 0)
-            y = y / length;
+            newY = y / length;
+
+        return new Vector2(newX, newY);
     }
 
     public void setX(double x) {

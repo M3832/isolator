@@ -15,7 +15,6 @@ import com.isolator.game.entity.BaseEntity;
 
 import java.awt.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameMap extends GameScene {

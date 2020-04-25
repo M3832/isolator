@@ -107,17 +107,24 @@ public abstract class BaseEntity extends BaseObject {
         animationController.update(state, direction);
 
         position.apply(movementMotor);
-        direction = Direction.fromVelocity(movementMotor, direction);
+        direction = Direction.fromVelocity(movementMotor, controller, direction);
         updateDebugContainer();
     }
 
     public void handleCollision(IsolatorGameState state, BaseObject object) {
         if(!(object instanceof BaseEntity) && !(object instanceof Group)) {
             CollisionBox box = object.getCollisionBox();
-            CollisionBox intersection = box.getIntersection(getNextPositionCollisionBox());
+            CollisionBox nextPos = getNextPositionCollisionBox();
+            CollisionBox currentBox = getCollisionBox(this.position);
+
+            Position nextPosX = new Position(nextPos.getBox().getX(), currentBox.getBox().getY());
+            Position nextPosY = new Position(currentBox.getBox().getX(), nextPos.getBox().getY());
+            boolean collideX = CollisionBox.of(nextPosX, collisionBoxSize).checkCollision(box);
+            boolean collideY = CollisionBox.of(nextPosY, collisionBoxSize).checkCollision(box);
+
             immediateStopInDirections(
-                    intersection.getBox().getWidth() > 0,
-                    intersection.getBox().getHeight() > 0);
+                    collideX,
+                    collideY);
         }
     }
 
@@ -135,9 +142,13 @@ public abstract class BaseEntity extends BaseObject {
 
     public CollisionBox getNextPositionCollisionBox() {
         Position nextPosition = position.getNextPosition(movementMotor);
+        return getCollisionBox(nextPosition);
+    }
+
+    private CollisionBox getCollisionBox(Position position) {
         Rectangle collisionBounds = new Rectangle(
-                nextPosition.getX() - collisionBoxSize.getWidth() / 2,
-                nextPosition.getY() - collisionBoxSize.getHeight() / 2,
+                position.getX() - collisionBoxSize.getWidth() / 2,
+                position.getY() - collisionBoxSize.getHeight() / 2,
                 collisionBoxSize.getWidth(),
                 collisionBoxSize.getHeight());
 

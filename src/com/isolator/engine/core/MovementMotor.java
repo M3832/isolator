@@ -17,11 +17,11 @@ public class MovementMotor {
         this.direction = new Vector2();
         this.accelerationRate = accelerationRate;
         this.maxVelocity = maxVelocity;
-        this.damper = 0.93f;
+        this.damper = 0.90f;
     }
 
     public void update(Controller controller) {
-        direction.damper(0.5f);
+        direction.damper(damper);
 
         if(controller.isRequestingRight()) {
             direction.setX(1);
@@ -39,7 +39,6 @@ public class MovementMotor {
             direction.setY(-1);
 
         }
-
         if(controller.isRequestingMove())
             velocity += accelerationRate;
 
@@ -80,8 +79,8 @@ public class MovementMotor {
     }
 
     public Vector2 getMovement() {
-        direction.normalize();
-        return direction.multiply(Math.min(velocity, maxVelocity));
+        Vector2 normalizedDirection = direction.normalized();
+        return normalizedDirection.multiply(Math.min(velocity, maxVelocity));
     }
 
     public Vector2 getDirection() {
@@ -99,5 +98,9 @@ public class MovementMotor {
 
     public void stop() {
         velocity = 0;
+    }
+
+    public boolean isBlocked() {
+        return direction.getX() == 0 && direction.getY() == 0 && velocity > 0;
     }
 }
