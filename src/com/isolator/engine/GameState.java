@@ -45,6 +45,7 @@ public abstract class GameState {
         gameObjects.forEach(entity -> entity.update(this));
         camera.update(this);
         gameObjects.addAll(readyForSpawn);
+        uiContainers.forEach(uiContainer -> uiContainer.update(this));
         readyForSpawn.clear();
         removeObjects();
     }

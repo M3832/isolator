@@ -5,7 +5,6 @@ import com.isolator.engine.ui.ContainerDirection;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
-import com.isolator.game.IsolatorGameState;
 import com.isolator.game.entity.Visitor;
 
 import java.awt.*;

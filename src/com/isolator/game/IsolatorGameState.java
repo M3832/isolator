@@ -24,28 +24,20 @@ public class IsolatorGameState extends GameState {
 
     private GameMap map;
     private final Size cellSize;
-    private UIInfectionPanel infectionPanel;
-    private GameTimePanel gameTime;
     private Pathfinder pathfinder;
 
     public IsolatorGameState() {
         super();
         cellSize = new Size(64, 64);
         initMap();
+        uiContainers.addAll(List.of(new UIInfectionPanel(), new GameTimePanel()));
         pathfinder = new Pathfinder(getObjects(), 24, 12);
-        initUI();
     }
 
     private void initMap() {
         this.map = new GameMap(24, 12, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
-    }
-
-    private void initUI() {
-        this.infectionPanel = new UIInfectionPanel();
-        this.gameTime = new GameTimePanel();
-        uiContainers.addAll(List.of(infectionPanel, gameTime));
     }
 
     private void initGame() {
@@ -56,7 +48,7 @@ public class IsolatorGameState extends GameState {
         for(int i = 0; i < 25; i++) {
             generateGroupOfVisitors();
         }
-        initSickPeople(5);
+        initSickPeople(1);
 
         camera.followEntity(player);
     }
@@ -88,8 +80,6 @@ public class IsolatorGameState extends GameState {
     @Override
     public void update() {
         super.update();
-        infectionPanel.update(this);
-        gameTime.update(this);
     }
 
     public GameMap getMap() {
