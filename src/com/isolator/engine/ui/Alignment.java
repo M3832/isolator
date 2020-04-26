@@ -20,6 +20,7 @@ public class Alignment {
 
     public static final Alignment BOTTOM_LEFT = new Alignment(AlignmentPosition.START, AlignmentPosition.END);
     public static final Alignment TOP_RIGHT = new Alignment(AlignmentPosition.END, AlignmentPosition.START);
+    public static final Alignment TOP_CENTER = new Alignment(AlignmentPosition.CENTER, AlignmentPosition.START);
     public static final Alignment CENTER_CENTER = new Alignment(AlignmentPosition.CENTER, AlignmentPosition.CENTER);
     public static final Alignment BOTTOM_RIGHT = new Alignment(AlignmentPosition.END, AlignmentPosition.END);
 }

@@ -21,4 +21,23 @@ public class GameTimer {
     public long getCurrentTime() {
         return updatesSinceStart;
     }
+
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        double minutes = updatesSinceStart / updatesPerSecond / 60;
+        double seconds = updatesSinceStart / updatesPerSecond % 60;
+        if(minutes < 10) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append((int) minutes);
+        stringBuilder.append(":");
+        if(seconds < 10) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append((int) seconds);
+
+        return stringBuilder.toString();
+    }
 }

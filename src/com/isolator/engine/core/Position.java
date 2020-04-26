@@ -1,5 +1,7 @@
 package com.isolator.engine.core;
 
+import java.util.Objects;
+
 public class Position {
 
     int x, y;
@@ -47,6 +49,11 @@ public class Position {
         }
         Position thatPosition = (Position) that;
         return this.getX() == thatPosition.getX() && this.getY() == thatPosition.getY();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 
     @Override

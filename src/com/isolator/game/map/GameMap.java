@@ -107,7 +107,7 @@ public class GameMap extends GameScene {
                 (int) (state.getRandomGenerator().nextDouble() * gridCells[0].length * cellSize.getHeight())
         );
 
-        CollisionBox targetCollisionBox = CollisionBox.of(randomPosition, collisionBoxSize);
+        CollisionBox targetCollisionBox = CollisionBox.of(new Position(randomPosition.getX() - 32, randomPosition.getY() - 32), collisionBoxSize);
 
         for(BaseObject object : state.getObjects().stream().filter(object -> !(object instanceof BaseEntity)).collect(Collectors.toList())) {
             if (object.getPosition().isWithinRangeOf(128, randomPosition)

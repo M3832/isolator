@@ -1,6 +1,7 @@
 package com.isolator.game.entity;
 
 import com.isolator.engine.GameState;
+import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
@@ -12,16 +13,18 @@ import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Visitor extends BaseEntity {
 
     private final AIStateMachine ai;
     private InfectionStatus infectionStatus;
 
-    public Visitor(Controller controller, double maxVelocity) {
+    public Visitor(Controller controller, Random random) {
         super(controller);
         ai = new AIStateMachine();
         infectionStatus = new InfectionStatus();
+        double maxVelocity = random.nextDouble() * (3.5f - 1.5f) + 1.5f;
         this.movementMotor = new MovementMotor(0.5f, maxVelocity);
     }
 
@@ -64,13 +67,18 @@ public class Visitor extends BaseEntity {
         ai.setCurrentState(action);
     }
 
-    public void handleCollision(IsolatorGameState state, BaseObject object) {
-        super.handleCollision(state, object);
+    public void handleCollision(IsolatorGameState state, BaseObject other) {
+        super.handleCollision(state, other);
 
-        if(object instanceof BaseEntity && !(object instanceof Player)) {
-            if(isMovingToward(object.getPosition())) {
-                movementMotor.rotateByAngle(20);
-            }
+        if(other instanceof BaseEntity
+                && !(other instanceof Player)
+                && controller.isRequestingMove()
+                && isFacingExactly(other.getCollisionBox().getPosition())) {
+            BaseEntity entity = (BaseEntity) other;
+            Vector2 direction = Vector2.directionBetweenPositions(getPosition(), other.getPosition());
+            Vector2 normalizedDirection = direction.normalized();
+            Vector2 experiment = new Vector2(-normalizedDirection.getY(), -normalizedDirection.getX());
+            entity.push(experiment, getCurrentSpeed());
         }
     }
 

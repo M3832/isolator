@@ -40,33 +40,36 @@ public class Pathfinder {
         Position targetPosition = new Position(targetPath.getX() / 64, targetPath.getY()/64);
 
         Queue<Node> openSet = new PriorityQueue<>();
-        Map<Position, Node> allNodes = new HashMap<>();
+        Set<Node> closed = new HashSet<>();
 
         Node startNode = new Node(startPosition, null, 0, startPosition.distanceTo(targetPosition));
         openSet.add(startNode);
-        allNodes.put(startPosition, startNode);
 
         while(!openSet.isEmpty()) {
-            Node next = openSet.poll();
-            if(next.position.equals(targetPosition)) {
-                return getFinalRoute(next);
+            Node current = openSet.poll();
+            closed.add(current);
+            openSet.remove(current);
+            if(current.position.equals(targetPosition)) {
+                return getFinalRoute(current);
             }
 
-            for(int x = next.position.getX() - 1; x <= next.position.getX() + 1; x++) {
-                for(int y = next.position.getY() - 1; y <= next.position.getY() + 1; y++) {
+            for(int x = current.position.getX() - 1; x <= current.position.getX() + 1; x++) {
+                for(int y = current.position.getY() - 1; y <= current.position.getY() + 1; y++) {
                     Position nextPosition = new Position(x, y);
-                    if(nextPosition.equals(next.position) || isOutOfBounds(nextPosition) || collisionMap[x][y])
+                    Node next = new Node(nextPosition);
+                    if(closed.contains(next) || isOutOfBounds(nextPosition)) {
                         continue;
-
-                    Node nextNode = allNodes.getOrDefault(nextPosition, new Node(nextPosition));
-                    allNodes.put(nextPosition, nextNode);
-
-                    double newScore = next.routeScore + nextPosition.distanceTo(next.position);
-                    if(newScore < nextNode.routeScore) {
-                        nextNode.previous = next;
-                        nextNode.routeScore = newScore;
-                        nextNode.estimatedScore = newScore + nextPosition.distanceTo(targetPosition);
-                        openSet.add(nextNode);
+                    }
+                    if(collisionMap[x][y]) {
+                        closed.add(next);
+                        continue;
+                    }
+                    double newScore = current.routeScore + nextPosition.distanceTo(current.position);
+                    if(newScore < next.routeScore) {
+                        next.previous = current;
+                        next.routeScore = newScore;
+                        next.estimatedScore = newScore + nextPosition.distanceTo(targetPosition);
+                        openSet.add(next);
                     }
                 }
             }
@@ -80,9 +83,8 @@ public class Pathfinder {
                 || exploredPosition.getY() < 0 || exploredPosition.getY() >= collisionMap[0].length;
     }
 
-    private List<Position> getFinalRoute(Node next) {
+    private List<Position> getFinalRoute(Node current) {
         List<Position> route = new ArrayList<>();
-        Node current = next;
         do {
             route.add(0, new Position(current.position.getX() * 64 + 32, current.position.getY() * 64 + 32));
             current = current.previous;
@@ -117,6 +119,19 @@ public class Pathfinder {
             } else {
                 return 0;
             }
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return position.equals(node.position);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(position);
         }
     }
 

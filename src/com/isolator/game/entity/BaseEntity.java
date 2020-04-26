@@ -172,11 +172,18 @@ public abstract class BaseEntity extends BaseObject {
         return movementMotor.getVelocity();
     }
 
-    public boolean isMovingToward(Position position) {
+    public boolean isFacing(Position position) {
         Vector2 direction = Vector2.directionBetweenPositions(position, this.position);
         double dotProduct = Vector2.dotProduct(direction, movementMotor.getDirection());
 
         return dotProduct > 0;
+    }
+
+    public boolean isFacingExactly(Position position) {
+        Vector2 direction = Vector2.directionBetweenPositions(position, this.position);
+        double dotProduct = Vector2.dotProduct(direction, movementMotor.getDirection());
+
+        return dotProduct > 0.75;
     }
 
     @Override

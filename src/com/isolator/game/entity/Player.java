@@ -22,7 +22,7 @@ public class Player extends BaseEntity {
     public void handleCollision(IsolatorGameState state, BaseObject other) {
         super.handleCollision(state, other);
 
-        if(other instanceof BaseEntity && isMovingToward(other.getCollisionBox().getPosition())) {
+        if(other instanceof BaseEntity && isFacing(other.getCollisionBox().getPosition())) {
             BaseEntity entity = (BaseEntity) other;
             Vector2 direction = Vector2.directionBetweenPositions(getPosition(), other.getPosition());
             Vector2 normalizedDirection = direction.normalized();
@@ -54,7 +54,7 @@ public class Player extends BaseEntity {
                 .filter(o -> o instanceof Visitor)
                 .map(o -> (Visitor) o)
                 .filter(v -> v.getPosition().isWithinRangeOf(64, position))
-                .filter(v -> isMovingToward(v.getPosition()))
+                .filter(v -> isFacing(v.getPosition()))
                 .min(Comparator.comparingDouble(e -> position.distanceTo(e.getPosition())));
 
         if(closestVisitor.isPresent()) {

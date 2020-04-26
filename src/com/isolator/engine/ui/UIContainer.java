@@ -1,5 +1,6 @@
 package com.isolator.engine.ui;
 
+import com.isolator.engine.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gfx.ImageUtils;
@@ -35,6 +36,10 @@ public class UIContainer extends UIBase {
 
     public void addElement(UIBase uiBase) {
         elements.add(uiBase);
+    }
+
+    public void update(GameState state) {
+
     }
 
     @Override

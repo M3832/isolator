@@ -6,7 +6,6 @@ import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.game.CollisionResolver;
-import com.isolator.game.entity.Cough;
 
 import java.util.ArrayList;
 import java.util.Comparator;
