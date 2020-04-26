@@ -49,4 +49,9 @@ public class HumanController implements Controller {
     public boolean isRequestingMove() {
         return isRequestingDown() || isRequestingLeft() || isRequestingRight() ||isRequestingUp();
     }
+
+    @Override
+    public boolean isRequestingDebugMode() {
+        return input.isClicked(KeyEvent.VK_Q);
+    }
 }

@@ -10,4 +10,6 @@ public interface Controller {
     boolean isRequestingSlowDown();
 
     boolean isRequestingMove();
+
+    boolean isRequestingDebugMode();
 }

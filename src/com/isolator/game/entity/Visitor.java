@@ -9,6 +9,7 @@ import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AICough;
 import com.isolator.game.ai.states.AIState;
+import com.isolator.game.gfx.ColorOverlay;
 import com.isolator.game.gfx.ImageEffect;
 import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
@@ -23,6 +24,7 @@ public class Visitor extends BaseEntity {
 
     private final AIStateMachine ai;
     private InfectionStatus infectionStatus;
+    private ImageEffect markedEffect;
 
     public Visitor(Controller controller, Random random) {
         super(controller);
@@ -30,6 +32,7 @@ public class Visitor extends BaseEntity {
         infectionStatus = new InfectionStatus();
         double maxVelocity = random.nextDouble() * (3.5f - 1.5f) + 1.5f;
         this.movementMotor = new MovementMotor(0.5f, maxVelocity);
+        markedEffect = new Outline(new Color(94, 156, 255));
     }
 
     @Override
@@ -59,11 +62,11 @@ public class Visitor extends BaseEntity {
     }
 
     public void focus() {
-        imageEffects.add(new Outline(new Color(94, 156, 255)));
+        imageEffects.add(markedEffect);
     }
 
     public void removeFocus() {
-        imageEffects.clear();
+        imageEffects.remove(markedEffect);
     }
 
     public Controller getController() {
@@ -122,5 +125,10 @@ public class Visitor extends BaseEntity {
 
     public AIState getCurrentAction() {
         return ai.getCurrentState();
+    }
+
+    public void isolate() {
+        infectionStatus = new InfectionStatus(InfectionStatus.Status.ISOLATED);
+        imageEffects.add(new ColorOverlay(Color.GRAY));
     }
 }

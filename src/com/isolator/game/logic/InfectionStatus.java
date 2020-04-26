@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class InfectionStatus {
     public enum Status {
-        NEGATIVE, INFECTED, SICK;
+        NEGATIVE, INFECTED, SICK, ISOLATED;
     }
 
     private Status status;

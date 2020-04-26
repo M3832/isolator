@@ -36,8 +36,12 @@ public class Player extends BaseEntity {
         removeMark();
         markClosestEntity(state);
 
-        if(controller.isRequestingAction()) {
+        if(controller.isRequestingDebugMode()) {
             state.toggleDebugMode();
+        }
+
+        if(controller.isRequestingAction()) {
+            isolateMark();
         }
 
         if(controller.isRequestingSpeedUp()) {
@@ -46,6 +50,12 @@ public class Player extends BaseEntity {
 
         if(controller.isRequestingSlowDown()) {
             state.decreaseGameSpeed();
+        }
+    }
+
+    private void isolateMark() {
+        if(markedVisitor != null) {
+            markedVisitor.isolate();
         }
     }
 

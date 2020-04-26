@@ -88,9 +88,7 @@ public class IsolatorGameState extends GameState {
         int numberOfMembers = random.nextInt(9) + 1;
         for(int i = 0; i < numberOfMembers; i++) {
             Visitor visitor = new Visitor(new AIController(), random);
-            visitor.setPosition(
-                    map.getRandomAvailableLocation(this, visitor.getSize())
-            );
+            visitor.setPosition(map.getRandomAvailableLocation(this, visitor.getSize()));
 
             group.addMember(visitor);
             addObject(visitor);
