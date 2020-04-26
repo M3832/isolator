@@ -6,16 +6,16 @@ import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
 
-public class GameTimePanel extends UIContainer {
-
-    public GameTimePanel() {
-        setWindowAlignment(Alignment.TOP_CENTER);
+public class VictoryScreen extends UIContainer {
+    public VictoryScreen() {
+        setWindowAlignment(Alignment.CENTER_CENTER);
         setPadding(new UISpacing(10));
+        toggleVisibility();
     }
 
     @Override
     public void update(GameState state) {
         clear();
-        addElement(new UIText(state.getGameTimer().toString()));
+        addElement(new UIText("VICTORY", 64));
     }
 }

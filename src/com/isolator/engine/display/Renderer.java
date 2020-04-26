@@ -1,9 +1,9 @@
 package com.isolator.engine.display;
 
-import com.isolator.engine.GameState;
+import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
-import com.isolator.engine.RunMode;
+import com.isolator.engine.game.RunMode;
 import com.isolator.engine.ui.UIAlignmentUtils;
 
 import java.awt.*;
@@ -23,7 +23,7 @@ public class Renderer {
         renderUI(state, windowSize, screenGraphics);
 
         if(state.getRunMode() == RunMode.DEBUG) {
-            debugRenderer.render(List.of(DebugRenderer.ENTITY_POSITION), state, screenGraphics);
+            debugRenderer.render(List.of(), state, screenGraphics);
         }
     }
 

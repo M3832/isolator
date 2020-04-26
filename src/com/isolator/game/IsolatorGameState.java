@@ -1,6 +1,6 @@
 package com.isolator.game;
 
-import com.isolator.engine.GameState;
+import com.isolator.engine.game.GameState;
 import com.isolator.engine.controller.AIController;
 import com.isolator.engine.controller.HumanController;
 import com.isolator.engine.controller.Input;
@@ -8,14 +8,17 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
+import com.isolator.engine.ui.UIContainer;
 import com.isolator.game.entity.Player;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
 import com.isolator.game.logic.InfectionStatus;
 import com.isolator.game.map.GameMap;
 import com.isolator.game.map.Pathfinder;
+import com.isolator.game.ui.DefeatScreen;
 import com.isolator.game.ui.GameTimePanel;
 import com.isolator.game.ui.UIInfectionPanel;
+import com.isolator.game.ui.VictoryScreen;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,13 +28,32 @@ public class IsolatorGameState extends GameState {
     private GameMap map;
     private final Size cellSize;
     private Pathfinder pathfinder;
+    private UIContainer victoryScreen;
+    private UIContainer defeatScreen;
 
     public IsolatorGameState() {
         super();
         cellSize = new Size(64, 64);
         initMap();
-        uiContainers.addAll(List.of(new UIInfectionPanel(), new GameTimePanel()));
+        victoryScreen = new VictoryScreen();
+        defeatScreen = new DefeatScreen();
+        uiContainers.addAll(List.of(new UIInfectionPanel(), new GameTimePanel(), defeatScreen, victoryScreen));
         pathfinder = new Pathfinder(getObjects(), 24, 12);
+        initConditions();
+    }
+
+    private void initConditions() {
+        losingConditions.add(state -> state.getObjects().stream()
+                .filter(o -> o instanceof Visitor)
+                .map(o -> (Visitor) o)
+                .filter(v -> v.isSick())
+                .count() > 10);
+
+        victoryConditions.add(state -> state.getObjects().stream()
+                .filter(o -> o instanceof Visitor)
+                .map(o -> (Visitor) o)
+                .filter(v -> v.isSick() || v.isInfected())
+                .count() == 0);
     }
 
     private void initMap() {
@@ -80,6 +102,12 @@ public class IsolatorGameState extends GameState {
     @Override
     public void update() {
         super.update();
+        if(victoryConditionsMet() && !victoryScreen.isVisible()) {
+            victoryScreen.toggleVisibility();
+        }
+        if(loseConditionsMet() && !defeatScreen.isVisible()) {
+            defeatScreen.toggleVisibility();
+        }
     }
 
     public GameMap getMap() {

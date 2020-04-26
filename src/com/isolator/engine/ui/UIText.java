@@ -40,7 +40,8 @@ public class UIText extends UIBase {
 
     @Override
     public Size getSize() {
-        return new Size(text.length() * fontSize / 2 + padding.getHorizontal(), fontSize + padding.getVertical());
+        FontMetrics fm = new Canvas().getFontMetrics(new Font("Helvetica", fontStyle, fontSize));
+        return new Size(fm.stringWidth(text) + padding.getHorizontal(), fm.getHeight() + padding.getVertical());
     }
 
     @Override
@@ -55,10 +56,10 @@ public class UIText extends UIBase {
 
         graphics.setColor(new Color(140, 140, 140));
         int shadowOffset = 2;
-        graphics.drawString(text, padding.getLeft() + shadowOffset, fontSize + padding.getTop() - 4 + shadowOffset);
+        graphics.drawString(text, padding.getLeft() + shadowOffset, fontSize + padding.getTop() + shadowOffset);
 
         graphics.setColor(color);
-        graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop() - 4);
+        graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop());
 
         return bufferedImage;
     }

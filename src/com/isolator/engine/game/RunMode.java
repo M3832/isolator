@@ -1,4 +1,4 @@
-package com.isolator.engine;
+package com.isolator.engine.game;
 
 public enum RunMode {
     DEFAULT, DEBUG

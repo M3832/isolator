@@ -1,6 +1,6 @@
 package com.isolator.game.ai.states;
 
-import com.isolator.engine.GameState;
+import com.isolator.engine.game.GameState;
 import com.isolator.game.entity.Visitor;
 
 public class AIStand extends AIState {

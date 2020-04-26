@@ -1,6 +1,6 @@
 package com.isolator;
 
-import com.isolator.engine.Game;
+import com.isolator.engine.game.Game;
 import com.isolator.engine.core.Size;
 import com.isolator.game.IsolatorGameState;
 

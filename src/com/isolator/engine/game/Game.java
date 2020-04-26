@@ -1,4 +1,4 @@
-package com.isolator.engine;
+package com.isolator.engine.game;
 
 import com.isolator.engine.controller.Input;
 import com.isolator.engine.core.Size;

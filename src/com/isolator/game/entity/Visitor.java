@@ -1,6 +1,6 @@
 package com.isolator.game.entity;
 
-import com.isolator.engine.GameState;
+import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.IsolatorGameState;
@@ -14,7 +14,6 @@ import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;

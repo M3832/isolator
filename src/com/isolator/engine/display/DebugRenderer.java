@@ -1,6 +1,6 @@
 package com.isolator.engine.display;
 
-import com.isolator.engine.GameState;
+import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
@@ -10,8 +10,6 @@ import com.isolator.game.entity.Visitor;
 
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class DebugRenderer {

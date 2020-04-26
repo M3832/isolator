@@ -1,4 +1,4 @@
-package com.isolator.engine;
+package com.isolator.engine.game;
 
 import com.isolator.engine.controller.Input;
 import com.isolator.engine.core.Size;
@@ -24,6 +24,8 @@ public abstract class GameState {
     protected final List<BaseObject> gameObjects;
     protected final List<BaseObject> readyForSpawn;
     protected final List<UIContainer> uiContainers;
+    protected final List<Condition> victoryConditions;
+    protected final List<Condition> losingConditions;
 
     protected Random random;
 
@@ -34,6 +36,8 @@ public abstract class GameState {
         gameObjects = new ArrayList<>();
         readyForSpawn = new ArrayList<>();
         uiContainers = new ArrayList<>();
+        victoryConditions = new ArrayList<>();
+        losingConditions = new ArrayList<>();
         this.collisionResolver = new CollisionResolver();
         mode = RunMode.DEFAULT;
         random = new Random(123);
@@ -43,8 +47,8 @@ public abstract class GameState {
         gameTimer.update();
         gameObjects.sort(Comparator.comparing(baseEntity -> baseEntity.getPosition().getY()));
         gameObjects.forEach(entity -> entity.update(this));
-        camera.update(this);
         gameObjects.addAll(readyForSpawn);
+        camera.update(this);
         uiContainers.forEach(uiContainer -> uiContainer.update(this));
         readyForSpawn.clear();
         removeObjects();
@@ -56,6 +60,14 @@ public abstract class GameState {
                 gameObjects.remove(i);
             }
         }
+    }
+
+    public boolean victoryConditionsMet() {
+        return victoryConditions.stream().allMatch(victoryCondition -> victoryCondition.condition(this));
+    }
+
+    public boolean loseConditionsMet() {
+        return losingConditions.stream().allMatch(victoryCondition -> victoryCondition.condition(this));
     }
 
     public List<UIContainer> getUiContainers() {
