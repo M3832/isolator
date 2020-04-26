@@ -9,11 +9,16 @@ import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AICough;
 import com.isolator.game.ai.states.AIState;
+import com.isolator.game.gfx.ImageEffect;
 import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Visitor extends BaseEntity {
 
@@ -40,6 +45,13 @@ public class Visitor extends BaseEntity {
         uiContainer.addElement(getDebugUIText());
         AIState aiState = ai.getCurrentState();
         uiContainer.addElement(aiState.getDebugUI(state, this));
+    }
+
+    @Override
+    protected List<ImageEffect> getImageEffects() {
+        return Stream.of(imageEffects, ai.getCurrentState().getImageEffects())
+                .flatMap(imageEffects -> imageEffects.stream())
+                .collect(Collectors.toList());
     }
 
     @Override

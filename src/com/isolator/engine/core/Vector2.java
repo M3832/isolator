@@ -15,6 +15,10 @@ public class Vector2 {
         this.y = y;
     }
 
+    public Vector2(Vector2 vector2) {
+        this(vector2.getX(), vector2.getY());
+    }
+
     public static Vector2 directionBetweenPositions(Position startingPosition, Position terminalPosition) {
         Vector2 directionBetweenPositions = new Vector2();
         directionBetweenPositions.setX(startingPosition.getX() - terminalPosition.getX());

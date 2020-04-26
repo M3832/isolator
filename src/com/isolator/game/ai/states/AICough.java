@@ -4,6 +4,11 @@ import com.isolator.engine.GameState;
 import com.isolator.engine.controller.AIController;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.entity.Visitor;
+import com.isolator.game.gfx.ImageEffect;
+import com.isolator.game.gfx.Outline;
+
+import java.awt.*;
+import java.util.List;
 
 public class AICough extends AIStand {
 

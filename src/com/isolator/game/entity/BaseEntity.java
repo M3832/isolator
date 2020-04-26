@@ -24,6 +24,7 @@ public abstract class BaseEntity extends BaseObject {
 
     protected final Controller controller;
     protected Direction direction;
+    protected Vector2 directionVector;
     protected MovementMotor movementMotor;
 
     protected Size collisionBoxSize;
@@ -44,6 +45,7 @@ public abstract class BaseEntity extends BaseObject {
         this.movementMotor = new MovementMotor(0.5f, 3.0f);
         this.controller = controller;
         this.direction = Direction.N;
+        this.directionVector = new Vector2();
         imageEffects = new ArrayList<>();
         initUIElements();
     }
@@ -62,7 +64,7 @@ public abstract class BaseEntity extends BaseObject {
 
     @Override
     public Image getDrawGraphics(Camera camera) {
-        if(!imageEffects.isEmpty()) {
+        if(!getImageEffects().isEmpty()) {
             return composeSprite();
         }
 
@@ -83,11 +85,15 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     private void renderEffects(Image sprite, Graphics2D graphics, ImageEffect.RenderOrder order) {
-        for (ImageEffect effect : imageEffects) {
+        for (ImageEffect effect : getImageEffects()) {
             if (effect.getRenderOrder().equals(order)) {
                 graphics.drawImage(effect.getEffect(sprite), 0, 0, null);
             }
         }
+    }
+
+    protected List<ImageEffect> getImageEffects() {
+        return imageEffects;
     }
 
     public Image getDebugUI() {
@@ -108,6 +114,8 @@ public abstract class BaseEntity extends BaseObject {
 
         position.apply(movementMotor);
         direction = Direction.fromVelocity(movementMotor, controller, direction);
+        if(controller.isRequestingMove())
+            directionVector = new Vector2(movementMotor.getDirection());
         updateDebugContainer();
     }
 
@@ -174,14 +182,14 @@ public abstract class BaseEntity extends BaseObject {
 
     public boolean isFacing(Position position) {
         Vector2 direction = Vector2.directionBetweenPositions(position, this.position);
-        double dotProduct = Vector2.dotProduct(direction, movementMotor.getDirection());
+        double dotProduct = Vector2.dotProduct(direction, directionVector);
 
         return dotProduct > 0;
     }
 
     public boolean isFacingExactly(Position position) {
         Vector2 direction = Vector2.directionBetweenPositions(position, this.position);
-        double dotProduct = Vector2.dotProduct(direction, movementMotor.getDirection());
+        double dotProduct = Vector2.dotProduct(direction, directionVector);
 
         return dotProduct > 0.75;
     }
