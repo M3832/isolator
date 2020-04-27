@@ -46,7 +46,7 @@ public class InfectionStatus {
     public void exposeWithRisk(Random random, double risk) {
         boolean infect = random.nextDouble() < risk;
 
-        if(infect && !this.status.equals(Status.SICK)) {
+        if(infect && this.status.equals(Status.NEGATIVE)) {
             this.status = Status.INFECTED;
         }
     }

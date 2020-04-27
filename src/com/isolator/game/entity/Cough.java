@@ -14,11 +14,11 @@ public class Cough extends BaseObject {
 
     @Override
     public void update(GameState state) {
-        state.getObjects().stream()
-                .filter(o -> o.getPosition().isWithinRangeOf(96, position))
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
-                .forEach(v -> v.exposeToVirus((IsolatorGameState) state));
+        IsolatorGameState isolatorState = (IsolatorGameState) state;
+
+        isolatorState.getStreamOfVisitors()
+                .filter((Visitor v) -> v.isWithinRangeOf(96, position))
+                .forEach((Visitor v) -> v.exposeToVirus((IsolatorGameState) state));
 
         this.remove = true;
     }

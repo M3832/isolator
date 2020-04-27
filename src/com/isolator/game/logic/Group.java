@@ -67,7 +67,7 @@ public class Group extends BaseObject {
             this.position = state.getMap().getRandomAvailableLocation(state, new Size(100, 100));
             for(int i = 0; i < members.size(); i++) {
                 Position targetPosition = Position.add(walkTargets.get(i), this.position);
-                List<Position> path = state.getPathFinder().findPathTo(targetPosition, members.get(i).getPosition());
+                List<Position> path = state.getPath(targetPosition, members.get(i).getPosition());
                 members.get(i).perform(new AIWander(path));
             }
         } else {

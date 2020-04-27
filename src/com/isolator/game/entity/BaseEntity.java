@@ -214,4 +214,8 @@ public abstract class BaseEntity extends BaseObject {
 
         this.direction = Direction.fromVector(lookDirection);
     }
+
+    public boolean isWithinRangeOf(int range, Position position) {
+        return position.isWithinRangeOf(range, position);
+    }
 }

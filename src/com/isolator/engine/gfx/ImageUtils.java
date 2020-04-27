@@ -13,6 +13,7 @@ public class ImageUtils {
     public static final double SCALE = 1.5f;
     public static final int ALPHA_OPAQUE = 1;
     public static final int ALPHA_BIT_MASKED = 2;
+    public static final int ALPHA_BLEND = 3;
 
     public static Image loadImage(String filePath) {
         try {

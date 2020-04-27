@@ -22,6 +22,7 @@ import com.isolator.game.ui.VictoryScreen;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IsolatorGameState extends GameState {
 
@@ -43,15 +44,11 @@ public class IsolatorGameState extends GameState {
     }
 
     private void initConditions() {
-        losingConditions.add(state -> state.getObjects().stream()
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
+        losingConditions.add(state -> ((IsolatorGameState)state).getStreamOfVisitors()
                 .filter(v -> v.isSick())
                 .count() > 10);
 
-        victoryConditions.add(state -> state.getObjects().stream()
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
+        victoryConditions.add(state -> ((IsolatorGameState)state).getStreamOfVisitors()
                 .filter(v -> v.isSick() || v.isInfected())
                 .count() == 0);
     }
@@ -76,9 +73,7 @@ public class IsolatorGameState extends GameState {
     }
 
     private void initSickPeople(int amount) {
-        gameObjects.stream()
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
+        getStreamOfVisitors()
                 .limit(amount)
                 .forEach(v -> v.setInfectionStatus(new InfectionStatus(InfectionStatus.Status.SICK)));
     }
@@ -135,7 +130,15 @@ public class IsolatorGameState extends GameState {
         initGame();
     }
 
-    public Pathfinder getPathFinder() {
-        return pathfinder;
+    public List<Position> getPath(Position target, Position start) {
+        return pathfinder.findPathTo(target, start);
     }
+
+    public Stream<Visitor> getStreamOfVisitors() {
+        return gameObjects.stream()
+                .filter(o -> o instanceof Visitor)
+                .map(o -> (Visitor) o);
+    }
+
+
 }

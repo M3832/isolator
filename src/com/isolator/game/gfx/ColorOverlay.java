@@ -23,7 +23,7 @@ public class ColorOverlay extends ImageEffect {
     public Image getEffect(Image sprite) {
         BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(
                 new Size(sprite.getWidth(null), sprite.getHeight(null)),
-                ImageUtils.ALPHA_BIT_MASKED);
+                ImageUtils.ALPHA_BLEND);
 
         Graphics2D graphics = image.createGraphics();
         graphics.drawImage(sprite, 0, 0, null);

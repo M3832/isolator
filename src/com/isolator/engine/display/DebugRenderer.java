@@ -4,6 +4,7 @@ import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
+import com.isolator.game.IsolatorGameState;
 import com.isolator.game.ai.states.AIWander;
 import com.isolator.game.entity.BaseEntity;
 import com.isolator.game.entity.Visitor;
@@ -57,13 +58,6 @@ public class DebugRenderer {
     private void renderEntityPositions(GameState state, Graphics2D screenGraphics) {
         state.getObjectsWithinViewingBounds()
                 .forEach(object -> drawPoint(object.getPosition(), state, screenGraphics, Color.GREEN));
-
-        state.getObjects().stream()
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
-                .filter(v -> v.getCurrentAction() instanceof AIWander)
-                .map(v -> (AIWander) v.getCurrentAction())
-                .forEach(wander -> wander.getPositions().forEach(p -> drawPoint(p, state, screenGraphics, Color.RED)));
     }
 
     private void drawString(Position position, String string, GameState state, Graphics2D graphics) {

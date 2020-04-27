@@ -123,12 +123,8 @@ public class Visitor extends BaseEntity {
         infectionStatus.exposeWithRisk(state.getRandomGenerator(), 0.01);
     }
 
-    public AIState getCurrentAction() {
-        return ai.getCurrentState();
-    }
-
     public void isolate() {
         infectionStatus = new InfectionStatus(InfectionStatus.Status.ISOLATED);
-        imageEffects.add(new ColorOverlay(Color.GRAY));
+        imageEffects.add(new ColorOverlay(new Color(0.5f, 0.5f, 0.5f, 0.5f)));
     }
 }

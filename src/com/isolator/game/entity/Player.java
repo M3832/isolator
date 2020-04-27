@@ -60,9 +60,7 @@ public class Player extends BaseEntity {
     }
 
     private void markClosestEntity(GameState state) {
-        Optional<Visitor> closestVisitor = state.getObjects().stream()
-                .filter(o -> o instanceof Visitor)
-                .map(o -> (Visitor) o)
+        Optional<Visitor> closestVisitor = ((IsolatorGameState)state).getStreamOfVisitors()
                 .filter(v -> v.getPosition().isWithinRangeOf(64, position))
                 .filter(v -> isFacing(v.getPosition()))
                 .min(Comparator.comparingDouble(e -> position.distanceTo(e.getPosition())));
