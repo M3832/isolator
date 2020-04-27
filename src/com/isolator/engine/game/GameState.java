@@ -8,6 +8,7 @@ import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.game.CollisionResolver;
 import com.isolator.game.entity.BaseEntity;
+import com.isolator.game.entity.Blocker;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -152,7 +153,7 @@ public abstract class GameState {
     }
 
     public boolean checkCollision(CollisionBox targetCollisionBox) {
-        return gameObjects.stream().filter(o -> !(o instanceof BaseEntity)).anyMatch(o -> o.getCollisionBox().checkCollision(targetCollisionBox));
+        return gameObjects.stream().filter(o -> o instanceof Blocker).anyMatch(o -> o.getCollisionBox().checkCollision(targetCollisionBox));
     }
 
     public List<Shape> getDebugShapes() {

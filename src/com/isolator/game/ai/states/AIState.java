@@ -13,7 +13,6 @@ public abstract class AIState {
 
     public abstract void update(GameState state, Visitor controlledEntity);
     public abstract boolean isReadyToTransition();
-    public abstract boolean isTimeoutReached();
     public UIBase getDebugUI(GameState state, BaseEntity baseEntity) {
         return new UIText(this.getClass().getSimpleName());
     }

@@ -11,7 +11,6 @@ import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.gfx.ImageEffect;
-import com.isolator.game.logic.Group;
 
 import java.awt.*;
 import java.util.ArrayList;

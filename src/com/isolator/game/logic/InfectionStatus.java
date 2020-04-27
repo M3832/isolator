@@ -62,4 +62,8 @@ public class InfectionStatus {
     public boolean isWell() {
         return status.equals(Status.NEGATIVE);
     }
+
+    public boolean isIsolated() {
+        return status.equals(Status.ISOLATED);
+    }
 }

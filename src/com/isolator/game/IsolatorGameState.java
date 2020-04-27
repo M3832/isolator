@@ -70,7 +70,7 @@ public class IsolatorGameState extends GameState {
             generateGroupOfVisitors();
         }
         initSickPeople(1);
-        addObject(new RemoveTrigger(new Position(getSceneSize().getWidth()/2, getSceneSize().getHeight() - cellSize.getHeight() / 2), new Size(64, 64)));
+        addObject(new RemoveTrigger(new Position(getSceneSize().getWidth()/2, getSceneSize().getHeight() - cellSize.getHeight() / 2), cellSize));
 
         camera.followEntity(player);
     }
@@ -98,6 +98,10 @@ public class IsolatorGameState extends GameState {
     @Override
     public void update() {
         super.update();
+        checkConditions();
+    }
+
+    private void checkConditions() {
         if(victoryConditionsMet() && !victoryScreen.isVisible()) {
             victoryScreen.toggleVisibility();
         }

@@ -177,7 +177,7 @@ public class GameMap extends GameScene {
                 (int) (state.getRandomGenerator().nextDouble() * gridCells[0].length * cellSize.getHeight())
         );
 
-        if(!walkableArea.contains(randomPosition.getX(), randomPosition.getY())) {
+        if(!walkableArea.contains(new Rectangle(randomPosition.getX(), randomPosition.getY(), cellSize.getWidth(), cellSize.getHeight()))) {
             return getRandomAvailableLocation(state);
         }
 

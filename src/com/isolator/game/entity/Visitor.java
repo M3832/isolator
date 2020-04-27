@@ -80,7 +80,9 @@ public class Visitor extends BaseEntity {
     }
 
     public void perform(AIState action) {
-        ai.setCurrentState(action);
+        if(!infectionStatus.isIsolated()) {
+            ai.setCurrentState(action);
+        }
     }
 
     public void handleCollision(IsolatorGameState state, BaseObject other) {
@@ -109,7 +111,7 @@ public class Visitor extends BaseEntity {
     }
 
     public void cough(IsolatorGameState state) {
-        ai.setCurrentState(new AICough(state));
+        perform(new AICough(state));
         state.spawn(new Cough(position));
     }
 
@@ -126,17 +128,21 @@ public class Visitor extends BaseEntity {
     }
 
     public void isolate(IsolatorGameState state) {
-        infectionStatus = new InfectionStatus(InfectionStatus.Status.ISOLATED);
-        imageEffects.add(new ColorOverlay(new Color(0.5f, 0.5f, 0.5f, 0.5f)));
         RemoveTrigger trigger = state.getObjects().stream()
                 .filter(o -> o instanceof RemoveTrigger)
                 .map(o -> (RemoveTrigger) o)
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("No RemoveTrigger present"));
         moveTo(state, trigger);
+        infectionStatus = new InfectionStatus(InfectionStatus.Status.ISOLATED);
+        imageEffects.add(new ColorOverlay(new Color(0.5f, 0.5f, 0.5f, 0.5f)));
     }
 
     private void moveTo(IsolatorGameState state, BaseObject trigger) {
-        ai.setCurrentState(new AIWander(state.getPath(trigger.getPosition(), position)));
+        perform(new AIWander(state.getPath(trigger.getPosition(), position)));
+    }
+
+    public boolean isIsolated() {
+        return infectionStatus.isIsolated();
     }
 }

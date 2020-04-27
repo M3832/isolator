@@ -23,9 +23,4 @@ public class AIStand extends AIState {
     public boolean isReadyToTransition() {
         return done;
     }
-
-    @Override
-    public boolean isTimeoutReached() {
-        return false;
-    }
 }
