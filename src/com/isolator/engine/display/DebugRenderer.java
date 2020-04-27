@@ -10,6 +10,7 @@ import com.isolator.game.entity.BaseEntity;
 import com.isolator.game.entity.Visitor;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.List;
 
 
@@ -58,6 +59,23 @@ public class DebugRenderer {
     private void renderEntityPositions(GameState state, Graphics2D screenGraphics) {
         state.getObjectsWithinViewingBounds()
                 .forEach(object -> drawPoint(object.getPosition(), state, screenGraphics, Color.GREEN));
+    }
+
+    private void drawShapes(GameState state, Graphics2D graphics) {
+        Position cameraPos = state.getCamera().getPosition();
+        List<Shape> shapes = state.getDebugShapes();
+        for(Shape s : shapes) {
+            Polygon p = (Polygon) s;
+            Polygon translatedPolygon = new Polygon(p.xpoints, p.ypoints, p.npoints);
+            translatedPolygon.translate(-cameraPos.getX(), -cameraPos.getY());
+            graphics.setColor(new Color(1, 1, 1, 0.5f));
+            graphics.fill(translatedPolygon);
+            graphics.setColor(Color.black);
+            graphics.draw(translatedPolygon);
+            for(int i = 0; i < translatedPolygon.npoints; i++) {
+                drawPoint(new Position(translatedPolygon.xpoints[i] + cameraPos.getX(), translatedPolygon.ypoints[i] + cameraPos.getY()), state, graphics, Color.BLUE);
+            }
+        }
     }
 
     private void drawString(Position position, String string, GameState state, Graphics2D graphics) {

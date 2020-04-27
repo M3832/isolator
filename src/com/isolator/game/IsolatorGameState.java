@@ -20,6 +20,7 @@ import com.isolator.game.ui.GameTimePanel;
 import com.isolator.game.ui.UIInfectionPanel;
 import com.isolator.game.ui.VictoryScreen;
 
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,7 +62,7 @@ public class IsolatorGameState extends GameState {
 
     private void initGame() {
         Player player = new Player(new HumanController(input));
-        player.setPosition(map.getRandomAvailableLocation(this, player.getSize()));
+        player.setPosition(map.getRandomAvailableLocation(this));
         addObject(player);
 
         for(int i = 0; i < 25; i++) {
@@ -83,7 +84,7 @@ public class IsolatorGameState extends GameState {
         int numberOfMembers = random.nextInt(9) + 1;
         for(int i = 0; i < numberOfMembers; i++) {
             Visitor visitor = new Visitor(new AIController(), random);
-            visitor.setPosition(map.getRandomAvailableLocation(this, visitor.getSize()));
+            visitor.setPosition(map.getRandomAvailableLocation(this));
 
             group.addMember(visitor);
             addObject(visitor);
@@ -140,5 +141,8 @@ public class IsolatorGameState extends GameState {
                 .map(o -> (Visitor) o);
     }
 
+    public List<Shape> getDebugShapes() {
+        return List.of(map.getWalkableArea());
+    }
 
 }

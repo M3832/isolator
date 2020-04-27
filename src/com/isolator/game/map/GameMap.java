@@ -1,5 +1,6 @@
 package com.isolator.game.map;
 
+import com.isolator.engine.core.Vector2;
 import com.isolator.engine.game.GameScene;
 import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.CollisionBox;
@@ -13,8 +14,11 @@ import com.isolator.engine.gfx.SpritesLibrary;
 import com.isolator.game.IsolatorGameState;
 import com.isolator.game.entity.BaseEntity;
 
-import java.awt.*;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameMap extends GameScene {
@@ -22,6 +26,7 @@ public class GameMap extends GameScene {
     private final GridCell[][] gridCells;
     private final Size cellSize;
     private final Size mapSize;
+    private Shape walkableArea;
 
     public GameMap(int xTiles, int yTiles, Size cellSize) {
         gridCells = new GridCell[xTiles][yTiles];
@@ -57,6 +62,70 @@ public class GameMap extends GameScene {
             }
         }
         addStage(state);
+        calculateWalkableArea(state);
+    }
+
+    private void calculateWalkableArea(IsolatorGameState state) {
+        List<Position> points = new ArrayList<>();
+
+        for(int x = 0; x < gridCells.length; x++) {
+            for(int y = 0; y < gridCells[0].length; y++) {
+                if(!state.checkCollision(CollisionBox.of(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize))
+                        && !allNeighborsFree(new Position(x, y), state)) {
+                    points.add(new Position(x * cellSize.getWidth() + cellSize.getWidth()/2, y * cellSize.getHeight() + cellSize.getHeight()/2));
+                }
+            }
+        }
+
+        List<Position> sorted = sortShapeVertices(points);
+        List<Position> simplified = simplifyShape(sorted);
+        int[] xs = simplified.stream().mapToInt(Position::getX).toArray();
+        int[] ys = simplified.stream().mapToInt(Position::getY).toArray();
+        walkableArea = new Polygon(xs, ys, simplified.size());
+    }
+
+    private List<Position> simplifyShape(List<Position> sorted) {
+        List<Position> simplifiedShape = new ArrayList<>();
+        simplifiedShape.add(sorted.get(0));
+        for(int i = 1; i < sorted.size() - 1; i++) {
+            Position previous = sorted.get(i-1);
+            Position current = sorted.get(i);
+            Position next = sorted.get(i+1);
+            if(previous.getY() == current.getY() && next.getY() != current.getY() || previous.getX() == current.getX() && next.getX() != current.getX()) {
+                simplifiedShape.add(current);
+            }
+        }
+
+        return simplifiedShape;
+    }
+
+    private boolean allNeighborsFree(Position position, IsolatorGameState state) {
+        for(int x = position.getX() - 1; x < position.getX() + 2; x++) {
+            for(int y = position.getY() - 1; y < position.getY() + 2; y++) {
+                if(new Position(x, y).equals(position)) {
+                    continue;
+                }
+                if(state.checkCollision(CollisionBox.of(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private List<Position> sortShapeVertices(List<Position> points) {
+        List<Position> sortedPositions = new ArrayList<>();
+        List<Position> open = new ArrayList<>(points);
+
+        while(!open.isEmpty()) {
+            Position current = open.get(0);
+            open.remove(current);
+            sortedPositions.add(current);
+            open.sort(Comparator.comparingDouble(p -> current.distanceTo(p)));
+        }
+
+        return sortedPositions;
     }
 
     private void addStage(IsolatorGameState state) {
@@ -101,19 +170,14 @@ public class GameMap extends GameScene {
         return mapSize;
     }
 
-    public Position getRandomAvailableLocation(IsolatorGameState state, Size collisionBoxSize) {
+    public Position getRandomAvailableLocation(IsolatorGameState state) {
         Position randomPosition = new Position(
                 (int) (state.getRandomGenerator().nextDouble() * gridCells.length * cellSize.getWidth()),
                 (int) (state.getRandomGenerator().nextDouble() * gridCells[0].length * cellSize.getHeight())
         );
 
-        CollisionBox targetCollisionBox = CollisionBox.of(new Position(randomPosition.getX() - 32, randomPosition.getY() - 32), collisionBoxSize);
-
-        for(BaseObject object : state.getObjects().stream().filter(object -> !(object instanceof BaseEntity)).collect(Collectors.toList())) {
-            if (object.getPosition().isWithinRangeOf(128, randomPosition)
-                    && object.getCollisionBox().checkCollision(targetCollisionBox)) {
-                return getRandomAvailableLocation(state, collisionBoxSize);
-            }
+        if(!walkableArea.contains(randomPosition.getX(), randomPosition.getY())) {
+            return getRandomAvailableLocation(state);
         }
 
         return randomPosition;
@@ -145,5 +209,9 @@ public class GameMap extends GameScene {
 
         sceneGraphics.dispose();
         return renderedScene;
+    }
+
+    public Shape getWalkableArea() {
+        return walkableArea;
     }
 }

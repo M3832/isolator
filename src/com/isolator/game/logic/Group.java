@@ -64,7 +64,7 @@ public class Group extends BaseObject {
         } else if(randomNumber == 1) {
             int radius = Math.max(25, 5 * members.size());
             List<Position> walkTargets = formation.calculatePositions(radius, members.size());
-            this.position = state.getMap().getRandomAvailableLocation(state, new Size(100, 100));
+            this.position = state.getMap().getRandomAvailableLocation(state);
             for(int i = 0; i < members.size(); i++) {
                 Position targetPosition = Position.add(walkTargets.get(i), this.position);
                 List<Position> path = state.getPath(targetPosition, members.get(i).getPosition());
