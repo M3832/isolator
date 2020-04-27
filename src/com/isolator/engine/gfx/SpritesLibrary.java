@@ -1,5 +1,7 @@
 package com.isolator.engine.gfx;
 
+import com.isolator.engine.core.Size;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,11 +9,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.isolator.engine.gfx.ImageUtils.SPRITE_SIZE;
+import static com.isolator.engine.gfx.ImageUtils.*;
 
 public class SpritesLibrary {
 
     public static final Image DEFAULT = createDefaultSprite();
+    public static final Image DOOR = createDoor();
     private static final List<AnimationSet> units = loadUnitSets();
 
     public static final Image WOOD_FLOOR = ImageUtils.loadImage("/tiles/woodfloor.png");
@@ -56,6 +59,15 @@ public class SpritesLibrary {
         Image defaultSprite = new BufferedImage(SPRITE_SIZE, SPRITE_SIZE, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = (Graphics2D) defaultSprite.getGraphics();
         graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
+
+        return defaultSprite;
+    }
+
+    private static Image createDoor() {
+        Image defaultSprite = ImageUtils.createCompatibleImage(new Size(SPRITE_SIZE, SPRITE_SIZE), ALPHA_BLEND);
+        Graphics2D graphics = (Graphics2D) defaultSprite.getGraphics();
+        graphics.setPaint(new GradientPaint(32, 0, new Color(115, 67, 1), 32, 64, new Color(37, 37, 61)));
         graphics.fillRect(0, 0, SPRITE_SIZE, SPRITE_SIZE);
 
         return defaultSprite;

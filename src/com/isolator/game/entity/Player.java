@@ -41,7 +41,7 @@ public class Player extends BaseEntity {
         }
 
         if(controller.isRequestingAction()) {
-            isolateMark();
+            isolateMark((IsolatorGameState) state);
         }
 
         if(controller.isRequestingSpeedUp()) {
@@ -53,9 +53,9 @@ public class Player extends BaseEntity {
         }
     }
 
-    private void isolateMark() {
+    private void isolateMark(IsolatorGameState state) {
         if(markedVisitor != null) {
-            markedVisitor.isolate();
+            markedVisitor.isolate(state);
         }
     }
 

@@ -13,6 +13,7 @@ import com.isolator.game.entity.Player;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
 import com.isolator.game.logic.InfectionStatus;
+import com.isolator.game.logic.RemoveTrigger;
 import com.isolator.game.map.GameMap;
 import com.isolator.game.map.Pathfinder;
 import com.isolator.game.ui.DefeatScreen;
@@ -69,6 +70,7 @@ public class IsolatorGameState extends GameState {
             generateGroupOfVisitors();
         }
         initSickPeople(1);
+        addObject(new RemoveTrigger(new Position(getSceneSize().getWidth()/2, getSceneSize().getHeight() - cellSize.getHeight() / 2), new Size(64, 64)));
 
         camera.followEntity(player);
     }

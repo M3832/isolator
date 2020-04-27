@@ -1,25 +1,21 @@
 package com.isolator.game.map;
 
-import com.isolator.engine.core.Vector2;
 import com.isolator.engine.game.GameScene;
 import com.isolator.engine.game.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
-import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.gameobjects.Blocker;
+import com.isolator.game.entity.PathBlocker;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.gfx.SpritesLibrary;
 import com.isolator.game.IsolatorGameState;
-import com.isolator.game.entity.BaseEntity;
 
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameMap extends GameScene {
 
@@ -51,13 +47,18 @@ public class GameMap extends GameScene {
         for(int x = 0; x < gridCells.length; x++) {
             for(int y = 0; y < gridCells[0].length; y++) {
                 if(x == 0 || y == 0 || x == gridCells.length - 1 || y == gridCells[0].length - 1) {
-                    Blocker blocker = new Blocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize);
+                    PathBlocker pathBlocker = new PathBlocker(new Position(x * cellSize.getWidth(), y * cellSize.getHeight()), cellSize);
                     if(y == 0) {
                         gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL_N);
                     } else {
                         gridCells[x][y].setTileSprite(SpritesLibrary.WOOD_WALL);
                     }
-                    state.addObject(blocker);
+
+                    if(!(y == gridCells[0].length - 1 && x == gridCells.length / 2)) {
+                        state.addObject(pathBlocker);
+                    } else {
+                        gridCells[x][y].setTileSprite(SpritesLibrary.DOOR);
+                    }
                 }
             }
         }
@@ -134,7 +135,7 @@ public class GameMap extends GameScene {
         int stageYEnd = 6;
         for(int x = 0; x < stageXEnd; x++) {
             for(int y = 0; y < stageYEnd; y++) {
-                state.addObject(new Blocker(
+                state.addObject(new PathBlocker(
                         new Position(
                                 (stageXStart + x) * cellSize.getWidth(),
                                 y * cellSize.getHeight()),

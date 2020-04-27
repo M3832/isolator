@@ -9,10 +9,12 @@ import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AICough;
 import com.isolator.game.ai.states.AIState;
+import com.isolator.game.ai.states.AIWander;
 import com.isolator.game.gfx.ColorOverlay;
 import com.isolator.game.gfx.ImageEffect;
 import com.isolator.game.gfx.Outline;
 import com.isolator.game.logic.InfectionStatus;
+import com.isolator.game.logic.RemoveTrigger;
 
 import java.awt.*;
 import java.util.List;
@@ -123,8 +125,18 @@ public class Visitor extends BaseEntity {
         infectionStatus.exposeWithRisk(state.getRandomGenerator(), 0.01);
     }
 
-    public void isolate() {
+    public void isolate(IsolatorGameState state) {
         infectionStatus = new InfectionStatus(InfectionStatus.Status.ISOLATED);
         imageEffects.add(new ColorOverlay(new Color(0.5f, 0.5f, 0.5f, 0.5f)));
+        RemoveTrigger trigger = state.getObjects().stream()
+                .filter(o -> o instanceof RemoveTrigger)
+                .map(o -> (RemoveTrigger) o)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No RemoveTrigger present"));
+        moveTo(state, trigger);
+    }
+
+    private void moveTo(IsolatorGameState state, BaseObject trigger) {
+        ai.setCurrentState(new AIWander(state.getPath(trigger.getPosition(), position)));
     }
 }

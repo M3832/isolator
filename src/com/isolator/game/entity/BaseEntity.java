@@ -120,7 +120,7 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     public void handleCollision(IsolatorGameState state, BaseObject object) {
-        if(!(object instanceof BaseEntity) && !(object instanceof Group)) {
+        if(object instanceof Blocker) {
             CollisionBox box = object.getCollisionBox();
             CollisionBox nextPos = getNextPositionCollisionBox();
             CollisionBox currentBox = getCollisionBox(this.position);

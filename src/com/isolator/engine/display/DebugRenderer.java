@@ -24,6 +24,8 @@ public class DebugRenderer {
         if (features.contains(COLLISION_BOX)) renderCollisionBoxes(state, screenGraphics);
         if (features.contains(ENTITY_DEBUG_UI)) renderEntityUI(state, screenGraphics);
         if (features.contains(ENTITY_POSITION)) renderEntityPositions(state, screenGraphics);
+
+//        drawShapes(state, screenGraphics);
     }
 
     private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {

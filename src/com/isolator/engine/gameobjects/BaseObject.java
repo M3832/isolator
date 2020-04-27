@@ -51,4 +51,8 @@ public abstract class BaseObject {
     public boolean readyToRemove() {
         return remove;
     }
+
+    public void remove() {
+        this.remove = true;
+    }
 }
