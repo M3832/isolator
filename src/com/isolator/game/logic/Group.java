@@ -1,11 +1,11 @@
 package com.isolator.game.logic;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.ai.states.AIDance;
 import com.isolator.game.ai.states.AIStand;
 import com.isolator.game.ai.states.AIWander;
@@ -62,7 +62,7 @@ public class Group extends BaseObject {
                 member.perform(new AIStand(standGameTime));
             });
         } else if(randomNumber == 1) {
-            int radius = Math.max(25, 5 * members.size());
+            int radius = Math.max(40, 15 * members.size());
             List<Position> walkTargets = formation.calculatePositions(radius, members.size());
             this.position = state.getMap().getRandomAvailableLocation(state);
             for(int i = 0; i < members.size(); i++) {

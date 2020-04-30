@@ -1,9 +1,10 @@
 package com.isolator.engine.ui;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gfx.ImageUtils;
+import com.isolator.engine.state.State;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,7 +39,7 @@ public class UIContainer extends UIBase {
         elements.add(uiBase);
     }
 
-    public void update(GameState state) {
+    public void update(State state) {
 
     }
 

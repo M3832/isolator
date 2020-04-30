@@ -1,8 +1,8 @@
 package com.isolator.game.ai.states;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.controller.AIController;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.entity.Visitor;
 
 public class AICough extends AIStand {

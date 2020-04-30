@@ -1,6 +1,6 @@
 package com.isolator.engine.display;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.game.entity.BaseEntity;
@@ -18,7 +18,7 @@ public class Camera {
     public Camera(Size size) {
         this.position = new Position();
         this.size = size;
-        zoom = 1.5f;
+        zoom = 1f;
     }
 
     public void followEntity(BaseEntity entityToFollow) {

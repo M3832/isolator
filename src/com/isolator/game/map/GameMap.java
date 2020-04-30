@@ -1,7 +1,7 @@
 package com.isolator.game.map;
 
 import com.isolator.engine.game.GameScene;
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
@@ -9,7 +9,7 @@ import com.isolator.engine.display.Camera;
 import com.isolator.game.entity.PathBlocker;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.gfx.SpritesLibrary;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 
 
 import java.awt.*;

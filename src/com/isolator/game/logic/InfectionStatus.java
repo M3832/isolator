@@ -1,6 +1,6 @@
 package com.isolator.game.logic;
 
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.entity.Visitor;
 
 import java.util.Random;

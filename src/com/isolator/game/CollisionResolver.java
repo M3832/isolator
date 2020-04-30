@@ -1,6 +1,7 @@
 package com.isolator.game;
 
 import com.isolator.game.entity.BaseEntity;
+import com.isolator.game.states.IsolatorGameState;
 
 public class CollisionResolver {
 

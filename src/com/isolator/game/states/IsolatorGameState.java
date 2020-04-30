@@ -1,6 +1,7 @@
-package com.isolator.game;
+package com.isolator.game.states;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.game.Condition;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.controller.AIController;
 import com.isolator.engine.controller.HumanController;
 import com.isolator.engine.controller.Input;
@@ -22,6 +23,7 @@ import com.isolator.game.ui.UIInfectionPanel;
 import com.isolator.game.ui.VictoryScreen;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,19 +35,30 @@ public class IsolatorGameState extends GameState {
     private Pathfinder pathfinder;
     private UIContainer victoryScreen;
     private UIContainer defeatScreen;
+    protected List<Condition> victoryConditions;
+    protected List<Condition> losingConditions;
 
-    public IsolatorGameState() {
+    public IsolatorGameState(Size windowSize, Input input) {
         super();
+        this.input = input;
+        camera = new Camera(windowSize);
         cellSize = new Size(64, 64);
+        initConditions();
         initMap();
+        initUI();
+        initGame();
+        pathfinder = new Pathfinder(getObjects(), 32, 16);
+    }
+
+    private void initUI() {
         victoryScreen = new VictoryScreen();
         defeatScreen = new DefeatScreen();
         uiContainers.addAll(List.of(new UIInfectionPanel(), new GameTimePanel(), defeatScreen, victoryScreen));
-        pathfinder = new Pathfinder(getObjects(), 24, 12);
-        initConditions();
     }
 
     private void initConditions() {
+        victoryConditions = new ArrayList<>();
+        losingConditions = new ArrayList<>();
         losingConditions.add(state -> ((IsolatorGameState)state).getStreamOfVisitors()
                 .filter(v -> v.isSick())
                 .count() > 10);
@@ -56,7 +69,7 @@ public class IsolatorGameState extends GameState {
     }
 
     private void initMap() {
-        this.map = new GameMap(24, 12, cellSize);
+        this.map = new GameMap(32, 16, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
     }
@@ -110,6 +123,14 @@ public class IsolatorGameState extends GameState {
         }
     }
 
+    private boolean victoryConditionsMet() {
+        return victoryConditions.stream().allMatch(victoryCondition -> victoryCondition.condition(this));
+    }
+
+    private boolean loseConditionsMet() {
+        return losingConditions.stream().allMatch(victoryCondition -> victoryCondition.condition(this));
+    }
+
     public GameMap getMap() {
         return map;
     }
@@ -128,13 +149,6 @@ public class IsolatorGameState extends GameState {
 
         return y > startRenderingPosition.getY() - 2 && y < endRenderingPosition.getY()
                 && x > startRenderingPosition.getX() - 3 && x < endRenderingPosition.getX();
-    }
-
-    @Override
-    public void setupGame(Camera camera, Input input) {
-        this.camera = camera;
-        this.input = input;
-        initGame();
     }
 
     public List<Position> getPath(Position target, Position start) {

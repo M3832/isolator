@@ -1,11 +1,11 @@
 package com.isolator.game.entity;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.controller.Controller;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -36,20 +36,8 @@ public class Player extends BaseEntity {
         removeMark();
         markClosestEntity(state);
 
-        if(controller.isRequestingDebugMode()) {
-            state.toggleDebugMode();
-        }
-
         if(controller.isRequestingAction()) {
             isolateMark((IsolatorGameState) state);
-        }
-
-        if(controller.isRequestingSpeedUp()) {
-            state.increaseGameSpeed();
-        }
-
-        if(controller.isRequestingSlowDown()) {
-            state.decreaseGameSpeed();
         }
     }
 

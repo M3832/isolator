@@ -1,9 +1,9 @@
 package com.isolator.game.entity;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 
 public class Cough extends BaseObject {
 

@@ -9,7 +9,7 @@ import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.ui.UIContainer;
 import com.isolator.engine.ui.UISpacing;
 import com.isolator.engine.ui.UIText;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.gfx.ImageEffect;
 
 import java.awt.*;
@@ -39,7 +39,7 @@ public abstract class BaseEntity extends BaseObject {
         this.id = ID_COUNTER++;
         animationController = AnimationController.randomUnit();
         this.size = new Size(64, 64);
-        this.renderOffset = new Position(0, -12);
+        this.renderOffset = new Position(-32, -48);
         this.collisionBoxSize = new Size(24, 32);
         this.movementMotor = new MovementMotor(0.5f, 3.0f);
         this.controller = controller;

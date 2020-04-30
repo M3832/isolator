@@ -1,6 +1,6 @@
 package com.isolator.engine.gfx;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Direction;
 
 import java.awt.*;

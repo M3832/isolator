@@ -1,6 +1,6 @@
 package com.isolator.game.map;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gameobjects.BaseObject;

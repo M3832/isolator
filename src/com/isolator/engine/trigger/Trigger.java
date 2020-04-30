@@ -3,7 +3,7 @@ package com.isolator.engine.trigger;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.gameobjects.BaseObject;
 
 public abstract class Trigger extends BaseObject {

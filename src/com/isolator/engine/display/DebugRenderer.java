@@ -1,16 +1,12 @@
 package com.isolator.engine.display;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
-import com.isolator.game.IsolatorGameState;
-import com.isolator.game.ai.states.AIWander;
 import com.isolator.game.entity.BaseEntity;
-import com.isolator.game.entity.Visitor;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.List;
 
 

@@ -1,6 +1,6 @@
 package com.isolator.game.ai.states;
 
-import com.isolator.engine.game.GameState;
+import com.isolator.engine.state.GameState;
 import com.isolator.engine.controller.AIController;
 import com.isolator.engine.core.Position;
 import com.isolator.game.entity.Visitor;

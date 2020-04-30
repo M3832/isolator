@@ -1,12 +1,12 @@
 package com.isolator;
 
-import com.isolator.engine.game.Game;
+import com.isolator.engine.game.GameRunner;
 import com.isolator.engine.core.Size;
-import com.isolator.game.IsolatorGameState;
+import com.isolator.game.Isolator;
 
 public class ApplicationStarter {
     public static void main(String[] args) {
-        final Game game = new Game(new Size(800, 640), new IsolatorGameState());
+        final GameRunner game = new GameRunner(new Isolator(new Size(800, 640)));
         final Thread gameRunner = new Thread(game);
 
         gameRunner.start();

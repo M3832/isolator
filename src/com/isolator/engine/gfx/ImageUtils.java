@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ImageUtils {
 
     public static final int SPRITE_SIZE = 64;
-    public static final double SCALE = 1.5f;
+    public static final double SCALE = 2f;
     public static final int ALPHA_OPAQUE = 1;
     public static final int ALPHA_BIT_MASKED = 2;
     public static final int ALPHA_BLEND = 3;

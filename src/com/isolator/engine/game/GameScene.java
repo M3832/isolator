@@ -1,6 +1,7 @@
 package com.isolator.engine.game;
 
 import com.isolator.engine.core.Size;
+import com.isolator.engine.state.GameState;
 
 import java.awt.*;
 

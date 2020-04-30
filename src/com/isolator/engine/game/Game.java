@@ -2,86 +2,82 @@ package com.isolator.engine.game;
 
 import com.isolator.engine.controller.Input;
 import com.isolator.engine.core.Size;
-import com.isolator.engine.display.Camera;
 import com.isolator.engine.display.Display;
-import com.isolator.engine.ui.Alignment;
-import com.isolator.engine.ui.UIContainer;
-import com.isolator.engine.ui.UIText;
+import com.isolator.engine.state.GameState;
 
-public class Game implements Runnable {
-    private final GameState state;
-    private final Display display;
-    private final Input input;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
-    private final UIContainer fpsContainer;
+public abstract class Game {
 
-    private boolean running;
+    protected List<GameState> gameStates;
+    protected GameState current;
+    protected RunMode mode;
+    protected Input input;
+    protected Display display;
 
-    private final float UPDATE_RATE = 1.0f/60.0f;
+    protected float gameSpeed = 1;
 
-    private long statisticsTimer = System.currentTimeMillis();
-    private int updates = 0, renders = 0;
-
-    public Game(Size windowSize, GameState state) {
-        this.state = state;
+    public Game(Size windowSize) {
+        gameStates = new ArrayList<>();
+        mode = RunMode.DEFAULT;
         this.input = new Input();
         this.display = new Display(windowSize, input);
-        this.fpsContainer = new UIContainer(false);
-        state.setupGame(new Camera(windowSize), input);
-        state.addUIContainer(fpsContainer);
     }
 
-    @Override
-    public void run() {
-        running = true;
-        double accumulator = 0.0;
-        long currentTime, lastUpdate = System.currentTimeMillis();
+    public void addGameState(GameState state) {
+        gameStates.add(state);
 
-        while(running) {
-            currentTime = System.currentTimeMillis();
-            float lastRenderDurationInSeconds = (float)(currentTime - lastUpdate) / 1000;
-            accumulator += lastRenderDurationInSeconds * state.getGameSpeed();
-            lastUpdate = currentTime;
-
-            while(accumulator >= UPDATE_RATE) {
-                update();
-                accumulator -= UPDATE_RATE;
-            }
-            render();
-
-            if(state.getRunMode() == RunMode.DEBUG) {
-                printStatistics();
-            }
+        if(current == null) {
+            current = state;
         }
     }
 
-    private void printStatistics() {
-        long currentTime = System.currentTimeMillis();
-        if(statisticsTimer + 1000 <= currentTime) {
-            drawStatisticsUI();
-            statisticsTimer = currentTime;
-            renders = 0;
-            updates = 0;
+    public void update() {
+        current.update();
+        handleGameInput();
+    }
+
+    private void handleGameInput() {
+        if(input.isClicked(KeyEvent.VK_ASTERISK)) {
+            toggleDebugMode();
+        }
+
+        if(input.isClicked(KeyEvent.VK_PLUS)) {
+            increaseGameSpeed();
+        }
+
+        if(input.isClicked(KeyEvent.VK_MINUS)) {
+            decreaseGameSpeed();
         }
     }
 
-    private void drawStatisticsUI() {
-        if(!fpsContainer.isVisible())
-            fpsContainer.toggleVisibility();
-
-        fpsContainer.clear();
-        fpsContainer.addElement(new UIText(String.format("UPS: %d", updates)));
-        fpsContainer.addElement(new UIText(String.format("FPS: %d", renders)));
-        fpsContainer.setWindowAlignment(Alignment.BOTTOM_RIGHT);
+    public void toggleDebugMode() {
+        if(mode == RunMode.DEFAULT) {
+            mode = RunMode.DEBUG;
+        } else {
+            mode = RunMode.DEFAULT;
+        }
     }
 
-    private void render() {
-        display.render(state);
-        renders++;
+    public void increaseGameSpeed() {
+        if(gameSpeed <= 3)
+            gameSpeed += 0.5;
+    }
+    public void decreaseGameSpeed() {
+        if(gameSpeed >= 1.0)
+            gameSpeed -= 0.5;
     }
 
-    private void update() {
-        state.update();
-        updates++;
+    public float getGameSpeed() {
+        return gameSpeed;
     }
+
+    public GameState getCurrentState() {
+        return current;
+    }
+
+    public abstract void render();
 }
+
