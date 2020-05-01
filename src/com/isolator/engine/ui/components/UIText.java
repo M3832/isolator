@@ -1,12 +1,10 @@
-package com.isolator.engine.ui;
+package com.isolator.engine.ui.components;
 
+import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gfx.ImageUtils;
-import org.w3c.dom.css.Rect;
 
 import java.awt.*;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 public class UIText extends UIBase {
@@ -14,7 +12,7 @@ public class UIText extends UIBase {
     private final int fontSize;
     private final String text;
     private int fontStyle;
-    private Color color;
+    protected Color color;
 
     public UIText(String text) {
         this(text, 20);
@@ -62,5 +60,13 @@ public class UIText extends UIBase {
         graphics.drawString(text, padding.getLeft(), fontSize + padding.getTop());
 
         return bufferedImage;
+    }
+
+    @Override
+    public String toString() {
+        return "UIText{" +
+                "text='" + text + '\'' +
+                ", fontSize=" + fontSize +
+                '}';
     }
 }

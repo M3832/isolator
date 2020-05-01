@@ -38,6 +38,9 @@ public abstract class Game {
     public void update() {
         current.update();
         handleGameInput();
+        if(current.hasNextState()) {
+            current = current.getNextState();
+        }
     }
 
     private void handleGameInput() {

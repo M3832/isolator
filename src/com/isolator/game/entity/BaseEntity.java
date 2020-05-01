@@ -1,6 +1,9 @@
 package com.isolator.game.entity;
 
 import com.isolator.engine.ui.*;
+import com.isolator.engine.ui.containers.UIContainer;
+import com.isolator.engine.ui.components.UIText;
+import com.isolator.engine.ui.containers.VerticalContainer;
 import com.isolator.game.controller.Controller;
 import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
@@ -48,9 +51,9 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     private void initUIElements() {
-        this.uiContainer = new VerticalContainer();
+        this.uiContainer = new VerticalContainer(new Size());
         uiContainer.setBackgroundColor(new Color(0, 0, 0, 0));
-        uiContainer.setPadding(new UISpacing(0));
+        uiContainer.setPadding(new Spacing(0));
         updateDebugContainer();
     }
 

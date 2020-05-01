@@ -2,7 +2,6 @@ package com.isolator.engine.state;
 
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Size;
-import com.isolator.engine.display.Camera;
 import com.isolator.engine.game.GameTimer;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.ui.UIScreen;

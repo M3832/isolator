@@ -14,6 +14,7 @@ public class FloatingShapeBackgroundScene extends Scene {
 
     private Size size;
     private List<Shape> shapes;
+    private int[] shades;
 
     public FloatingShapeBackgroundScene(Size windowSize) {
         this.size = windowSize;
@@ -22,9 +23,11 @@ public class FloatingShapeBackgroundScene extends Scene {
     }
 
     private void initShapeList() {
-        for(int i = 0; i < 250; i++) {
-            Rectangle rectangle = new Rectangle((int)(Math.random() * size.getWidth()), (int)(Math.random() * size.getHeight()), 20, 20);
+        shades = new int[1500];
+        for(int i = 0; i < 1500; i++) {
+            Rectangle rectangle = new Rectangle((int)(Math.random() * size.getWidth()), (int)(Math.random() * size.getHeight()), 10, 10);
             shapes.add(rectangle);
+            shades[i] = (int)(Math.random() * (255 - 200)) + 200;
         }
     }
 
@@ -58,8 +61,7 @@ public class FloatingShapeBackgroundScene extends Scene {
         graphics.fillRect(0, 0, size.getWidth(), size.getHeight());
 
         for(int i = 0; i < shapes.size(); i++) {
-            int color = Math.max(200, Math.min(245, 2 * (i + 255 - shapes.size())));
-            graphics.setColor(new Color(color, color, color));
+            graphics.setColor(new Color(shades[i], shades[i], shades[i]));
             graphics.fill(shapes.get(i));
         }
 

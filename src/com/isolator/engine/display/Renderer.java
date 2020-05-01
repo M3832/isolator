@@ -5,6 +5,8 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.state.State;
 
 import java.awt.*;
+import java.util.List;
+
 
 public class Renderer {
 
@@ -16,8 +18,10 @@ public class Renderer {
 
     public void renderState(State state, Graphics2D screenGraphics) {
         renderScene(state, screenGraphics);
-        renderUI(state, screenGraphics);
         renderObjects(state, screenGraphics);
+        renderUI(state, screenGraphics);
+
+        debugRenderer.render(List.of(), state, screenGraphics);
     }
 
     private void renderObjects(State state, Graphics2D screenGraphics) {

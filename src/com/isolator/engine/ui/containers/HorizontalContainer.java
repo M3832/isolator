@@ -1,9 +1,14 @@
-package com.isolator.engine.ui;
+package com.isolator.engine.ui.containers;
 
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
+import com.isolator.engine.ui.components.UIBase;
 
 public class HorizontalContainer extends UIContainer {
+    public HorizontalContainer(Size parentSize) {
+        super(parentSize);
+    }
+
     @Override
     protected Size calculateSize() {
         int width = padding.getHorizontal();

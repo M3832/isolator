@@ -9,8 +9,7 @@ public class Isolator extends Game {
 
     public Isolator(Size windowSize) {
         super(windowSize);
-        addState(new Menu(windowSize));
-        addState(new IsolatorGameState(windowSize, input));
+        addState(new Menu(windowSize, input));
     }
 
     @Override

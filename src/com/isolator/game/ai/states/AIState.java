@@ -1,10 +1,10 @@
 package com.isolator.game.ai.states;
 
 import com.isolator.engine.state.GameState;
-import com.isolator.engine.ui.UIText;
+import com.isolator.engine.ui.components.UIText;
 import com.isolator.game.entity.BaseEntity;
 import com.isolator.game.entity.Visitor;
-import com.isolator.engine.ui.UIBase;
+import com.isolator.engine.ui.components.UIBase;
 import com.isolator.game.gfx.ImageEffect;
 
 import java.util.List;

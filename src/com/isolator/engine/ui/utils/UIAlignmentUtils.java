@@ -1,27 +1,29 @@
-package com.isolator.engine.ui;
+package com.isolator.engine.ui.utils;
 
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
+import com.isolator.engine.ui.Alignment;
+import com.isolator.engine.ui.containers.UIContainer;
 
 public class UIAlignmentUtils {
 
-    public static Position calculateDrawPosition(UIContainer uiContainer, Size containerSize) {
+    public static Position calculatePosition(UIContainer uiContainer, Size containerSize) {
         Alignment alignment = uiContainer.getWindowAlignment();
-        AlignmentPosition alignmentHorizontal = alignment.getHorizontal();
-        AlignmentPosition alignmentVertical = alignment.getVertical();
+        Alignment.Position alignmentHorizontal = alignment.getHorizontal();
+        Alignment.Position alignmentVertical = alignment.getVertical();
 
         int screenWidth = containerSize.getWidth();
         int x = 0 + uiContainer.getMargin().getLeft();
-        if(alignmentHorizontal == AlignmentPosition.CENTER)
+        if(alignmentHorizontal == Alignment.Position.CENTER)
             x = screenWidth / 2 - uiContainer.getSize().getWidth() / 2;
-        if(alignmentHorizontal == AlignmentPosition.END)
+        if(alignmentHorizontal == Alignment.Position.END)
             x = screenWidth - uiContainer.getSize().getWidth() - uiContainer.getMargin().getRight();
 
         int screenHeight = containerSize.getHeight();
         int y = 0 + uiContainer.getMargin().getTop();
-        if(alignmentVertical == AlignmentPosition.CENTER)
+        if(alignmentVertical == Alignment.Position.CENTER)
             y = screenHeight / 2 - uiContainer.getSize().getHeight() / 2;
-        if(alignmentVertical == AlignmentPosition.END)
+        if(alignmentVertical == Alignment.Position.END)
             y = screenHeight - uiContainer.getSize().getHeight() - uiContainer.getMargin().getBottom();
 
         return new Position(x, y);

@@ -11,6 +11,7 @@ import java.awt.image.BufferStrategy;
 
 public class Display extends JFrame {
     private Canvas canvas;
+    private Input input;
     private final Size size;
     private final Renderer renderer;
 
@@ -18,6 +19,7 @@ public class Display extends JFrame {
         super();
         this.size = size;
         this.renderer = new Renderer();
+        this.input = input;
         addKeyListener(input);
         setupWindow();
     }
@@ -31,6 +33,8 @@ public class Display extends JFrame {
         canvas = new Canvas();
         canvas.setPreferredSize(windowSize);
         canvas.setFocusable(false);
+        canvas.addMouseListener(input);
+        canvas.addMouseMotionListener(input);
         add(canvas);
         pack();
         canvas.createBufferStrategy(3);

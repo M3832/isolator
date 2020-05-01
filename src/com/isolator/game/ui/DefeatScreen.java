@@ -1,14 +1,16 @@
 package com.isolator.game.ui;
 
-import com.isolator.engine.state.GameState;
+import com.isolator.engine.core.Size;
 import com.isolator.engine.state.State;
 import com.isolator.engine.ui.*;
-import com.isolator.game.states.IsolatorGameState;
+import com.isolator.engine.ui.containers.HorizontalContainer;
+import com.isolator.engine.ui.components.UIText;
 
 public class DefeatScreen extends HorizontalContainer {
-    public DefeatScreen() {
+    public DefeatScreen(Size parentSize) {
+        super(parentSize);
         setWindowAlignment(Alignment.CENTER_CENTER);
-        setPadding(new UISpacing(10));
+        setPadding(new Spacing(10));
         toggleVisibility();
     }
 

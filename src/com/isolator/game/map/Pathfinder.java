@@ -5,6 +5,7 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.entity.BaseEntity;
+import com.isolator.game.entity.PathBlocker;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,14 +22,13 @@ public class Pathfinder {
 
     private void initCollisionMap(List<BaseObject> objects) {
         List<BaseObject> collect = objects.stream()
-                .filter(o -> !(o instanceof BaseEntity))
+                .filter(o -> o instanceof PathBlocker)
                 .collect(Collectors.toList());
 
         for(int x = 0; x < collisionMap.length; x++) {
             for(int y = 0; y < collisionMap[0].length; y++) {
                 final CollisionBox currentTile = CollisionBox.of(
-                        new Position(x * gridSize.getWidth(), y * gridSize.getHeight()),
-                        gridSize);
+                        new Position(x * gridSize.getWidth(), y * gridSize.getHeight()), gridSize);
 
                 collisionMap[x][y] = collect.stream().anyMatch(o -> o.getCollisionBox().checkCollision(currentTile));
             }

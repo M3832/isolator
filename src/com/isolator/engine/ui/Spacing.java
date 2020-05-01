@@ -1,23 +1,23 @@
 package com.isolator.engine.ui;
 
-public class UISpacing {
+public class Spacing {
     private final int top;
     private final int bottom;
     private final int right;
     private final int left;
 
-    public UISpacing(int padding) {
+    public Spacing(int padding) {
         this(padding, padding);
     }
 
-    public UISpacing(int vertical, int horizontal) {
+    public Spacing(int vertical, int horizontal) {
         this.top = vertical;
         this.bottom = vertical;
         this.right = horizontal;
         this.left = horizontal;
     }
 
-    public UISpacing(int top, int bottom, int right, int left) {
+    public Spacing(int top, int bottom, int right, int left) {
         this.top = top;
         this.bottom = bottom;
         this.right = right;

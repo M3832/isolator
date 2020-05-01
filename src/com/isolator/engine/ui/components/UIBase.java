@@ -1,59 +1,51 @@
-package com.isolator.engine.ui;
+package com.isolator.engine.ui.components;
 
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
-import com.isolator.engine.state.State;
+import com.isolator.engine.ui.Spacing;
 
 import java.awt.*;
 
 public abstract class UIBase {
     protected Position position;
     protected Size size;
-    protected UISpacing margin;
-    protected UISpacing padding;
+    protected Spacing margin;
+    protected Spacing padding;
 
     public UIBase() {
-        this.margin = new UISpacing(0);
-        this.padding = new UISpacing(5);
+        this.margin = new Spacing(0);
+        this.padding = new Spacing(5);
         this.position = new Position();
         this.size = new Size();
     }
 
-    public void update(State state) {
-
-    }
-
     public abstract Image getUIElement();
 
-    public UISpacing getMargin() {
+    public Spacing getMargin() {
         return margin;
     }
 
-    public UISpacing getPadding() {
+    public Spacing getPadding() {
         return padding;
     }
 
-    public void setPadding(UISpacing padding) {
+    public void setPadding(Spacing padding) {
         this.padding = padding;
     }
 
-    public void setMargin(UISpacing margin) {
+    public void setMargin(Spacing margin) {
         this.margin = margin;
     }
 
-    void setPosition(Position position) {
+    public void setPosition(Position position) {
         this.position = position;
     }
 
-    Position getPosition() {
+    public Position getPosition() {
         return position;
     }
 
     public Size getSize() {
         return size;
-    }
-
-    void setSize(Size size) {
-        this.size = size;
     }
 }

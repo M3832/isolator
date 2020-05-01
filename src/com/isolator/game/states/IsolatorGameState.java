@@ -9,7 +9,7 @@ import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
-import com.isolator.engine.ui.UIContainer;
+import com.isolator.engine.ui.containers.UIContainer;
 import com.isolator.game.entity.Player;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
@@ -44,16 +44,16 @@ public class IsolatorGameState extends GameState {
         camera = new Camera(windowSize);
         cellSize = new Size(64, 64);
         initConditions();
-        initMap();
         initUI();
+        initMap();
         initGame();
         pathfinder = new Pathfinder(getObjects(), 32, 16);
     }
 
     private void initUI() {
-        victoryScreen = new VictoryScreen();
-        defeatScreen = new DefeatScreen();
-        uiScreen.addContainers(List.of(new UIInfectionPanel(), new GameTimePanel(), defeatScreen, victoryScreen));
+        victoryScreen = new VictoryScreen(uiScreen.getSize());
+        defeatScreen = new DefeatScreen(uiScreen.getSize());
+        uiScreen.addContainers(List.of(new UIInfectionPanel(uiScreen.getSize()), new GameTimePanel(uiScreen.getSize()), defeatScreen, victoryScreen));
     }
 
     private void initConditions() {

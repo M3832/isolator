@@ -4,6 +4,7 @@ import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Vector2;
+import com.isolator.engine.state.State;
 import com.isolator.game.entity.BaseEntity;
 
 import java.awt.*;
@@ -16,12 +17,14 @@ public class DebugRenderer {
     public static final int COLLISION_BOX = 1;
     public static final int ENTITY_DEBUG_UI = 2;
 
-    public void render(List<Integer> features, GameState state, Graphics2D screenGraphics) {
-        if (features.contains(COLLISION_BOX)) renderCollisionBoxes(state, screenGraphics);
-        if (features.contains(ENTITY_DEBUG_UI)) renderEntityUI(state, screenGraphics);
-        if (features.contains(ENTITY_POSITION)) renderEntityPositions(state, screenGraphics);
+    public void render(List<Integer> features, State state, Graphics2D screenGraphics) {
+        if(state instanceof GameState) {
+            GameState gameState = (GameState) state;
 
-//        drawShapes(state, screenGraphics);
+            if (features.contains(COLLISION_BOX)) renderCollisionBoxes(gameState, screenGraphics);
+            if (features.contains(ENTITY_DEBUG_UI)) renderEntityUI(gameState, screenGraphics);
+            if (features.contains(ENTITY_POSITION)) renderEntityPositions(gameState, screenGraphics);
+        }
     }
 
     private void renderCollisionBoxes(GameState state, Graphics2D screenGraphics) {

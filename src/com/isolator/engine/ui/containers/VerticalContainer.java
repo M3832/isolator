@@ -1,9 +1,14 @@
-package com.isolator.engine.ui;
+package com.isolator.engine.ui.containers;
 
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
+import com.isolator.engine.ui.components.UIBase;
 
 public class VerticalContainer extends UIContainer {
+    public VerticalContainer(Size parentSize) {
+        super(parentSize);
+    }
+
     @Override
     public Size calculateSize() {
         int width = padding.getHorizontal();

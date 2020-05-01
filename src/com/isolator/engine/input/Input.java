@@ -1,12 +1,13 @@
 package com.isolator.engine.input;
 
 import com.isolator.engine.core.Position;
+import javafx.scene.input.MouseButton;
 
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Input implements KeyListener, MouseListener, MouseMotionListener {
+public class Input extends MouseAdapter implements KeyListener, MouseListener, MouseMotionListener {
 
     public final Map<Integer, KeyPress> keys;
     public final Map<Integer, MouseButtonPress> mouseButtons;
@@ -32,7 +33,6 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         } else {
             key.press();
         }
-
     }
 
     @Override
@@ -52,8 +52,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
         }
     }
 
-    private void checkButtonInMap(Integer buttonCode) {
-        if(keys.get(buttonCode) == null) {
+    private void checkButtonInMap(int buttonCode) {
+        if(mouseButtons.get(buttonCode) == null) {
             mouseButtons.put(buttonCode, new MouseButtonPress());
         }
     }
@@ -72,7 +72,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
     public void mousePressed(MouseEvent mouseEvent) {
         checkButtonInMap(mouseEvent.getButton());
         MouseButtonPress button = mouseButtons.get(mouseEvent.getButton());
-        if(!button.isTyped()) {
+        if(!button.isClicked()) {
             button.click();
         } else {
             button.press();
@@ -86,12 +86,10 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-
     }
 
     @Override
@@ -106,6 +104,11 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
 
     public Position getMousePosition() {
         return mousePosition;
+    }
+
+    public boolean mouseButtonClicked(int mouseButton) {
+        checkButtonInMap(mouseButton);
+        return mouseButtons.get(mouseButton).isClicked();
     }
 
     public static class KeyPress {
@@ -154,10 +157,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener {
             pressed = false;
         }
 
-        public boolean isPressed() {
-            return pressed || clicked;
-        }
-        public boolean isTyped() {
+        public boolean isClicked() {
             if(clicked && !pressed) {
                 pressed = true;
                 return true;
