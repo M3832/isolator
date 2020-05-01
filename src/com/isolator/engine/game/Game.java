@@ -1,6 +1,6 @@
 package com.isolator.engine.game;
 
-import com.isolator.engine.controller.Input;
+import com.isolator.engine.input.Input;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Display;
 import com.isolator.engine.state.GameState;

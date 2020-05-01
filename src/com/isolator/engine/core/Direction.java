@@ -1,6 +1,6 @@
 package com.isolator.engine.core;
 
-import com.isolator.engine.controller.Controller;
+import com.isolator.game.controller.Controller;
 
 public enum Direction {
     S(0),

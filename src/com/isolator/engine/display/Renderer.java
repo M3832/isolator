@@ -4,7 +4,6 @@ import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.state.State;
-import com.isolator.engine.ui.UIAlignmentUtils;
 
 import java.awt.*;
 
@@ -19,7 +18,7 @@ public class Renderer {
     public void renderState(GameState state, Size windowSize, Graphics2D screenGraphics) {
         renderScene(state, screenGraphics);
         renderObjects(state, screenGraphics);
-        renderUI(state, windowSize, screenGraphics);
+        renderUI(state, screenGraphics);
     }
 
     private void renderObjects(GameState state, Graphics2D screenGraphics) {
@@ -48,15 +47,7 @@ public class Renderer {
         );
     }
 
-    private void renderUI(State state, Size windowSize, Graphics2D screenGraphics) {
-        state.getUiContainers().forEach(container -> {
-            Position drawPosition = UIAlignmentUtils.calculateDrawPosition(container, windowSize);
-            screenGraphics.drawImage(
-                    container.getUIElement(),
-                    drawPosition.getX(),
-                    drawPosition.getY(),
-                    null
-            );
-        });
+    private void renderUI(State state, Graphics2D screenGraphics) {
+        screenGraphics.drawImage(state.getUiScreen().getUiImage(), 0, 0, null);
     }
 }

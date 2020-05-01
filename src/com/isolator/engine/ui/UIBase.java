@@ -1,6 +1,7 @@
 package com.isolator.engine.ui;
 
 import com.isolator.engine.core.Size;
+import com.isolator.engine.state.State;
 
 import java.awt.*;
 

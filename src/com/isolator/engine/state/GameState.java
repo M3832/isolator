@@ -1,9 +1,11 @@
 package com.isolator.engine.state;
 
 import com.isolator.engine.core.CollisionBox;
+import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.game.GameTimer;
 import com.isolator.engine.gameobjects.BaseObject;
+import com.isolator.engine.ui.UIScreen;
 import com.isolator.game.CollisionResolver;
 import com.isolator.game.entity.Blocker;
 
@@ -28,6 +30,11 @@ public abstract class GameState extends State {
         readyForSpawn = new ArrayList<>();
 
         this.collisionResolver = new CollisionResolver();
+    }
+
+    public GameState(Size windowSize) {
+        this();
+        uiScreen = new UIScreen(windowSize);
     }
 
     public void update() {

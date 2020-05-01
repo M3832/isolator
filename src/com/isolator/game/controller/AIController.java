@@ -1,4 +1,4 @@
-package com.isolator.engine.controller;
+package com.isolator.game.controller;
 
 public class AIController implements Controller {
     private boolean up, down, left, right;
@@ -29,23 +29,8 @@ public class AIController implements Controller {
     }
 
     @Override
-    public boolean isRequestingSpeedUp() {
-        return false;
-    }
-
-    @Override
-    public boolean isRequestingSlowDown() {
-        return false;
-    }
-
-    @Override
     public boolean isRequestingMove() {
         return isRequestingDown() || isRequestingLeft() || isRequestingRight() ||isRequestingUp();
-    }
-
-    @Override
-    public boolean isRequestingDebugMode() {
-        return false;
     }
 
     public void setUp(boolean up) {

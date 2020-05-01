@@ -1,4 +1,6 @@
-package com.isolator.engine.controller;
+package com.isolator.game.controller;
+
+import com.isolator.engine.input.Input;
 
 import java.awt.event.KeyEvent;
 
@@ -36,22 +38,7 @@ public class HumanController implements Controller {
     }
 
     @Override
-    public boolean isRequestingSpeedUp() {
-        return input.isClicked(KeyEvent.VK_PLUS);
-    }
-
-    @Override
-    public boolean isRequestingSlowDown() {
-        return input.isClicked(KeyEvent.VK_MINUS);
-    }
-
-    @Override
     public boolean isRequestingMove() {
         return isRequestingDown() || isRequestingLeft() || isRequestingRight() ||isRequestingUp();
-    }
-
-    @Override
-    public boolean isRequestingDebugMode() {
-        return input.isClicked(KeyEvent.VK_Q);
     }
 }

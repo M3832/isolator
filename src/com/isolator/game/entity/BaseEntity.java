@@ -1,6 +1,6 @@
 package com.isolator.game.entity;
 
-import com.isolator.engine.controller.Controller;
+import com.isolator.game.controller.Controller;
 import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;

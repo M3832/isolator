@@ -1,7 +1,7 @@
 package com.isolator.engine.display;
 
 import com.isolator.engine.state.GameState;
-import com.isolator.engine.controller.Input;
+import com.isolator.engine.input.Input;
 import com.isolator.engine.core.Size;
 
 import javax.swing.*;

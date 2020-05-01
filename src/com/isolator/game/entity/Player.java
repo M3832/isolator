@@ -1,7 +1,7 @@
 package com.isolator.game.entity;
 
 import com.isolator.engine.state.GameState;
-import com.isolator.engine.controller.Controller;
+import com.isolator.game.controller.Controller;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;

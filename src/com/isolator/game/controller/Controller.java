@@ -1,4 +1,4 @@
-package com.isolator.engine.controller;
+package com.isolator.game.controller;
 
 public interface Controller {
     boolean isRequestingUp();
@@ -6,10 +6,5 @@ public interface Controller {
     boolean isRequestingRight();
     boolean isRequestingLeft();
     boolean isRequestingAction();
-    boolean isRequestingSpeedUp();
-    boolean isRequestingSlowDown();
-
     boolean isRequestingMove();
-
-    boolean isRequestingDebugMode();
 }

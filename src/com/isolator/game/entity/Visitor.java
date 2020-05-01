@@ -5,7 +5,7 @@ import com.isolator.engine.core.Vector2;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.ai.AIStateMachine;
-import com.isolator.engine.controller.Controller;
+import com.isolator.game.controller.Controller;
 import com.isolator.engine.core.MovementMotor;
 import com.isolator.game.ai.states.AICough;
 import com.isolator.game.ai.states.AIState;

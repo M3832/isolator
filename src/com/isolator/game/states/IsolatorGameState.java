@@ -2,9 +2,9 @@ package com.isolator.game.states;
 
 import com.isolator.engine.game.Condition;
 import com.isolator.engine.state.GameState;
-import com.isolator.engine.controller.AIController;
-import com.isolator.engine.controller.HumanController;
-import com.isolator.engine.controller.Input;
+import com.isolator.game.controller.AIController;
+import com.isolator.game.controller.HumanController;
+import com.isolator.engine.input.Input;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
@@ -39,7 +39,7 @@ public class IsolatorGameState extends GameState {
     protected List<Condition> losingConditions;
 
     public IsolatorGameState(Size windowSize, Input input) {
-        super();
+        super(windowSize);
         this.input = input;
         camera = new Camera(windowSize);
         cellSize = new Size(64, 64);
@@ -53,7 +53,7 @@ public class IsolatorGameState extends GameState {
     private void initUI() {
         victoryScreen = new VictoryScreen();
         defeatScreen = new DefeatScreen();
-        uiContainers.addAll(List.of(new UIInfectionPanel(), new GameTimePanel(), defeatScreen, victoryScreen));
+        uiScreen.addContainers(List.of(new UIInfectionPanel(), new GameTimePanel(), defeatScreen, victoryScreen));
     }
 
     private void initConditions() {
