@@ -1,14 +1,12 @@
 package com.isolator.game.entity;
 
+import com.isolator.engine.ui.*;
 import com.isolator.game.controller.Controller;
 import com.isolator.engine.core.*;
 import com.isolator.engine.display.Camera;
 import com.isolator.engine.gameobjects.BaseObject;
 import com.isolator.engine.gfx.AnimationController;
 import com.isolator.engine.gfx.ImageUtils;
-import com.isolator.engine.ui.UIContainer;
-import com.isolator.engine.ui.UISpacing;
-import com.isolator.engine.ui.UIText;
 import com.isolator.game.states.IsolatorGameState;
 import com.isolator.game.gfx.ImageEffect;
 
@@ -50,7 +48,7 @@ public abstract class BaseEntity extends BaseObject {
     }
 
     private void initUIElements() {
-        this.uiContainer = new UIContainer();
+        this.uiContainer = new VerticalContainer();
         uiContainer.setBackgroundColor(new Color(0, 0, 0, 0));
         uiContainer.setPadding(new UISpacing(0));
         updateDebugContainer();

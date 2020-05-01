@@ -2,16 +2,13 @@ package com.isolator.game.ui;
 
 import com.isolator.engine.state.GameState;
 import com.isolator.engine.state.State;
-import com.isolator.engine.ui.ContainerDirection;
-import com.isolator.engine.ui.UIContainer;
-import com.isolator.engine.ui.UISpacing;
-import com.isolator.engine.ui.UIText;
+import com.isolator.engine.ui.*;
 import com.isolator.game.entity.Visitor;
 import com.isolator.game.states.IsolatorGameState;
 
 import java.awt.*;
 
-public class UIInfectionPanel extends UIContainer {
+public class UIInfectionPanel extends VerticalContainer {
 
     @Override
     public void update(State state) {
@@ -21,10 +18,9 @@ public class UIInfectionPanel extends UIContainer {
         long infected = isolatorState.getObjects().stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isInfected()).count();
         long sick = isolatorState.getObjects().stream().filter(o -> o instanceof Visitor).filter(v -> ((Visitor)v).isSick()).count();
 
-        UIContainer scoreContainer = new UIContainer();
+        UIContainer scoreContainer = new HorizontalContainer();
         scoreContainer.setMargin(new UISpacing(5));
         scoreContainer.setPadding(new UISpacing(5,  0));
-        scoreContainer.setDirection(ContainerDirection.HORIZONTAL);
         scoreContainer.setBackgroundColor(new Color(243, 243, 243));
         scoreContainer.addElement(createScoreText(healthy + "", new Color(0, 228, 12)));
         scoreContainer.addElement(createScoreText(infected + "", Color.YELLOW));

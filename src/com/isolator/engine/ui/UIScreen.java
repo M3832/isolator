@@ -31,6 +31,10 @@ public class UIScreen {
         containers.addAll(uiContainers);
     }
 
+    public void addContainer(UIContainer uiContainers) {
+        containers.add(uiContainers);
+    }
+
     public Image getUiImage() {
         Image uiImage = ImageUtils.createCompatibleImage(size, ImageUtils.ALPHA_BIT_MASKED);
         Graphics2D screenGraphics = (Graphics2D) uiImage.getGraphics();

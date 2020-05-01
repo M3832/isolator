@@ -17,7 +17,6 @@ import java.util.List;
 public abstract class GameState extends State {
 
     protected GameTimer gameTimer;
-    protected Camera camera;
     protected final CollisionResolver collisionResolver;
 
     protected final List<BaseObject> gameObjects;
@@ -62,10 +61,6 @@ public abstract class GameState extends State {
                 gameObjects.remove(i);
             }
         }
-    }
-
-    public Camera getCamera() {
-        return camera;
     }
 
     public void addObject(BaseObject object) {

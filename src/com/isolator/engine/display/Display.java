@@ -3,6 +3,7 @@ package com.isolator.engine.display;
 import com.isolator.engine.state.GameState;
 import com.isolator.engine.input.Input;
 import com.isolator.engine.core.Size;
+import com.isolator.engine.state.State;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,12 +39,12 @@ public class Display extends JFrame {
         setVisible(true);
     }
 
-    public void render(GameState state) {
+    public void render(State state) {
         BufferStrategy bufferStrategy = canvas.getBufferStrategy();
         Graphics2D screenGraphics = (Graphics2D) bufferStrategy.getDrawGraphics();
 
         clearScreen(screenGraphics);
-        renderer.renderState(state, size, screenGraphics);
+        renderer.renderState(state, screenGraphics);
 
         screenGraphics.dispose();
         bufferStrategy.show();

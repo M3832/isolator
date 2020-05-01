@@ -1,13 +1,9 @@
 package com.isolator.game.ui;
 
-import com.isolator.engine.state.GameState;
 import com.isolator.engine.state.State;
-import com.isolator.engine.ui.Alignment;
-import com.isolator.engine.ui.UIContainer;
-import com.isolator.engine.ui.UISpacing;
-import com.isolator.engine.ui.UIText;
+import com.isolator.engine.ui.*;
 
-public class VictoryScreen extends UIContainer {
+public class VictoryScreen extends HorizontalContainer {
     public VictoryScreen() {
         setWindowAlignment(Alignment.CENTER_CENTER);
         setPadding(new UISpacing(10));

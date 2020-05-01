@@ -2,7 +2,6 @@ package com.isolator.engine.display;
 
 import com.isolator.engine.state.GameState;
 import com.isolator.engine.core.Position;
-import com.isolator.engine.core.Size;
 import com.isolator.engine.state.State;
 
 import java.awt.*;
@@ -15,17 +14,20 @@ public class Renderer {
         this.debugRenderer = new DebugRenderer();
     }
 
-    public void renderState(GameState state, Size windowSize, Graphics2D screenGraphics) {
+    public void renderState(State state, Graphics2D screenGraphics) {
         renderScene(state, screenGraphics);
-        renderObjects(state, screenGraphics);
         renderUI(state, screenGraphics);
+        renderObjects(state, screenGraphics);
     }
 
-    private void renderObjects(GameState state, Graphics2D screenGraphics) {
-        Camera camera = state.getCamera();
-        Position camPos = state.getCamera().getPosition();
+    private void renderObjects(State state, Graphics2D screenGraphics) {
+        if(!(state instanceof GameState)) return;
 
-        state.getObjectsWithinViewingBounds().forEach(object -> {
+        GameState gameState = (GameState) state;
+        Camera camera = gameState.getCamera();
+        Position camPos = gameState.getCamera().getPosition();
+
+        gameState.getObjectsWithinViewingBounds().forEach(object -> {
             Position objectPos = object.getPosition();
             Position renderOffset = object.getRenderOffset(camera);
             Image sprite = object.getDrawGraphics(camera);
@@ -38,9 +40,9 @@ public class Renderer {
         });
     }
 
-    private void renderScene(GameState state, Graphics2D screenGraphics) {
+    private void renderScene(State state, Graphics2D screenGraphics) {
         screenGraphics.drawImage(
-                state.getActiveScene().getSceneGraphics(state),
+                state.getSceneImage(),
                 0,
                 0,
                 null

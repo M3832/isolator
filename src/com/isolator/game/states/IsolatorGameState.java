@@ -15,7 +15,7 @@ import com.isolator.game.entity.Visitor;
 import com.isolator.game.logic.Group;
 import com.isolator.game.logic.InfectionStatus;
 import com.isolator.game.logic.RemoveTrigger;
-import com.isolator.game.map.GameMap;
+import com.isolator.game.map.Map;
 import com.isolator.game.map.Pathfinder;
 import com.isolator.game.ui.DefeatScreen;
 import com.isolator.game.ui.GameTimePanel;
@@ -30,7 +30,7 @@ import java.util.stream.Stream;
 
 public class IsolatorGameState extends GameState {
 
-    private GameMap map;
+    private Map map;
     private final Size cellSize;
     private Pathfinder pathfinder;
     private UIContainer victoryScreen;
@@ -69,7 +69,7 @@ public class IsolatorGameState extends GameState {
     }
 
     private void initMap() {
-        this.map = new GameMap(32, 16, cellSize);
+        this.map = new Map(32, 16, cellSize);
         this.map.addWallsToPerimeter(this);
         this.scene = map;
     }
@@ -131,7 +131,7 @@ public class IsolatorGameState extends GameState {
         return losingConditions.stream().allMatch(victoryCondition -> victoryCondition.condition(this));
     }
 
-    public GameMap getMap() {
+    public Map getMap() {
         return map;
     }
 

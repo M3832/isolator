@@ -1,11 +1,11 @@
 package com.isolator.game.map;
 
-import com.isolator.engine.game.GameScene;
-import com.isolator.engine.state.GameState;
+import com.isolator.engine.game.Scene;
 import com.isolator.engine.core.CollisionBox;
 import com.isolator.engine.core.Position;
 import com.isolator.engine.core.Size;
 import com.isolator.engine.display.Camera;
+import com.isolator.engine.state.State;
 import com.isolator.game.entity.PathBlocker;
 import com.isolator.engine.gfx.ImageUtils;
 import com.isolator.engine.gfx.SpritesLibrary;
@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class GameMap extends GameScene {
+public class Map extends Scene {
 
     private final GridCell[][] gridCells;
     private final Size cellSize;
     private final Size mapSize;
     private Shape walkableArea;
 
-    public GameMap(int xTiles, int yTiles, Size cellSize) {
+    public Map(int xTiles, int yTiles, Size cellSize) {
         gridCells = new GridCell[xTiles][yTiles];
         this.cellSize = cellSize;
         fillWithTiles();
@@ -190,7 +190,12 @@ public class GameMap extends GameScene {
     }
 
     @Override
-    public Image getSceneGraphics(GameState state) {
+    public void update(State state) {
+
+    }
+
+    @Override
+    public Image getSceneGraphics(State state) {
         Camera camera = state.getCamera();
         Position startRenderingPosition = getViewableStartingPosition(camera);
         Position endRenderingPosition = getViewableEndingPosition(camera);
